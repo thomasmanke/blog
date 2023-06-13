@@ -1,0 +1,52 @@
+project:
+  type: website
+
+website:
+  title: "Thomas"
+  favicon: images/Manke_2019.11.17_small.JPG
+
+  navbar:
+    left: 
+      - text: "Lectures"
+        icon: book
+        menu: 
+          - text: Rintro
+            href: lectures/Rintro2023/index.qmd
+#          - text: Applied Biostatistics 
+#            href: lectures/ABS2022/index.qmd
+      - text: "Posts"
+        icon: mailbox
+        href: posts/index.qmd
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/
+
+  page-footer: 
+    left: |
+      Made with Quatro   
+    center: 
+      - about.qmd
+    right:
+      - icon: github
+        href: https://github.com
+    background: "grey"
+    
+#  sidebar:
+#      - id: get-started
+#        title: "Get Started"
+#        style: "floating"
+  
+format:
+  html:
+    theme: 
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    code-link: true
+    code-fold: show
+#    code-tools: true
+    highlight-style: github
+
+editor: visual
+

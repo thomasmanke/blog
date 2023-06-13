@@ -1,0 +1,131 @@
+---
+title: "Gapminder"
+author: "Thomas Manke"
+date: 2023/06/12
+date-modified: last-modified
+categories: 
+  - ggplotly
+  - gapminder
+
+echo: true
+eval: true
+
+image: gapminder.png
+
+format:
+  html: default
+---
+
+# Setup
+
+```{r}
+#| label: gapminder_setup
+#| warning: false
+library(gapminder)
+library(tidyverse)
+library(plotly)
+```
+
+# Overview
+
+## Summary Statistics
+
+```{r}
+#| label: overview
+D=gapminder
+summary(D)
+```
+
+## Number of Countries per Continent
+
+Two fancy bar plots:
+
+```{r}
+#| label: number_of_countries
+p <- gapminder %>% 
+  group_by(continent) %>% 
+  summarize(nc=n_distinct(country)) %>%
+  ggplot(aes(x=continent, y=nc, fill=continent)) +
+  geom_bar(stat='identity') +
+  labs(y="Number of countries")
+
+p
+p + coord_polar()
+```
+
+## Distribution of Life Expectancy
+
+```{r}
+#| label: life_expt
+ggplot(data=gapminder, aes(x=lifeExp, fill=continent)) +
+    geom_density(alpha=0.3)
+```
+
+# Correlation Analyses
+
+## Life Expectancy vs. GDP (2002)
+
+```{r}
+#| label: LEx_vs_GDP
+#| warning: false
+#| fig-cap: "Life Expectancy shown vs GDP (2002)"
+
+D=gapminder %>% filter(year==2002)
+p = ggplot(D, aes(x = gdpPercap, y = lifeExp, color=continent)) +
+  geom_point(aes(size = pop, ids = country), alpha=0.7) + 
+  #geom_bin2d(bins=10) +
+  scale_x_log10() +
+  geom_smooth(formula = y~x, se = F, method = "lm") + 
+  facet_wrap(~continent)
+
+
+
+ggplotly(p) %>% highlight("plotly_hover")
+
+ggsave('gapminder.png', plot=p) # save for blog image
+```
+
+## Life Expectancy vs GDP (vs year)
+
+Here I visualize the variable `year` dynamically.
+
+```{r}
+#| label: core_plot
+#g <- crosstalk::SharedData$new(D, ~continent)
+gg = gapminder %>% 
+  group_by(continent) %>%
+  ggplot(aes(gdpPercap, lifeExp, color = continent, frame = year)) +
+  geom_point(aes(size = pop), alpha=0.5) +
+  geom_smooth(formula = y ~x, se = F, method = "lm", show.legend = FALSE) +
+  scale_x_log10()
+```
+
+```{r}
+#| label: plotly_year_joined
+
+# Notice that legends behave differently for ggplot and ggplotly: 
+# + guides(size = FALSE) works as intended for ggplot but it would 
+# include multiple redundant labels for color (=continent)
+gp = gg  # + guides(size = FALSE)
+#gp
+ggplotly(gp) %>% highlight("plotly_hover")
+```
+
+Same can be done with `facet_wrap`:
+
+```{r}
+#| label: plotly_year_facetwrap
+gp = gg +  facet_wrap(~continent)
+ggplotly(gp) %>% highlight("plotly_hover")
+```
+
+# sessionInfo
+
+::: {.callout-tip collapse="true"}
+## sessionInfo
+
+```{r}
+#| label: sessionInfo
+sessionInfo()
+```
+:::

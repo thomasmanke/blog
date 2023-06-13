@@ -1,0 +1,14 @@
+---
+title: "Rintro"
+listing:
+  - id: rintro2023
+    contents: "*.qmd"
+    type: grid
+    sort: "name asc"
+    categories: true
+    sort-ui: true
+    filter-ui: true
+#page-layout: full
+title-block-banner: true
+toc: true
+---

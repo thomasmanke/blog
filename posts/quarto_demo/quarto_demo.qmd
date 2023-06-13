@@ -1,0 +1,217 @@
+---
+title: "Quarto Intro"
+description: Summary of useful features
+date: 2023/06/01
+date-modified: last-modified
+author:
+  - name: Thomas Manke
+    url: thomasmanke1@gmail
+    affiliation: Bioinformatics Group @ MPI-IE
+    affiliation-url: https://bioinfo.ie-freiburg.mpg.de
+title-block-banner: true
+categories: 
+    - Quarto
+image: quarto_demo.png
+
+format:
+  html:
+    theme: flatly
+    code-fold: true
+    code-tools: true
+    toc: true
+    number-sections: true
+bibliography: iris.bib
+link-citations: true
+csl: apa-single-spaced.csl
+#reference-location: margin
+#citation-location: margin
+---
+
+# Preparation
+
+The generic steps in data analysis is to
+
+-   Load software
+-   Load data
+    -   filter
+    -   transformations
+-   Inspect data
+-   Plot data
+
+In this summary I follow this paradigm with very simplistic examples - primarily to illustrate quatro functionality, rather than data science.
+
+## Load packages
+
+Every analysis comes wityh certain software requirements (and dependencies). Here we load the frequenly used `tidyverse` which is a collection of R package with many useful tools
+
+```{r}
+#| label: load_software
+#| warning: FALSE
+#| message: FALSE
+library(tidyverse)
+```
+
+It's best practice to record all packages
+
+::: {.callout-tip collapse="true"}
+## sessionInfo
+
+```{r}
+#| label: sessionInfo
+sessionInfo()
+```
+:::
+
+## Load data
+
+Loading data can also be challenging. In the following we will use the pre-compiled `iris` data set for simplicity.
+
+::: callout-note
+R has many predefined data sets to illustrate data science concepts and software functionality. You can inspect more of those using `data()`.
+:::
+
+```{r}
+#| label: load_data
+#| echo: true
+d <- iris
+```
+
+[An aside: I assign `iris` to a new data frame `d` to keep the workflow generic. But this is optional and I may also have used `iris` instead of `d` below.]{.aside}
+
+::: {.callout-caution collapse="true"}
+## Unfold this callout if you want to know more about this data set.
+
+You may refer to the original paper in [@Fisher1936] or by @Anderson1935. Those references are defined in the file `iris.bib`.
+
+But if you are using R/Rstudio you can also use
+
+``` r
+?iris
+class(iris)
+str(iris)
+```
+
+Notice that this code chunk is not executed during rendering, but you can copy it conveniently from html to your clipboard.
+:::
+
+::: {.callout-tip collapse="true"}
+## The iris data can also be read from the following URL.
+
+The following code block will not be evaluated because of the parameter `eval: false`
+
+```{r}
+#| label: load_iris_from_url
+#| echo: true
+#| eval: false
+url = 'https://iris.csv'  # choose valid link!
+
+d <- read_csv(url) %>% 
+  drop_na()  # some filtering maybe necessary
+```
+:::
+
+More information on additional callouts (warning, caution, important) is available [here](https://quarto.org/docs/authoring/callouts.html)
+
+## Data Inspection
+
+```{r}
+#| label: tbl-data_inspection
+#| tbl-cap: A formatted table with knitr::kable
+knitr::kable(head(d))
+```
+
+@tbl-data_inspection is nicely formatted to show the first few observations of the iris data set. It has `r nrow(d)` rows and `r ncol(d)` columns[^1].
+
+[^1]: Note that we may have filtered the data as part of the pre-processing steps.
+
+# Descriptive statistics
+
+Below I use panel-tabset to illustrate both text summaries and graphical summaries
+
+::: panel-tabset
+#### text
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: A text summary of the data
+
+knitr::kable(summary(d))
+```
+
+#### correlations
+
+```{r}
+#| label: fig-pairwise_corr
+#| fig-cap: A graphical summary
+plot(d[,-5])
+```
+
+#### correlations + colours
+
+```{r}
+#| label: fig-pairwise_corr_col
+#| fig-cap: A graphical summary with colors
+plot(d[,-5], col=d[,5])
+```
+:::
+
+The summary statistics is shown in @tbl-summary and all pairwise correlations are shown in @fig-pairwise_corr and in @fig-pairwise_corr_col with colour-coded species variable. Notice that the table reference does not seem to work within tabsets.
+
+## Columns
+
+Sometimes we may want to define columns
+
+::: columns
+::: {.column width="40%"}
+The average petal length is `r round(mean(d$Petal.Length),2)` cm and the average petal width is `r round(mean(d$Petal.Width),2)` cm.
+:::
+
+::: {.column width="20%"}
+:::
+
+::: {.column width="40%"}
+The data dimensions is `r dim(iris)`.
+:::
+:::
+
+# Plotting with ggplot2
+
+## Coloured by species
+
+```{r}
+#| label: fig-PL_PW
+#| warning: false
+#| fig-cap: Iris data (colored by Species)
+p <- d %>%
+  ggplot(aes(x = Petal.Width, y = Petal.Length)) + 
+  geom_point(aes(color=Species), size = 3, alpha = 0.8) +
+  geom_smooth(method="lm", color="grey") +
+  theme_minimal() +
+  labs(title = "Iris Data",
+       subtitle = "Petal Length vs Petal Width",
+       x = "Petal Width (cm)",
+       y = "Petal Length (cm)",
+       color = "Species",
+       shape = "Species") +
+  theme_minimal() 
+#  scale_color_manual(values = c("darkorange","purple","cyan4")) 
+
+p
+ggsave('quarto_demo.png', plot=p)
+```
+
+## Facet Wrap
+
+```{r}
+#| label: fig-PL_PW_facet
+#| fig-cap: Iris data with caption in margin
+#| cap-location: margin
+#| warning: false
+p +   
+  geom_smooth(aes(color=Species), method="lm") +
+  facet_wrap(~Species)
+```
+
+@fig-PL_PW colors species but runs regression over all samples. @fig-PL_PW_facet facets the data by species and shows also the species-specific regression lines. [Notice that in this case the caption is put in the margin. And this comment too.]{.aside}
+
+Here is just another reference to a figure way back up: @fig-pairwise_corr (But notice that it works only when the corresponding tabset panel is open).

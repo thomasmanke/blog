@@ -1,0 +1,17 @@
+---
+title: "Thomas Manke"
+image: images/Manke_2019.11.17_small.JPG
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/thomasmanke/
+    - icon: github
+      text: Github
+      href: https://github.com/thomasmanke
+    - icon: envelope
+      text: Contact
+      href: mailto:thomasmanke1@gmail.com
+# get icons from: https://icons.getbootstrap.com/
+---

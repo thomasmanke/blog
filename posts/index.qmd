@@ -1,0 +1,13 @@
+---
+title: "Posts-To-Myself"
+listing:
+  contents: .
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: true
+  filter-ui: true
+  image-placeholder: https://github.com/thomasmanke/ABS/raw/main/figures/Sherlock.png
+#page-layout: full
+title-block-banner: true
+---

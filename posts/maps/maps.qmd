@@ -1,0 +1,319 @@
+---
+title: "Geographic Maps with R"
+author: "Thomas Manke"
+date: 2023/06/09
+date-modified: last-modified
+categories: 
+  - geographic maps
+  
+image: maps.png
+
+format:
+  html: default
+---
+
+# Setup
+
+```{r}
+#| label: setup
+#| warning: false
+
+library(ggplot2)
+library(tidyverse)
+library(plotly)
+
+# for map definitions and manipulations
+library(sf)
+library("rnaturalearth")
+#library("rnaturalearthdata")
+library(maps)
+
+library(gapminder)     # for some world data
+library(RColorBrewer)  # for color maps
+```
+
+# Maps with ggplot2
+
+Maps are polygons and can be plotted using `ggplot2::geom_map()`.
+
+Below I illustrate this with
+
+a)  a simple map of the world and\
+b)  a more customized version of Italy.
+
+```{r}
+#| label: ggplot_map
+
+# World Map
+world_map <- ggplot2::map_data('world')
+world_map %>% head(3)
+
+p = ggplot(data=world_map)
+p + geom_map(map=world_map, aes(map_id=region, fill=region)) + 
+  expand_limits(x = world_map$long, y = world_map$lat) +
+  theme(legend.position = "none") +
+  ggtitle('World with default colours')
+
+# Italy map with Pastel colours
+italy_map = map_data("italy")
+italy_map %>% head(3)
+
+# define a custom colour palette and recycle the colours
+palette <- brewer.pal(8, "Dark2")
+my_palette <- rep(palette, length.out = 100)
+
+ggplot(data=italy_map) +
+  geom_map(map=italy_map, aes(map_id=region, fill=region)) + 
+  expand_limits(x = italy_map$long, y = italy_map$lat) +
+  scale_fill_manual(values = my_palette) +
+  theme(legend.position = "none") + 
+  ggtitle('Italy with custom colours')
+
+```
+
+# Overlap with Data
+
+Projecting external data onto geographic maps is easy. We just need to make sure that the data contains a variable (`map_id`) that corresponds to the region variable in the map.
+
+First we show this for a standard data set that comes with R: `USArrests`
+
+```{r}
+#| label: overlap_data
+
+# map of US states as polygon
+states_map <- ggplot2::map_data("state")
+
+# simple map of regions
+p <- ggplot(data=states_map) + 
+  geom_map(map=states_map, aes(map_id=region, fill=region)) +
+  expand_limits(x = states_map$long, y = states_map$lat) +
+  ggtitle('US states with colour-coded regions') +
+  theme(legend.position = "none")
+p
+
+# USA crime data (match 'state' format to 'region' definition in map)
+d = USArrests  %>% mutate(state=tolower(rownames(.)))
+
+d %>% head(3)
+states_map %>% head(3)
+
+# link map with data, by  map_id = state = region
+p <- ggplot(d) +
+  geom_map(map = states_map, aes(map_id = state, fill = Murder) ) + 
+  expand_limits(x = states_map$long, y = states_map$lat) +
+  ggtitle('US states with colour-coded regions by data values')
+p
+```
+
+## More Examples
+
+Next I repeat the same for other data sets: `gapminder` and a custom data set with emigration data from an Excel file.
+
+Notice that some countries are missing because map by name failed (e.g. USA). This should be fixed, but I leave it here to highlight the challenge.
+
+```{r}
+#| label: overlap_data2
+
+# gapminder data
+ggplot(data=gapminder) +
+  geom_map(map=world_map, 
+           aes(fill=lifeExp, map_id=country), colour = "#7f7f7f") +
+  expand_limits(x = world_map$long, y = world_map$lat) +
+  ggtitle('world_map with gapminder(lifeExp)')
+
+
+# read emigration data from Excel file
+fn = "data/20200501_emigrant_remittance_data_visualization_raw.xlsx"
+emigration_data = readxl::read_excel(path = fn)
+
+#simplify the column names
+colnames(emigration_data)=c("country", "Pop2019", "Emi2019", "Share_t", "Share_i", "Remit2019_V", "Remit2019_GDP")
+
+# using the orginal world_map (long, lat, region) and data emigration_data
+# where emigration_data$country is used to map to world_map$region
+
+ggplot(data=emigration_data) +
+  geom_map(map=world_map, 
+           aes(fill=Emi2019, map_id=country), colour = "#7f7f7f") +
+  expand_limits(x = world_map$long, y = world_map$lat) +
+  ggtitle('world_map with own data(Emi2019)')
+```
+
+## Cooordinates: fine tuning
+
+There are various coordinate systems. We can use coord_sf() to make specific choices for beautification.
+
+Here I revisit the plot of USA murder statistics from above
+
+```{r}
+#| label: "coordinate finetuning"
+
+# crs = 5070 is a Conus Albers projection for North America, see: https://epsg.io/5070
+# default_crs = 4326 tells coord_sf() that the input map data are in longitude-latitude format
+
+coords <- ggplot2::coord_sf(
+  crs = 5070, default_crs = 4326,
+  xlim = c(-125, -70), ylim = c(25, 52)
+  )
+
+# p was the defined above
+p + coords
+```
+
+## Multiple Maps
+
+Using a long data format and `facet_wrap` we can also plot multiple maps.
+
+```{r}
+#| label: maps_facet_wrap
+
+d_long <- d %>% pivot_longer(Murder:Rape)
+d_long %>% head(3)
+
+ggplot(d_long) +
+  geom_map(map = states_map, aes(map_id = state, fill = value) ) +
+  coords + 
+  facet_wrap(~name) 
+```
+
+## sf format and geom_sf
+
+`sf` is a common data standard for `simple feature` objects such as geographical data.
+
+The `sf` package provides many tools for reading and transforming sf data.
+
+`ggplot2` provides a convenient interface `geom_sf` to plot such data.
+
+```{r}
+#| label: sf_intro
+nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
+glimpse(nc)
+ggplot(nc) + geom_sf(aes(fill = AREA))
+
+nc_3857 <- sf::st_transform(nc, 3857)
+ggplot(nc_3857) + geom_sf(aes(fill = PERIMETER))
+
+```
+
+# Maps from rnaturalearth
+
+There are additional libraries to retrieve Geo-coordinates at various resolutions and formats.
+
+```{r}
+#| label: rnaturalearth
+#| warning: false
+
+# a world map from the rnaturalearth library in sf format
+# this includes a geometry field per region (defined as MULTIPOLYGON)
+# notice that 'world' also contains additional data such as population 'pop_est'
+world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+world %>% glimpse()
+
+p = ggplot(data = world) +
+  geom_sf(aes(fill = log10(pop_est), ids=name)) +
+  scale_fill_gradient2(low="white", high="red", midpoint=6)
+p
+
+ggsave('maps.png', plot=p)  # thumbnail for blog
+```
+
+## Adding new data
+
+We can add new data to the sf object ...
+
+```{r}
+#| label: join_sf_with_new_data
+#| warning: false
+
+# here we join additional data into the world map
+D=world %>% inner_join(gapminder, by=c("name"="country"))
+
+# D now contains coordinate `geometry` from world and 
+# additional data from gapminder - we plot it again with geom_sf()
+
+p <- D %>% 
+  # keep plot size manageable
+  filter(year>=1992) %>%                                         
+  ggplot(data = .) +
+  # add labels to be shown in plotly hover
+  geom_sf(aes(fill=log10(pop),label=name, label1=year)) +
+  # custom colour scheme
+  scale_fill_gradient2(low="white", high="red", midpoint=6) +
+  # default map
+  coord_sf(crs = st_crs("+proj=longlat +datum=WGS84")) +         
+  # Mercator map
+  #  coord_sf(crs = st_crs(3857)) +    
+  # separate plot for each year
+  facet_wrap(~year) + 
+  ggtitle('Map of world with gapminder data')
+
+#p
+
+# use plotly for more interactivity - just because we can
+ggplotly(p)
+```
+
+# There is more
+
+## Maps with maps
+
+```{r}
+#| label: maps_with_maps
+
+maps::map()         # map of workd
+maps::map("state")  # map of US states
+
+# pacific-centered map of the world
+maps::map(wrap = c(0,360), fill = TRUE, col = "lightblue") 
+```
+
+## Map Manipulation with maps and sf
+
+```{r}
+#| label: color_map
+
+# convert map object (list) to sf object (data frame)
+counties <- st_as_sf(map("county", plot = FALSE, fill = TRUE))
+#states <- st_as_sf(map("state", plot = FALSE, fill = TRUE)) # unused here
+
+# subset US counties in Florida and check if polygon is valid (not for all!)
+counties <- counties %>% 
+  subset(grepl("florida", counties$ID)) %>% 
+  filter(st_is_valid(.))
+
+# Calculate the county area
+counties$area <- as.numeric(st_area(counties))
+
+# ggplot with geom_sf() - a more modern version of geom_map
+ggplot(data = world) +
+    # first show map and borders beyond Florida counties
+    geom_sf() + 
+    # now overlay the filled counties of Florida
+    geom_sf(data = counties, aes(fill = area)) +
+    # chose colour scheme
+    scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
+    # define coordinates
+    coord_sf(xlim = c(-88, -78), ylim = c(24.5, 33), expand = FALSE)
+```
+
+## And there is more ...
+
+```{r}
+#| label: test
+#| eval: false
+#| echo: false
+
+# Not sure where this code fragment is from ?? 
+# Clearly something is not fully defined here
+# need to define world_points
+ggplot(data = world) + 
+  geom_sf() + 
+  geom_text(data=world_points,aes(x=X, y=Y, label=name), color='darkblue', fontface = 'bold', check_overlap = FALSE) +
+  annotate(geom=text, x = -90, y = 26, label = 'Gulf of Mexico', fontface = 'italic', color = 'grey22', size = 6) +
+  annotation_scale(location = 'bl', width_hint = 0.5) + 
+  annotation_north_arrow(location = 'bl', which_north = 'true', pad_x = unit(0.75, 'in'), pad_y = unit(0.5, 'in'), style = north_arrow_fancy_orienteering) + 
+  coord_sf(xlim = c(-102.15, -74.12), ylim = c(7.65, 33.97), expand = FALSE) + xlab('Longitude') + ylab('Latitude') +
+  ggtitle('Map of the Gulf of Mexico and the Caribbean Sea') + 
+  theme(panel.grid.major = element_line(color = gray(.5), linetype = 'dashed', size = 0.5), panel.background = element_rect(fill = 'aliceblue'))
+
+```

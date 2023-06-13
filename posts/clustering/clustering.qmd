@@ -1,0 +1,51 @@
+---
+title: "Clustering"
+author: "Thomas Manke"
+date: 2023/06/09
+date-modified: last-modified
+categories: 
+  - clustering
+  - iris
+  - shiny
+
+echo: true
+eval: true
+
+format: 
+  html:
+    page-layout: custom
+server: shiny
+---
+
+# Introduction
+This is a shiny application. It requires a shiny server to run properly.
+The latter could be as part of Rstudio or some cloud server (e.g. shinyapps.io, quarto).
+Without it will not render properly, but I used it hear to illustrate how quarto can be used to define a simple shiny app.
+
+```{r}
+#| panel: sidebar
+vars = names(iris)[-5]
+selectInput('xcol', 'x', vars)
+selectInput('ycol', 'y', vars, selected=vars[[2]])
+numericInput('k', '#clusters', 3, min=1, max=9)
+```
+
+```{r}
+#| panel: fill
+plotOutput('plot1')
+```
+
+
+Notice that we have to define the `context` of the following code block.
+```{r}
+#| context: server
+#| label: server_code
+
+d <- reactive({
+  iris[,c(input$xcol, input$ycol)]
+})
+
+output$plot1 <- renderPlot({
+  plot(d(), col=iris$Species)
+})
+```

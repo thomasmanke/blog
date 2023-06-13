@@ -1,0 +1,9 @@
+_site
+_freeze
+__pycache__
+*_files
+*_cache
+.DS_Store
+.Rhistory
+.Rproj.user
+.quarto
