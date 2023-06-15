@@ -10,6 +10,8 @@ image: maps.png
 
 format:
   html: default
+  revealjs:
+     output-file: maps_slides.html
 ---
 
 # Setup

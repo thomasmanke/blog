@@ -11,7 +11,8 @@ image: vst.png
 
 format:
   html: default
-  revealjs: default
+  revealjs: 
+    output-file: vst_slides.html
 ---
 
 ## Error Propagation {.smaller}

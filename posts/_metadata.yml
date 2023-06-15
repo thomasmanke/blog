@@ -30,4 +30,4 @@ format:
     tbl-cap-location: bottom
     chalkboard: true
     slide-number: true
-    output-file: vst_slides.html
+
