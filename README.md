@@ -11,6 +11,7 @@ git clone
 
 ```
 mamba env create -f env.yml 
+mamba env update -f env.yml
 ```
 
 ### Render web site
