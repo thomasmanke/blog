@@ -1,17 +1,11 @@
 ---
 title: "Geographic Maps with R"
-author: "Thomas Manke"
 date: 2023/06/09
 date-modified: last-modified
 categories: 
   - geographic maps
   
 image: maps.png
-
-format:
-  html: default
-  revealjs:
-     output-file: maps_slides.html
 ---
 
 # Setup
