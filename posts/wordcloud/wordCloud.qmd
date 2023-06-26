@@ -1,6 +1,5 @@
 ---
 title: "Word Clouds with R"
-author: "Thomas Manke"
 date: 2023/06/15
 date-modified: last-modified
 categories: 
@@ -9,10 +8,6 @@ categories:
   - web scraping
 
 image: wordcloud.png
-format:
-  html: default
-  revealjs:
-     output-file: wordcloud_slides.html
 ---
 
 # Setup
@@ -86,7 +81,7 @@ do <- dev.off()
 
 For some of the common text manipulation (punctuation, stopword removal etc) we could also use specific packages, e.g. tm.
 
-```{r} 
+```{r}
 #| label: tm 
 #| eval: false 
 #| echo: false
