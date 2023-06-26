@@ -3,23 +3,13 @@ title: "Quarto Intro"
 description: Summary of useful features
 date: 2023/06/01
 date-modified: last-modified
-author:
-  - name: Thomas Manke
-    url: thomasmanke1@gmail
-    affiliation: Bioinformatics Group @ MPI-IE
-    affiliation-url: https://bioinfo.ie-freiburg.mpg.de
+
 title-block-banner: true
 categories: 
     - Quarto
+    
 image: quarto_demo.png
 
-format:
-  html:
-    theme: flatly
-    code-fold: true
-    code-tools: true
-    toc: true
-    number-sections: true
 bibliography: iris.bib
 link-citations: true
 csl: apa-single-spaced.csl
