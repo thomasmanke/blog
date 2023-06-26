@@ -1,0 +1,122 @@
+---
+title: "Gapminder (Animated)"
+date: 2023/06/16
+date-modified: last-modified
+categories: 
+  - plotly
+  - gapminder
+  - animation
+  - geographic maps
+
+jupyter: python3
+
+image: gapminder_animated.png
+
+format:
+  html: default
+  revealjs:
+     output-file: gapminder_revealjs.html  
+---
+
+# Setup
+
+```{python}
+#| label: gapminder_setup
+#| warning: false
+
+import pandas as pd
+import matplotlib.pyplot as plt                      # simple plots
+import plotly.express as px                          # visualizations
+from statsmodels.tsa.vector_ar.var_model import VAR  # predictions
+
+df=px.data.gapminder()
+df.head()
+```
+
+# Animated Scatter Plot
+
+-   ... overloaded with other data (size=population, colour=continent)
+-   ... and animated over time
+
+```{python}
+#| label: animated_scatter
+#| fig-cap: "Here I use px.scatter to reproduce Hans Rosling's famous plot"
+
+fig = px.scatter(data_frame=df,
+           x='gdpPercap',
+           y='lifeExp',
+           size='pop',
+           color='continent',
+           title='GapMinder: Hans Rosling',
+           labels={'gdpPercap':'Wealth',
+                   'lifeExp':'Life Expectancy'},
+           log_x=True,
+           range_y=[25,95], range_x=[100,1e5],
+           hover_name='country',
+           animation_frame='year',
+           height=700,
+           size_max=100)
+           
+
+fig.write_image("gapminder_animated.png")
+fig
+
+```
+
+# Animated World Map
+
+-   ... for a single variable (lifeExp) over time
+
+```{python}
+#| label: fig_animaated_world
+#| fig-cap: "Use choropleth to visualize and animate life exptectancy across the globe and time"
+value="lifeExp"
+v_min, v_max = df[value].min(), df[value].max()
+
+px.choropleth(df,               
+              locations="iso_alpha",               
+              color=value,
+              hover_name="country",  
+              animation_frame="year",    
+              color_continuous_scale='Blues', 
+              range_color=(v_min, v_max), 
+              height=600, 
+              width=800,            
+)
+```
+
+# Watermark and Package Versions
+
+::: {.callout-tip collapse="true"}
+## watermark
+
+```{python}
+import watermark
+import pkg_resources
+
+
+# Display watermark information
+print(watermark.watermark())
+
+
+# Get installed module versions
+installed_packages = pkg_resources.working_set
+
+# Print module versions
+print("Module versions:")
+for package in installed_packages:
+    print(package.key, package.version)
+```
+:::
+
+## Cell magic
+
+It would be nice to get the cell magic working as with Jupyter. But the ipython code block seems to be ignored.
+
+See: https://stackoverflow.com/questions/75024926/is-quarto-able-to-render-documents-with-ipython-magic
+
+```{ipython}
+%load_ext rpy2.ipython
+%watermark
+%watermark --iversions
+```
