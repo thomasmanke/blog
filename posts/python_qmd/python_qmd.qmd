@@ -1,0 +1,39 @@
+---
+title: "Quarto with Python (qmd)"
+date: 2023/06/06
+date-modified: last-modified
+
+jupyter: python3
+
+image: python_qmd.png
+
+format:
+  html: default
+  revealjs:
+     output-file: python_qmd_revealjs.html  
+---
+
+## Polar Axis
+
+For a demonstration of a line plot on a polar axis, see @fig-polar.
+
+```{python}
+#| label: fig-polar
+#| fig-cap: "A line plot on a polar axis"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+fig.savefig("python_qmd.png")
+plt.show()
+```
+
+The source file for this example is a qmd file with python code blogs.
