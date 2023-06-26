@@ -1,19 +1,12 @@
 ---
 title: "Gapminder"
-author: "Thomas Manke"
 date: 2023/06/12
 date-modified: last-modified
 categories: 
   - ggplotly
   - gapminder
 
-echo: true
-eval: true
-
 image: gapminder.png
-
-format:
-  html: default
 ---
 
 # Setup
