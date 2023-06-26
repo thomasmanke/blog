@@ -1,0 +1,156 @@
+---
+title: "Trees with Python (qmd)"
+date: 2023/06/06
+date-modified: last-modified
+
+jupyter: python3
+
+image: sunburst_python.png
+
+format:
+  html: default
+  revealjs:
+     output-file: trees_python_revealjs.html  
+---
+
+## Setup
+
+```{python}
+import subprocess
+import numpy as np
+import pandas as pd
+import plotly.express as px
+```
+
+## Sunbursts
+
+The `gapminder` data has a simple hierachy defined by the map `country` $\to$ `continent`.
+
+In px.sunburst we define a `path` from continent to country. In fact, we may also define a root node (here `world`).
+
+Notice how the nodes and their parents are defined as columns in a data frame.
+
+Other columns can be chosen for color coding of nodes (here: lifeExp).
+
+Th calculation of proper sizes (continent pop) are done implicitly as part of the px::sunburs() implementation.
+
+```{python}
+#| label: fig-gapminder_sunburst
+#| fig-cap: A Sunburst plot of gapminder data. Sizes (arc lengths) correspond to population sizes of countries aand continents. Colours encode life expectancy (lifeExp) relative to the weighted global average.
+
+df = px.data.gapminder().query("year == 2007")
+df.head(4)  # nodes (country) and parents (continent) in pandas df
+
+fig = px.sunburst(df, 
+  path=[px.Constant('world'), 'continent', 'country'], values='pop',
+  color='lifeExp', hover_data=['iso_alpha'],
+  color_continuous_scale='RdBu',
+  color_continuous_midpoint=np.average(df['lifeExp'], weights=df['pop']))
+
+fig.write_image("sunburst_python.png")
+fig.show()
+
+
+```
+
+## Directory as TreeMap
+
+References/Links:
+
+-   https://plotly.com/python/sunburst-charts/
+-   https://stackoverflow.com/questions/74895923/create-a-treemap-showing-directory-structure-with-plotly-graph-object
+-   https://towardsdatascience.com/visualize-hierarchical-data-using-plotly-and-datapane-7e5abe2686e1
+-   https://www.geeksforgeeks.org/treemap-using-plotly-in-python/
+
+### Get data: using du
+
+Collect data. Make sure to not double-count files. Per default `du` list files and directories, but here I only collect files.
+
+Notice 1: there are various ways to achieve the same with python modules (glob.glob, os.walk), but in the end `du -a` worked best for me.
+
+Notice 2: The strategy is to look for files and directories only appear as part of the file name (and only the direct parent directory). As a consequence empty directories will be ommitted, also upper level directories will be ommitted if they only contain other directories but no files: /empty/empty/full/files.txt
+
+In this case only node (file.txt) and parent (full) would be reported
+
+empty directories will be omitted. Also
+
+```{python}
+folder=".."  # chose folder for which to collect data
+
+# run `du` on all files (but not directories)
+cmd='find ' +  folder + ' -type f -exec du -a {} +'
+out=subprocess.check_output( cmd, shell=True, text=True)
+lines = out.split("\n")
+
+data = []
+for line in lines:
+  if line:
+    size, file_name = line.split("\t")
+    dirs = file_name.split("/")         # extract (sub)dirs from file_name
+    L = len(dirs)
+    if (L<2):
+      continue
+    parent = dirs[L-2]
+    node   = dirs[L-1] 
+    #print(line, size, node, parent)
+    data.append({"size": int(size), "level": L, "node": node, "parent": parent})
+ 
+df = pd.DataFrame(data)
+df.head(15)
+```
+
+### Visualization 1: sunburst
+
+Again the sizes of the directories are automatically inferred and visualized by the node-parent relationships. Minor differences with `du <dir>` may occur.
+
+```{python}
+#| label: fig-dir_sunburst
+#| fig-cap: Sunburst of direcory `folder`
+fig = px.sunburst(df, 
+                  path=[px.Constant(folder),'parent', 'node'], 
+                  values='size', 
+                  color='parent',
+#                  color_continuous_scale='Blues'
+                  )
+fig.update_layout(title_text="Content of directory = " + folder +  "  Command: " + cmd, font_size=10)
+fig.show()
+```
+
+### Visualization 2: treemap
+
+```{python}
+#| label: fig-dir_treemap
+#| fig-cap: Treemap of direcory.
+fig = px.treemap(df, 
+                  path=[px.Constant(folder),'parent', 'node'], 
+                  values='size', 
+                  color='parent',
+#                  color_continuous_scale='Blues'
+                  )
+fig.update_layout(title_text="Content of directory = " + folder +  "  Command: " + cmd, font_size=10)
+fig.show()
+```
+
+## Watermark and Package Versions
+
+::: {.callout-tip collapse="true"}
+### watermark
+
+```{python}
+import watermark
+import pkg_resources
+
+
+# Display watermark information
+print(watermark.watermark())
+
+
+# Get installed module versions
+installed_packages = pkg_resources.working_set
+
+# Print module versions
+print("Module versions:")
+for package in installed_packages:
+    print(package.key, package.version)
+```
+:::

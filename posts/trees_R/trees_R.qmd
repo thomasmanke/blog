@@ -1,0 +1,445 @@
+---
+title: "Trees with R"
+date: 2023/06/16
+date-modified: last-modified
+categories: 
+  - plotly
+  - treemap
+  - sunburst
+  - gapminder
+
+image: trees.png
+---
+
+## Setup
+
+```{r}
+#| label: libraries
+#| warning: false
+library(tidyverse)
+library(plotly)
+library(gapminder)
+```
+
+## Simple Sunburst Example
+
+Notice that the simplicity of this example hides a few important issues
+
+-   labels: are arbitrary (and can be redundant)
+-   ids: should be unique
+    -   if not used explicitly they will be implicitly set from labels
+    -   manual says they could not be numbers
+-   parents: must refer to the unique IDs
+
+Ref: https://plotly.com/r/reference/sunburst/#sunburst
+
+```{r}
+#| label: fig-simple-sunburst
+#| fig-cap: A simple sunburst exaample from plotly
+fig <- plot_ly(
+  labels = c("Eve", "Cain", "Seth", "Enos", "Noam", "Abel", "Awan", "Enoch", "Azura"),   # = ids !!!
+  parents = c("", "Eve", "Eve", "Seth", "Seth", "Eve", "Eve", "Awan", "Eve"),
+  values = c(10, 14, 12, 10, 2, 6, 6, 4, 4),
+  type = 'sunburst'
+)
+
+fig
+```
+
+Notice: If all parents are set to `root=""` then this reduces to a simple pie chart
+
+```{r}
+#| label: fig-simple-pie
+#| fig-cap: A pie chart is a special case of a sunburst
+
+fig <- plot_ly(
+  labels = c("Eve", "Cain", "Seth", "Enos", "Noam", "Abel", "Awan", "Enoch", "Azura"),   # = ids !!!
+  parents = c("", "", "", "", "", "", "", "", ""),
+  values = c(10, 14, 12, 10, 2, 6, 6, 4, 4),
+  type = 'sunburst'
+)
+
+fig
+```
+
+## Gapminder
+
+### Filter and Subset Data
+
+As usual we need some pre-processing and filtering of the data before we get started. In this case we only want to filter for `year` and reduce it to the relevant columns.
+
+```{r}
+#| label: gapminder_setup
+
+# preprocess gapminder data
+gpm = gapminder %>% 
+  filter(year==2007) %>%                 # filter specific year (the last)
+#  mutate_if(is.factor, as.character) %>% # convert factors to character for uniformity (optional)
+  select(continent, country, pop)        # select only specific columns
+```
+
+### Define hierarchy
+
+Goal: create a new data frame that contains `node` with labels, parent labels and values - with one line per node.
+
+Possible parent="" to denote root node(s). In the `gapminder` example the continents are parents (and roots) of countries.
+
+```{r}
+#| label: create_hierarchy
+
+root="world"
+# define nodes
+df1 = gpm %>% 
+  group_by(continent) %>%          # organize gapminder by continent
+  summarise(val=sum(pop)) %>%      # continents value = sum(pop)  = sum over countries
+  mutate(parent=root) %>%            # continents are root (no label)
+  select(label=continent, parent, val)
+
+
+# for each country (=leaf)-level define val(=pop), parent (continent) and label (country)
+df2 = gpm %>% 
+  select(label=country, parent=continent, val=pop) 
+
+# merge nodes (continents and countries)
+df = df1 %>% bind_rows(df2)
+df %>% head(10)
+```
+
+### Plotting
+
+There are two popular plots to visualize hierarchical relationships with quantitative values: `sunburst` and `treemaps`.
+
+Given a properly prepared dataframe they can be easily plotted with plot_ly.
+
+Notice: In the code below `branchvalues = 'total'` ensures that the relative arc length (sunburst) and areas (treemaps) correspond to the total values implied by the hierarchy. (Otherwise the arc length of the continents would be twice the length over all countries)
+
+#### Sunbursts
+
+```{r}
+#| label: fig-gapminder_sunburst
+#| fig-cap: Gapminder sunburst.
+fig = plot_ly(df, type = 'sunburst', 
+              branchvalues = 'total',
+              labels  = ~label,
+              parents = ~parent,
+              values  = ~val
+)
+fig
+```
+
+#### Treemap
+
+In fact, treemaps are preferred to visualize data of different proportions. For the same reasons that pie charts are discouraged.
+
+```{r}
+#| label: fig-treemap
+#| fig-cap: Treemap of World Population.
+fig = plot_ly(df, type = 'treemap', 
+        branchvalues = "total",
+        labels  = ~label,
+        parents = ~parent,
+        values  = ~val
+)
+
+fig
+```
+
+### Further Developments
+
+Here are my efforts to color-code the population size and also scale the countries separately for their respective continent.
+
+And I also tested how to combine figures - an additional challenge for plotly sunbursts.
+
+Beware: the setting for `branchvalues` has to be handled carefully.
+
+```{r}
+#| label: fig-gapminder-colors
+#| fig-cap: Two Sunburst of world population (2007). a) unscaled and b) scaled
+# simple scale function
+scale01 <- function(x){(x-min(x))/(max(x)-min(x))}
+
+# calculate scaled population for each parent (continent)
+df <- df %>% group_by(parent) %>% mutate(val_s = scale01(val))
+
+# illustrate the parent-specific scaling for Europe
+df %>% filter(parent=="Europe") 
+
+p1 <- plot_ly() %>% 
+  add_trace(data = df,
+            type = "sunburst",    
+            branchvalues = 'total',
+            labels  = ~label,
+            parents = ~parent,
+            values  = ~val,
+            marker = list( color = ~val, 
+                           colorscale='Blues', 
+                           colorbar = list(title = "Population"),
+                           reversescale=TRUE,
+                           showscale=TRUE
+                           )
+            )
+
+
+p2 <- plot_ly() %>% 
+  add_trace(data = df,
+            type = "sunburst",    
+            # for the scaled values branchvalue='total' will cause problems
+            #branchvalues = 'total',
+            labels  = ~label,
+            parents = ~parent,
+            values  = ~val_s,
+            marker = list( color = ~val_s, 
+                           colorscale='Blues', 
+                           colorbar = list(title = "Scaled Population"),
+                           reversescale=TRUE,
+                           showscale=TRUE
+                           )
+            )
+
+#plotly::subplot(p1,p2)  #does not work: https://github.com/plotly/plotly.R/issues/1867
+
+crosstalk::bscols(p1, p2)
+```
+
+## Directory Content
+
+Here I want to visualize the file structure and size of a given directory.
+
+### Load Data
+
+Get all files and directories (under a given `root` folder) and determine their sizes using 'du -a'
+
+```{r}
+#| label: get_data_from_du
+#| warning: false
+
+root=".."
+#cmd=paste('find', root,' -type f -exec du -a {} +')
+cmd=paste('du -a', root)
+df = read_tsv(pipe(cmd), col_names = c("size", "file_name"))
+```
+
+### Data Munging
+
+The directory structure is a tree. The key steps below are to define appropriate node-IDs, node-labels and parents for each node.
+
+#### A sidetrack ...
+
+In retrospective the above goals sounds simple, but much work went into this lengthy sidetrack. which was caued by a misunderstanding on how node and parent labels work. The code cell below introduced some convenience function to extract only the partial directory name as `parent`, but this is overly complicated since `parent` should refer to a *unique* ID. I keep this code fragment only for reference because it took some time to develop
+
+```{r}
+#| label: unused_helper_functions
+#| eval: false
+
+get_2ndlast <- function(L){
+  # get 2nd last element from a list
+  if (length(L) >= 2) {
+    L[length(L) - 1]
+  } else {
+    "root"
+  }
+}
+
+get_parent <- function(filename){
+  # get the direct parent directory of a file (before the last "/", possibly empty)
+  # split filename by directories %>% convert to simple vector %>% extract 2nd last element
+  
+  #this is not vectorize and doesn't work properly if filename is a vector, e.g df$file_name
+  strsplit(filename, "/") %>% unlist %>% .[length(.)-1]     
+}
+
+# to vectorize a function there are different strategies 
+# this solution does not work: https://deanattali.com/blog/mutate-non-vectorized/
+get_parent_v <- Vectorize(get_parent)
+
+# this version worked, but I stopped using this anyhow
+get_parent_v <- function(filename){
+  strsplit(filename, "/") %>% sapply(get_2ndlast) %>% unlist
+}
+```
+
+Below we add a label and a parent-ID to the data frame. Notice the following choices in the code block below
+
+-   `file_name` will serve as a unique ID of each file
+-   `basenanme(file_name)` will serve as a convenient label for files (and directories)
+-   `dirname(file_name)` will serve as a unique ID for parent directories
+
+#### ... and a simple solution
+
+```{r}
+#| label: process_dir
+                            
+df = df %>% 
+  mutate(label=basename(file_name), parent=dirname(file_name)) 
+  # this one does not help because the reduced directory name is not a unique ID
+  #mutate(node=basename(file_name), parent=get_parent_v(file_name)) 
+
+#df %>% summary()
+df %>% head()
+```
+
+### Sunburst
+
+```{r}
+#| label: fig-directory_sunburst
+#| fig-cap: "A Sunburst directory"
+
+fig = df %>% 
+  plot_ly(
+    type = 'sunburst', 
+    branchvalues = "total",  # choice on how to represent 
+    ids     = ~file_name,    # unique ID
+    labels  = ~label,        # arbitrary label
+    parents = ~parent,       # unique ID
+    values  = ~size
+) %>%
+  layout(
+    title = paste("File System Sunburst for direcory ", root)
+  )
+
+fig
+
+```
+
+### Treemap
+
+```{r}
+#| label: fig-directory_treemap
+#| fig-cap: "Treemap of directory"
+
+fig = df %>% 
+  plot_ly(
+    type = 'treemap', 
+    branchvalues = "total",
+    ids     = ~file_name,    # unique ID
+    labels  = ~label,        # arbitrary label
+    parents = ~parent,
+    values  = ~size
+) %>%
+  layout(
+    title = paste("File System Treemap for direcory ", root)
+  )
+
+fig
+```
+
+## Exercise: Titanic
+
+Use the `Titanic` data set to visualize the number of survivors in the various categories: Class -\> Sex -\> Age.
+
+Define IDs and parent-IDs for each cell in this hierarchy: Survival/Class/Sex/Age.
+
+```{r}
+#| label: titanic_data
+#| eval: false
+#| 
+df = as.data.frame(Titanic)
+df %>% head(10)
+
+df$ID = seq_along(df$Freq)
+
+fig = plot_ly(df, 
+              type = 'sunburst', 
+              branchvalues = 'total',
+              ids =~ ID,
+              labels  = ~Survived,
+              parents = ~Class,
+              values  = ~Freq
+)
+fig
+```
+
+## sessionInfo
+
+::: {.callout-tip collapse="true"}
+## sessionInfo
+
+```{r}
+#| label: sessionInfo
+sessionInfo()
+```
+:::
+
+```{r}
+#| label: directory
+#| eval: false
+#| echo: false
+
+# Here is some effort with treemap
+# Function to generate file system tree with cumulative sizes
+
+generateFileSystemTree <- function(directory) {
+  files <- list.files(directory, recursive = TRUE, full.names = TRUE, all.files = TRUE)
+  
+  tree <- treemap:::buildTree(files, sep = "/", rootLabel = directory)
+  treemap:::accumulateTreeSizes(tree)
+  
+  return(tree)
+}
+
+# Directory path for the treemap
+print(getwd())
+directoryPath <- "."
+
+# Generate file system tree with cumulative sizes
+fileSystemTree <- generateFileSystemTree(directoryPath)
+
+# Function to convert file system tree to plot_ly format
+convertToPlotly <- function(tree) {
+  if (!is.null(tree$children)) {
+    subdata <- lapply(tree$children, convertToPlotly)
+    data <- do.call(rbind, subdata)
+    
+    if (is.null(data$path)) {
+      data$path <- paste0("/", tree$rootLabel)
+    } else {
+      data$path <- paste0(data$path, "/", tree$rootLabel)
+    }
+    
+    return(data)
+  } else {
+    data <- data.frame(size = tree$area / 1024^3, path = character())
+    data$path <- paste0(data$path, "/", tree$rootLabel)
+    
+    return(data)
+  }
+}
+
+# Convert file system tree to plot_ly format
+plotlyData <- convertToPlotly(fileSystemTree)
+
+# Plot the treemap using plot_ly
+plot_ly(plotlyData, labels = ~path, parents = ~gsub("/[^/]+$", "", path), values = ~size, type = "treemap")
+
+```
+
+```{r}
+#| label: fig-static_treemap
+#| eval: false
+#| echo: false
+
+# produces a static Treemap for a given directory
+# needs package treemap
+# less fancy than above, but still some useful package (just for memory)
+FolderTreemap <- function(directory){
+  df <- NULL
+  aa <- list.files(directory,full.names=TRUE)
+  dirs <- aa[file.info(aa)$isdir]
+  for (i in 1:length(dirs)){
+    name_f <- basename(dirs[i])
+    size_f <- sum(file.info(list.files(path=dirs[i], recursive = T, full.names = T))$size)
+    df <- rbind(df, data.frame(size=size_f/(1024*1024), folder=name_f))
+  }
+  p <- treemap(df,
+               index=c("folder"),
+               vSize="size",
+               type="index",
+               palette = "Set2",
+               bg.labels=c("white"),
+               title = paste0("Total size of folder: ",directory, " is: ", as.integer(sum(df$size)), " MiB.", collapse=NULL),
+               align.labels=list(c("center", "center"), c("right", "bottom"))  
+  )            
+}
+
+FolderTreemap("../..")
+```
