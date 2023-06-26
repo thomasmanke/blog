@@ -8,6 +8,12 @@ freeze: true
 title-block-banner: true
 image-placeholder: https://github.com/thomasmanke/ABS/raw/main/figures/Sherlock.png
 
+author:
+  - name: Thomas Manke
+    url: thomasmanke1@gmail
+#    affiliation: Bioinformatics Group @ MPI-IE
+#    affiliation-url: https://bioinfo.ie-freiburg.mpg.de
+    
 eval: true
 echo: true
 cache: true
@@ -30,4 +36,7 @@ format:
     tbl-cap-location: bottom
     chalkboard: true
     slide-number: true
-
+    # ideally I would like to have a variable output-file name here.
+    # It should depend on the input.qmd or input.ipynb
+    # but I could not find a solution for this
+    output-file: revealjs.html
