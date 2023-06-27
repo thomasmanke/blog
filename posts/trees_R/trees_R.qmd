@@ -325,9 +325,9 @@ fig
 
 ## Exercise: Titanic
 
-Use the `Titanic` data set to visualize the number of survivors in the various categories: Class -\> Sex -\> Age.
+Use the `Titanic` data set to visualize the number of survivors in the various categories. Use the following hierarchy: Class -\> Sex -\> Age --\> Survival Status.
 
-Define IDs and parent-IDs for each cell in this hierarchy: Survival/Class/Sex/Age.
+Define IDs and parent-IDs for each cell in this hierarchy: Class/Sex/Age/Survived.
 
 ```{r}
 #| label: titanic_data
@@ -336,15 +336,16 @@ Define IDs and parent-IDs for each cell in this hierarchy: Survival/Class/Sex/Ag
 df = as.data.frame(Titanic)
 df %>% head(10)
 
-df$ID = seq_along(df$Freq)
+# Prepare df
 
+# Plot
 fig = plot_ly(df, 
               type = 'sunburst', 
               branchvalues = 'total',
-              ids =~ ID,
-              labels  = ~Survived,
-              parents = ~Class,
-              values  = ~Freq
+              ids =~ id,
+              labels  = ~label,
+              parents = ~parent,
+              values  = ~n
 )
 fig
 ```
