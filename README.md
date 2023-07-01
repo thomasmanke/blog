@@ -14,6 +14,11 @@ mamba env create -f env.yml
 mamba env update -f env.yml
 ```
 
+### Add quarto extension 
+```
+quarto add quarto-ext/shinylive
+```
+
 ### Render web site
 ```
 #https://github.com/quarto-dev/quarto-cli/discussions/3977
