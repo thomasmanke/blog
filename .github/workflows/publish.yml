@@ -1,10 +1,22 @@
+name: Quarto Publish
+
 on:
   workflow_dispatch:
   push:
     branches: main
 
-name: Quarto Publish
-
+defaults:
+  run:
+    shell: bash -l {0}
+    
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+  
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -22,6 +34,7 @@ jobs:
         with:
           environment-file: env.yml
           cache-environment: true
+          cache-downloads: true
           environment-name: web
           
       - name: Activate Env
