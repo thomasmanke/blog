@@ -12,8 +12,8 @@ website:
         menu: 
           - text: Rintro
             href: lectures/Rintro2023/index.qmd
-#          - text: Applied Biostatistics 
-#            href: lectures/ABS2022/index.qmd
+          - text: Applied Biostatistics 
+            href: lectures/ABS2022/index.qmd
       - text: "Posts"
         icon: mailbox
         href: posts/index.qmd
