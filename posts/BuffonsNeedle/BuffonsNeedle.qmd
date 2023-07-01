@@ -6,6 +6,8 @@ categories:
   - PI
   - shinylive
   - simulation
+  
+image: Buffon.png
 
 format: html
 filters:
