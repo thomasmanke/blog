@@ -18,10 +18,10 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Micromamba
-        uses: mamba-org/provision-with-micromamba@main
+        uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: env.yml
-          cache-downloads: true
+          cache-environment: true
           environment-name: web
           
       - name: Activate Env
