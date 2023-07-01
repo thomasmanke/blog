@@ -1,6 +1,7 @@
 project:
   type: website
-
+  output-dir: docs
+  
 website:
   title: "Thomas"
   favicon: images/Manke_2019.11.17_small.JPG
@@ -48,5 +49,8 @@ format:
 #    code-tools: true
     highlight-style: github
 
+execute:
+  freeze: auto
+  
 editor: visual
 
