@@ -1,0 +1,152 @@
+---
+title: Buffon's Needle
+date: 2023/07/01
+date-modified: last-modified
+categories: 
+  - PI
+  - shinylive
+  - simulation
+
+format: html
+filters:
+  - shinylive
+---
+
+## Idea
+
+## Simulation
+
+Here I simulate Buffon's Needle Problem (Comte de Buffon: 1707 - 1788) using `shinylive` and its quarto extension. This package allows to generate html that can run shiny code on the client side (and without the need for a dedicated shiny server).
+
+``` {shinylive-python}
+#| standalone: true
+#| components: [viewer, editor]
+#| code-folding: true
+#| layout: vertical
+#| viewerHeight: 420
+
+## file: app.py
+from shiny import App, reactive, render, ui
+import numpy as np
+import matplotlib.pyplot as plt
+from my_plots import plotHist, plotNeedles
+from my_calcs import simulateNeedles
+
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.panel_sidebar(
+            ui.input_numeric("N", "Needles", 10, min = 2, max = 1e7),
+            ui.input_numeric("NR","Replicates=", 1, min = 1, max = 1000),
+            ui.input_action_button("update", "Update", class_="btn-success"),
+        ),
+        ui.panel_main(
+            ui.output_plot("Buffon"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @output
+    @render.plot(alt="Buffon")
+    @reactive.event(input.update, ignore_none=False)
+    def Buffon():
+        N=input.N()         # number of needles
+        NR=input.NR()       # number of replicates
+     
+        x0,x1,y0,y1 = simulateNeedles(N*NR)   # simulate  N needles thrown NR times
+        cross = np.floor(x0) != np.floor(x1)  # cross=TRUE if line crossing
+        
+        # interpret N*NR needles as N needles thrown NR times (simulate)
+        cross_r = np.reshape(cross,(N, NR))    # reshape: rows=needles columns=replicates
+        Nc = np.sum(cross_r, axis=0)           # number of crossings (per replicate) (R: colSum(cross))
+        ratio = N / Nc                         # ratios for all replicate
+
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+        plotNeedles(x0,x1,y0,y1,cross, N)
+        
+        plt.subplot(1, 2, 2)
+        plotHist(ratio)
+
+        plt.tight_layout()
+        plt.show()
+
+app = App(app_ui, server)
+
+## file: my_calcs.py
+import numpy as np
+
+def simulateNeedles(n):
+  # simulate n random start coordinates (x0,y0) and N random angles
+  # notice that for the problem y0,y1 are irrelevant, but distribution across y helps visualization
+  x0 = np.random.uniform(low=0.0, high=3.0, size=n)
+  y0 = np.random.uniform(low=1.0, high=3.0, size=n)
+  alpha = np.random.uniform(low=0.0, high=np.pi, size=n)    
+
+  # calculate end coordinates (x1,y1)
+  x1=x0 + 0.5*np.cos(alpha)
+  y1=y0 + 0.5*np.sin(alpha)
+
+  return x0,x1,y0,y1
+  
+## file: my_plots.py
+import numpy as np
+import matplotlib.pyplot as plt
+
+def plotHist(ratio):
+  # Plot the histogram over all replicate trials, ratio is a vector of length NR
+
+  ratio_finite = ratio[np.isfinite(ratio)]
+  plt.hist(ratio_finite, color='green', edgecolor='black')
+  plt.axvline(np.pi, color='red', linewidth=2)
+  plt.xlabel("N/Nc")
+  plt.ylabel("Frequency")
+  plt.title("Histogram of N/Nc")
+
+  
+def plotNeedles(x0,x1,y0,y1,cross,N):
+  Nc = np.sum(cross[:N])          # _calculate_ number of crossing for N needles (first replicate) 
+  title = "N={} Nc={} --> N/Nc={}".format(N, Nc, round(N/Nc, 4))
+  plt.plot()
+  plt.xlim(-1, 4)
+  plt.ylim(0, 4)
+  plt.xlabel("x")
+  plt.ylabel("y")
+  plt.vlines(np.arange(0, 11), ymin=0, ymax=4, colors='gray')
+  plt.title(title)
+  
+  Nmax = min(N, 1000)                                      # _plot_ at most 1000 needles
+  colors = ['red' if c else 'blue' for c in cross[:Nmax]]  # plot crossing lines 'red'
+  for i in range(Nmax):
+    plt.plot([x0[i], x1[i]], [y0[i], y1[i]], color=colors[i])
+```
+
+## References
+
+-   [Wikipedia](https://en.wikipedia.org/wiki/Buffon%27s_needle_problem)
+-   [shinylive github](https://github.com/quarto-ext/shinylive)
+-   [shinylive.io](https://shinylive.io/py/examples/)
+
+::: {.callout-tip collapse="true"}
+#### watermark
+
+```{python}
+import watermark
+import pkg_resources
+
+#import os
+#print("Local variables:", locals())
+#print("Global variables:", globals())
+
+# Display watermark information
+print(watermark.watermark())
+
+# Get installed module versions
+installed_packages = pkg_resources.working_set
+
+# Print module versions
+print("Installed Packages:")
+for package in installed_packages:
+    print(package.key, package.version)
+```
+:::
