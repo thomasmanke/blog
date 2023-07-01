@@ -44,7 +44,7 @@ format:
       light: cosmo
       dark: darkly
     css: styles.css
-    code-link: true
+    code-link: false
     code-fold: show
 #    code-tools: true
     highlight-style: github
