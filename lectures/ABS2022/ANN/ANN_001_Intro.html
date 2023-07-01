@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thomas Manke">
+
+<title>Thomas - 001 - Introduction to Artificial Neural Networks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/Manke_2019.11.17_small.JPG" rel="icon" type="image/jpeg">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Thomas</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../../lectures/Rintro2023/index.html" rel="" target="">
+ <span class="dropdown-text">Rintro</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../lectures/ABS2022/index.html" rel="" target="">
+ <span class="dropdown-text">Applied Biostatistics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
+</i> 
+ <span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">001 - Introduction to Artificial Neural Networks</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Artificial Neural Networks</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Manke </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="what-is-machine-learning-ai" class="level1">
+<h1>What is Machine Learning (AI)</h1>
+<p><strong>A problem:</strong> How do we recognize (label) images? Can we write a program to do the same?</p>
+<p><img src="https://github.com/thomasmanke/ABS/raw/main/figures/Sherlock.png"></p>
+<blockquote class="blockquote">
+<p>“The principal difficulty … lay in the fact of there being too much evidence. What was vital was overlaid and hidden by what was irrelevant. Of all the facts which were presented to us we had to pick just those which we deemed to be essential, and then piece them together in their order, so as to reconstruct this very remarkable chain of events.” Sherlock Holmes (The Naval treaty, 1893)</p>
+</blockquote>
+<ul>
+<li>Classical Programming: Rules (f) + Data (X) –&gt; Answers (Y)<br>
+</li>
+<li>Machine Learning: Answers (Y) + Data (X) –&gt; Rules (f)</li>
+</ul>
+<p><strong>Quiz (5 min):</strong> A simpler challenge: Find the rule <span class="math inline">\(y = f(x, \beta)\)</span> for x and y below</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>,  <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>])     <span class="co"># Data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>])     <span class="co"># Answer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><em>Notice</em>: a more realistic scenario would allow for errors: <span class="math inline">\(y = f(x, \beta) + \epsilon\)</span></p>
+<section id="the-linear-regression-way-gauss-1809" class="level2">
+<h2 class="anchored" data-anchor-id="the-linear-regression-way-gauss-1809">The linear regression way (Gauss 1809)</h2>
+<p><span class="math display">\[f(X, \beta) = \beta_0  + \beta_1 x\]</span></p>
+<p><strong>Ordinary Least-squares fit</strong>: analytical</p>
+<p><span class="math display">\[\underset{\beta}{\mbox{argmin}} || y - f(X,\beta)||^2 \longrightarrow (\beta_0, \beta_1)=(-1,2)\]</span></p>
+<p><strong>Predictions</strong>: for two new values <span class="math inline">\((x=10, -40)\)</span></p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:365,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655300693811,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="0df6f458-cd92-4f91-8483-ad63b079b282">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x_new <span class="op">=</span> np.array([<span class="dv">10</span>, <span class="op">-</span><span class="dv">40</span>])</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>y_new <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">+</span> <span class="fl">2.0</span><span class="op">*</span>np.array(x_new)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'predictions: '</span>, x_new, <span class="st">"-&gt;"</span>, y_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>predictions:  [ 10 -40] -&gt; [ 19. -81.]</code></pre>
+</div>
+</div>
+</section>
+<section id="the-python-way-sklearn-2013" class="level2">
+<h2 class="anchored" data-anchor-id="the-python-way-sklearn-2013">The Python way (sklearn: 2013)</h2>
+<p>The modeling steps: - define the data - define the model - fit - evaluate - predict</p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:878,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655300709578,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="65b18eef-984a-451d-e2f5-e2ca9113ab76">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> linear_model</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> linear_model.LinearRegression()  <span class="co"># define model</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xr <span class="op">=</span> x.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)                  <span class="co"># define data (+restructuring for specific tool) </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>lm.fit(xr, y)                         <span class="co"># fit c.f. R: lm(Y ~ X)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># report fit</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Fitted Parameters       '</span>, lm.intercept_, lm.coef_)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>yp <span class="op">=</span> lm.predict(xr)                   <span class="co"># prediction</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>MSE<span class="op">=</span> mean_squared_error(y, yp)        <span class="co"># evaluate fit. other scores: R2=lm.score(xr, y)</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Squared Error:     '</span>, MSE)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># predict y for some new x</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>x_new<span class="op">=</span>np.array([<span class="dv">10</span>, <span class="op">-</span><span class="dv">40</span>])</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>y_new <span class="op">=</span> lm.predict(x_new.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'predictions:   '</span>, y_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fitted Parameters        -0.9999999999999991 [2.]
+Mean Squared Error:      7.231224964525941e-31
+predictions:    [ 19. -81.]</code></pre>
+</div>
+</div>
+</section>
+<section id="the-tensorflowkeras-way-2022" class="level2">
+<h2 class="anchored" data-anchor-id="the-tensorflowkeras-way-2022">The Tensorflow/Keras way (2022)</h2>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:1227,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655303346032,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="5c2eb818-ff98-487c-a91b-1f973af0ac96">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'tf version:'</span>,tf.__version__)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># define model - the "black box"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model.add( tf.keras.layers.Dense(units<span class="op">=</span><span class="dv">1</span>, input_shape<span class="op">=</span>[<span class="dv">1</span>]) )</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># define optimization and loss</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'sgd'</span>, loss<span class="op">=</span><span class="st">'mean_squared_error'</span>) </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model </span><span class="al">###</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>fit_history <span class="op">=</span> model.fit(x,y, epochs<span class="op">=</span><span class="dv">100</span>, verbose<span class="op">=</span><span class="dv">0</span>)       </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a> <span class="co"># report fit ####</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Fitted Parameters             '</span>, model.trainable_variables)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Squared Error (loss):    '</span>, fit_history.history[<span class="st">'loss'</span>][<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># make predictions ####</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>x_new <span class="op">=</span> [ <span class="fl">10.0</span> , <span class="op">-</span><span class="fl">40.0</span> ]</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>y_new <span class="op">=</span> model.predict(x_new)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>y_ana <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">+</span> <span class="fl">2.0</span><span class="op">*</span>np.array(x_new)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'analytical: '</span>, y_ana)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'numerical:  '</span>, y_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>tf version: 2.8.2
+Fitted Parameters              [&lt;tf.Variable 'dense_55/kernel:0' shape=(1, 1) dtype=float32, numpy=array([[1.8585451]], dtype=float32)&gt;, &lt;tf.Variable 'dense_55/bias:0' shape=(1,) dtype=float32, numpy=array([-0.5614597], dtype=float32)&gt;]
+Mean Squared Error (loss):     0.11189737915992737
+WARNING:tensorflow:5 out of the last 19 calls to &lt;function Model.make_predict_function.&lt;locals&gt;.predict_function at 0x7f1a699cc8c0&gt; triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has experimental_relax_shapes=True option that relaxes argument shapes that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+analytical:  [ 19. -81.]
+numerical:   [[ 18.02399]
+ [-74.90327]]</code></pre>
+</div>
+</div>
+</section>
+<section id="dont-panic" class="level2">
+<h2 class="anchored" data-anchor-id="dont-panic">Don’t Panic !</h2>
+<p><strong>Notice</strong>: - tensorflow supports generic <strong>modeling steps</strong>: define model, define loss function, fit model, predict. - the most cryptic (and the most flexible!) part is the definition of the “black box”. We will spend much more time with this - so don’t panic. - There are many <strong>alternative frameworks</strong>: pyTorch, Caffe2, … In this course we use the high-level API <em>Keras</em> rather than Tensorflow directly. - tensorflow has <strong>new data structures</strong> that need to get used to: e.g.&nbsp;fitted_parameters - tensorflow model predictions appear less accurate (and slower) for this task of linear regression. This is because they have been obtained from an <strong>iterative approach</strong> (epcohs). In contrast, sklearn:LinearRegression() uses fast analytical tools (specific for linear regression) under the hood. - Tthe tensorflow approach is more generic and extends to much more complex models - The iteration can be monitored by the loss function (MSE) to assess convergence</p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:467,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655300725756,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="78460124-311e-4d5d-d160-626b257bb0e9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.plot(fit_history.history[<span class="st">'loss'</span>][<span class="dv">1</span>:])</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'model loss'</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'loss'</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'epoch'</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="ANN_001_Intro_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p><strong>Task (10 min):</strong> Play with the new toy !</p>
+<ul>
+<li><p>The model is fitted iteratively (iterations = epochs) to reduce some loss function (here: <em>mean_squared error</em> MSE).</p></li>
+<li><p>Change the number of epochs and/or the new data points <span class="math inline">\(x\_new\)</span>. Observe the different results.</p></li>
+<li><p>You may also activate the verbose function to see some progress reporting</p></li>
+</ul>
+</section>
+</section>
+<section id="linear-regression-as-a-neural-network" class="level1">
+<h1>Linear Regression as a Neural Network</h1>
+</section>
+<section id="group-task-30-min-fit-iris-data-with-tensorflow" class="level1">
+<h1>Group Task (30 min): Fit Iris Data with tensorflow</h1>
+<p>Follow the above example to fit a more realistic data set to a linear model.</p>
+<ul>
+<li><p>Explore the Iris data set: iris.data. What are the variables? See also here: <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set">wikipedia link</a></p></li>
+<li><p><strong>Fitting:</strong> Implement a linear fit making use of the tensorflow approach as shown above</p></li>
+<li><p><strong>Convergence:</strong> Plot the loss (MSE) check if it has been reduced over the fitting epochs: <span class="math inline">\(\to\)</span> plot fit_history.history[‘loss’]</p></li>
+<li><p><strong>Parameters:</strong> Check the slope (weight) and intersect (bias): <span class="math inline">\(\to\)</span> model.layers[0].get_weights()</p></li>
+<li><p><strong>Predictions:</strong> use the model to obtain the predicted values yp <span class="math inline">\(\to\)</span> model.predict()</p></li>
+<li><p>plot the fitted regression line over the scatter plot</p></li>
+<li><p>if time allows: feel free to repeat the above analysis for other variables from the Iris data set</p></li>
+</ul>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:456,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655313970623,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="ad4ac4a0-ff80-4544-91b8-0a2030c30ba2">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris() </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ix, iy <span class="op">=</span> <span class="dv">2</span>,<span class="dv">3</span>                <span class="co"># you might want to chose different columns</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> iris.data[:,ix]  </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> iris.data[:,iy]  </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(iris.feature_names[ix])</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(iris.feature_names[iy])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="ANN_001_Intro_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Implement a linear fit with tensorflow below.</p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:1436,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655313977425,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="f326beff-ae68-471e-c058-e8549c1bd95a">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># it's good practise to test your shapes frequently</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'x.shape: '</span>, x.shape)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'y.shape: '</span>, y.shape)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># It's good practise to name your models and layers</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential(name<span class="op">=</span><span class="st">'LM_model_01'</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>model.add( tf.keras.layers.Dense(units<span class="op">=</span><span class="dv">1</span>, input_shape<span class="op">=</span>(<span class="dv">1</span>,), name<span class="op">=</span><span class="st">'1st_layer'</span>) )</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'sgd'</span>, loss<span class="op">=</span><span class="st">'mean_squared_error'</span>) </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>fh <span class="op">=</span> model.fit(x,y, epochs<span class="op">=</span><span class="dv">100</span>, verbose<span class="op">=</span><span class="dv">0</span>)       </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>x.shape:  (150,)
+y.shape:  (150,)</code></pre>
+</div>
+</div>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:1032,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655313982669,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="9cc26cca-8a50-4b72-fa6f-5886dbb013c6">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plt.plot(fh.history[<span class="st">'loss'</span>])</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean Squared Error (loss):    '</span>, fh.history[<span class="st">'loss'</span>][<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#print('Fitted Parameters   ', model.trainable_variables)</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> model.layers[<span class="dv">0</span>].get_weights()[<span class="dv">0</span>][<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>inter <span class="op">=</span> model.layers[<span class="dv">0</span>].get_weights()[<span class="dv">1</span>][<span class="dv">0</span>]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'slope (weight):     '</span>, slope)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'intersect (bias):   '</span>, inter)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>yp <span class="op">=</span> model.predict(x)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># yp = inter + slope * x  # alternatively</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.plot(x,yp)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="ANN_001_Intro_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean Squared Error (loss):     0.044724106788635254
+slope (weight):      0.39227274
+intersect (bias):    -0.25071707</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="ANN_001_Intro_files/figure-html/cell-9-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<p><strong>Warnings:</strong></p>
+<ul>
+<li>Models are ignorant: What is the Petal.Width for Petal.Length = -1cm ?</li>
+<li>Assessments of predicted performance should invoke some left out data (test set)</li>
+<li>Models are not necessarily causal</li>
+</ul>
+</section>
+<section id="shapes-weights-numpy" class="level1">
+<h1>Shapes &amp; Weights &amp; Numpy</h1>
+<p>Tensorflow stores many objects as “tf.Variable”. They can be converted to numpy arrays: *.numpy()</p>
+<p>For the weights and biases there are convenience functions that return numpy arrays: layer.get_weights()</p>
+<p>To interprete the structure and shape of these weights remember:</p>
+<p>In general a neural network has - multiple layers - multiple neurons (=nodes=units) per layer - multiple input links (<strong>weights</strong>) per neuron + 1 bias per neuron</p>
+<p>Keeping track of shapes (of tensors) is in an important aspect of designing neural networks.</p>
+<p><strong>Task (10 min):</strong></p>
+<p>Inspect the summary below - and explore the hierarchy of layers - neurons - weights.</p>
+<p>For our simple linear regression, extract the two parameters (slope and intersect) from the first (and only) layer</p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:345,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655313997296,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="2f60052d-c4e7-4b5c-a76e-f4d3b878b7f9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>layer <span class="op">=</span> model.layers[<span class="dv">0</span>]  <span class="co"># choose first layer - the only one in our simple case</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'layer.weights (list of tf-objects):     '</span>, layer.weights)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'layer.weights[0]: weights               '</span>, layer.weights[<span class="dv">0</span>])</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'layer.weights[1]: biases                '</span>, layer.weights[<span class="dv">1</span>])</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'layer.bias:  the same                   '</span>, layer.bias)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'layer.bias:  converted to numpy         '</span>, layer.bias.numpy())</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n\n</span><span class="st">Using get_weights() ....'</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> layer.get_weights()</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'W (list of arrays):           '</span>, W)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'weights W[0] (numpy array):   '</span>, W[<span class="dv">0</span>].shape)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'bias    W[1] (numpy array):   '</span>, W[<span class="dv">1</span>].shape)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>neuron <span class="op">=</span> <span class="dv">0</span> <span class="co"># = node = unit</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'node weights W[0][neuron] (array): '</span>, W[<span class="dv">0</span>][neuron].shape, W[<span class="dv">0</span>][neuron])</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'node bias    W[1][neuron] (float): '</span>, W[<span class="dv">1</span>][neuron].shape, W[<span class="dv">1</span>][neuron])</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Edit here</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>slope <span class="op">=</span> layer.get_weights()[<span class="dv">0</span>][<span class="dv">0</span>][<span class="dv">0</span>]  <span class="co"># weights - node 0 - weight 0</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>inter <span class="op">=</span> layer.get_weights()[<span class="dv">1</span>][<span class="dv">0</span>]     <span class="co"># bias    - node 0  (1 bias per node)</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'slope:    '</span>, slope)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'intersect:'</span>, inter )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>layer.weights (list of tf-objects):      [&lt;tf.Variable '1st_layer/kernel:0' shape=(1, 1) dtype=float32, numpy=array([[0.39227274]], dtype=float32)&gt;, &lt;tf.Variable '1st_layer/bias:0' shape=(1,) dtype=float32, numpy=array([-0.25071707], dtype=float32)&gt;]
+layer.weights[0]: weights                &lt;tf.Variable '1st_layer/kernel:0' shape=(1, 1) dtype=float32, numpy=array([[0.39227274]], dtype=float32)&gt;
+layer.weights[1]: biases                 &lt;tf.Variable '1st_layer/bias:0' shape=(1,) dtype=float32, numpy=array([-0.25071707], dtype=float32)&gt;
+layer.bias:  the same                    &lt;tf.Variable '1st_layer/bias:0' shape=(1,) dtype=float32, numpy=array([-0.25071707], dtype=float32)&gt;
+layer.bias:  converted to numpy          [-0.25071707]
+
+
+Using get_weights() ....
+W (list of arrays):            [array([[0.39227274]], dtype=float32), array([-0.25071707], dtype=float32)]
+weights W[0] (numpy array):    (1, 1)
+bias    W[1] (numpy array):    (1,)
+node weights W[0][neuron] (array):  (1,) [0.39227274]
+node bias    W[1][neuron] (float):  () -0.25071707
+slope:     0.39227274
+intersect: -0.25071707</code></pre>
+</div>
+</div>
+</section>
+<section id="shapes-extensions-multivariate-inputs" class="level1">
+<h1>Shapes &amp; Extensions: Multivariate Inputs</h1>
+<p>When using higher dimensional objects keep good track of their shape.</p>
+<p>In particular we have to specify the shape of the input into the Neural Network. This is the shape of X <strong>without</strong> the sample dimension</p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:385,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655317533907,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="5c9e9037-8232-4894-d7b0-91a6ae7e1ea9">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> iris.data[:,ix]         <span class="co"># My convention: use captial letters for higher dim inputs</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>input_shape <span class="op">=</span> X.shape[<span class="dv">1</span>:]   <span class="co"># TF convention: exclude element 0 (= #samples)</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'X.shape:     '</span>, X.shape)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'input_shape: '</span>, input_shape)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># input_shape can be used here:</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># model.add( tf.keras.layers.Dense(units=1, input_shape=input_shape) )</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Warning !!! notice the anomaly for 1-dimensional inputs x</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">Caution for 1-D inputs x. Need to reshape!'</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>ix <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> iris.data[:,ix]</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'x.shape:            '</span>, x.shape)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> x.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'x.shape (reshaped): '</span>, x.shape)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>input_shape <span class="op">=</span> x.shape[<span class="dv">1</span>:]        </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'input_shape:        '</span>, input_shape)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternatively set input_shape=(1,) explicitly for 1-D x</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>X.shape:      (150, 2)
+input_shape:  (2,)
+
+Caution for 1-D inputs x. Need to reshape!
+x.shape:             (150,)
+x.shape (reshaped):  (150, 1)
+input_shape:         (1,)</code></pre>
+</div>
+</div>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:1144,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655317417721,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="053c3a34-f0ad-4bb4-cd44-16382f3a7f7e">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> iris.data[:,[<span class="dv">1</span>,<span class="dv">2</span>]]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> iris.data[:,<span class="dv">3</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>input_shape <span class="op">=</span> X.shape[<span class="dv">1</span>:]   </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential(name<span class="op">=</span><span class="st">'LM_model_02'</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>model.add( tf.keras.layers.Dense(units<span class="op">=</span><span class="dv">1</span>, input_shape<span class="op">=</span>input_shape, name<span class="op">=</span><span class="st">'1st_layer'</span>) )</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'sgd'</span>, loss<span class="op">=</span><span class="st">'mean_squared_error'</span>) </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>fh <span class="op">=</span> model.fit(X,y, epochs<span class="op">=</span><span class="dv">100</span>, verbose<span class="op">=</span><span class="dv">0</span>)   </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>Xnew <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>, <span class="dv">5</span>]).reshape(<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)   <span class="co"># bring to proper shape !</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Xnew.shape: '</span>, Xnew.shape)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'prediction: '</span>, model.predict(Xnew))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Xnew.shape:  (1, 2)
+prediction:  [[1.8900421]]</code></pre>
+</div>
+</div>
+</section>
+<section id="summarizing-model" class="level1">
+<h1>Summarizing Model</h1>
+<p>Frequently we would like to get an overview of the neural network with many layers and parameters</p>
+<div class="cell" data-executioninfo="{&quot;elapsed&quot;:544,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1655317555316,&quot;user&quot;:{&quot;displayName&quot;:&quot;Thomas Manke&quot;,&quot;userId&quot;:&quot;17591636328965298454&quot;},&quot;user_tz&quot;:-120}" data-outputid="5695436e-21c2-4cc1-8d61-9ac54d2bebc3">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>model.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "LM_model_02"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ 1st_layer (Dense)           (None, 1)                 3         
+                                                                 
+=================================================================
+Total params: 3
+Trainable params: 3
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../../about.html">About</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

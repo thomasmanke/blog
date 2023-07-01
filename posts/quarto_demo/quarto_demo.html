@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Thomas Manke">
+<meta name="dcterms.date" content="2023-06-01">
+<meta name="description" content="Summary of useful features">
+<title>Thomas - Quarto Intro</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/Manke_2019.11.17_small.JPG" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><link rel="stylesheet" href="../../styles.css">
+</head>
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Thomas</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+<li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">
+<li>
+    <a class="dropdown-item" href="../../lectures/Rintro2023/index.html" rel="" target="">
+ <span class="dropdown-text">Rintro</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/ABS2022/index.html" rel="" target="">
+ <span class="dropdown-text">Applied Biostatistics</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
+</i> 
+ <span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+<ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+<div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Quarto Intro</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+                  <div>
+        <div class="description">
+          Summary of useful features
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Quarto</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="thomasmanke1@gmail">Thomas Manke</a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 1, 2023</p>
+      </div>
+    </div>
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">July 2, 2023</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+<li>
+<a href="#preparation" id="toc-preparation" class="nav-link active" data-scroll-target="#preparation">Preparation</a>
+  <ul class="collapse">
+<li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">Load packages</a></li>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
+  <li><a href="#data-inspection" id="toc-data-inspection" class="nav-link" data-scroll-target="#data-inspection">Data Inspection</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics">Descriptive statistics</a>
+  <ul class="collapse">
+<li><a href="#columns" id="toc-columns" class="nav-link" data-scroll-target="#columns">Columns</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#plotting-with-ggplot2" id="toc-plotting-with-ggplot2" class="nav-link" data-scroll-target="#plotting-with-ggplot2">Plotting with ggplot2</a>
+  <ul class="collapse">
+<li><a href="#coloured-by-species" id="toc-coloured-by-species" class="nav-link" data-scroll-target="#coloured-by-species">Coloured by species</a></li>
+  <li><a href="#facet-wrap" id="toc-facet-wrap" class="nav-link" data-scroll-target="#facet-wrap">Facet Wrap</a></li>
+  </ul>
+</li>
+  </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="revealjs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><section id="preparation" class="level1 page-columns page-full"><h1>Preparation</h1>
+<p>The generic steps in data analysis is to</p>
+<ul>
+<li>Load software</li>
+<li>Load data
+<ul>
+<li>filter</li>
+<li>transformations</li>
+</ul>
+</li>
+<li>Inspect data</li>
+<li>Plot data</li>
+</ul>
+<p>In this summary I follow this paradigm with very simplistic examples - primarily to illustrate quatro functionality, rather than data science.</p>
+<section id="load-packages" class="level2"><h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
+<p>Every analysis comes wityh certain software requirements (and dependencies). Here we load the frequenly used <code>tidyverse</code> which is a collection of R package with many useful tools</p>
+<div class="cell" data-hash="quarto_demo_cache/html/load_software_0e879f4a626fa1f86cf1b17c0297acea">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>It’s best practice to record all packages</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+sessionInfo
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-hash="quarto_demo_cache/html/sessionInfo_9d76ed85bc9dad8e315aa147751b5c52">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>R version 4.2.3 (2023-03-15)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+Running under: macOS Big Sur ... 10.16
+
+Matrix products: default
+BLAS/LAPACK: /Users/manke/miniconda3/envs/web/lib/libopenblasp-r0.3.21.dylib
+
+locale:
+[1] C/UTF-8/C/C/C/C
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] lubridate_1.9.2 forcats_1.0.0   stringr_1.5.0   dplyr_1.1.1    
+ [5] purrr_1.0.1     readr_2.1.4     tidyr_1.3.0     tibble_3.2.1   
+ [9] ggplot2_3.4.1   tidyverse_2.0.0
+
+loaded via a namespace (and not attached):
+ [1] pillar_1.9.0      compiler_4.2.3    tools_4.2.3       digest_0.6.31    
+ [5] timechange_0.2.0  jsonlite_1.8.4    evaluate_0.20     lifecycle_1.0.3  
+ [9] gtable_0.3.3      pkgconfig_2.0.3   rlang_1.1.0       cli_3.6.1        
+[13] yaml_2.3.7        xfun_0.38         fastmap_1.1.1     withr_2.5.0      
+[17] knitr_1.42        generics_0.1.3    vctrs_0.6.1       htmlwidgets_1.6.2
+[21] hms_1.1.3         grid_4.2.3        tidyselect_1.2.0  glue_1.6.2       
+[25] R6_2.5.1          fansi_1.0.4       rmarkdown_2.14    tzdb_0.3.0       
+[29] magrittr_2.0.3    codetools_0.2-19  scales_1.2.1      htmltools_0.5.5  
+[33] colorspace_2.1-0  utf8_1.2.3        stringi_1.7.12    munsell_0.5.0    </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="load-data" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="load-data">Load data</h2>
+<p>Loading data can also be challenging. In the following we will use the pre-compiled <code>iris</code> data set for simplicity.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>R has many predefined data sets to illustrate data science concepts and software functionality. You can inspect more of those using <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code>.</p>
+</div>
+</div>
+<div class="cell" data-hash="quarto_demo_cache/html/load_data_fd7fd5f32b78dfcceb00c2979bdea2f7">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>d <span class="ot">&lt;-</span> iris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">An aside: I assign <code>iris</code> to a new data frame <code>d</code> to keep the workflow generic. But this is optional and I may also have used <code>iris</code> instead of <code>d</code> below.</span></div></div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Unfold this callout if you want to know more about this data set.
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You may refer to the original paper in <span class="citation" data-cites="Fisher1936">(<a href="#ref-Fisher1936" role="doc-biblioref">Fischer, 1936</a>)</span> or by <span class="citation" data-cites="Anderson1935">Anderson (<a href="#ref-Anderson1935" role="doc-biblioref">1935</a>)</span>. Those references are defined in the file <code>iris.bib</code>.</p>
+<p>But if you are using R/Rstudio you can also use</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>?iris</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">class</span>(iris)</span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">str</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notice that this code chunk is not executed during rendering, but you can copy it conveniently from html to your clipboard.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The iris data can also be read from the following URL.
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The following code block will not be evaluated because of the parameter <code>eval: false</code></p>
+<div class="cell" data-hash="quarto_demo_cache/html/load_iris_from_url_fea532124c65d20a552023bcc76b812e">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>url <span class="ot">=</span> <span class="st">'https://iris.csv'</span>  <span class="co"># choose valid link!</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(url) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">drop_na</span>()  <span class="co"># some filtering maybe necessary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<p>More information on additional callouts (warning, caution, important) is available <a href="https://quarto.org/docs/authoring/callouts.html">here</a></p>
+</section><section id="data-inspection" class="level2"><h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
+<div class="cell" data-hash="quarto_demo_cache/html/tbl-data_inspection_2e94577f44078253d99efc58ab35a580">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="tbl-data_inspection" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;1: A formatted table with knitr::kable</caption>
+<thead><tr class="header">
+<th style="text-align: right;">Sepal.Length</th>
+<th style="text-align: right;">Sepal.Width</th>
+<th style="text-align: right;">Petal.Length</th>
+<th style="text-align: right;">Petal.Width</th>
+<th style="text-align: left;">Species</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5.1</td>
+<td style="text-align: right;">3.5</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.9</td>
+<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4.7</td>
+<td style="text-align: right;">3.2</td>
+<td style="text-align: right;">1.3</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4.6</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5.4</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: left;">setosa</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><a href="#tbl-data_inspection">Table&nbsp;1</a> is nicely formatted to show the first few observations of the iris data set. It has 150 rows and 5 columns<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+</section></section><section id="descriptive-statistics" class="level1"><h1>Descriptive statistics</h1>
+<p>Below I use panel-tabset to illustrate both text summaries and graphical summaries</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">text</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">correlations</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">correlations + colours</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-hash="quarto_demo_cache/html/tbl-summary_3c0f0749d4db404bf4f0a5b4a3270536">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">summary</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="tbl-summary" class="anchored">
+<table class="table table-sm table-striped small">
+<caption>Table&nbsp;2: A text summary of the data</caption>
+<colgroup>
+<col style="width: 4%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 19%">
+</colgroup>
+<thead><tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Sepal.Length</th>
+<th style="text-align: left;">Sepal.Width</th>
+<th style="text-align: left;">Petal.Length</th>
+<th style="text-align: left;">Petal.Width</th>
+<th style="text-align: left;">Species</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Min. :4.300</td>
+<td style="text-align: left;">Min. :2.000</td>
+<td style="text-align: left;">Min. :1.000</td>
+<td style="text-align: left;">Min. :0.100</td>
+<td style="text-align: left;">setosa :50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1st Qu.:5.100</td>
+<td style="text-align: left;">1st Qu.:2.800</td>
+<td style="text-align: left;">1st Qu.:1.600</td>
+<td style="text-align: left;">1st Qu.:0.300</td>
+<td style="text-align: left;">versicolor:50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Median :5.800</td>
+<td style="text-align: left;">Median :3.000</td>
+<td style="text-align: left;">Median :4.350</td>
+<td style="text-align: left;">Median :1.300</td>
+<td style="text-align: left;">virginica :50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Mean :5.843</td>
+<td style="text-align: left;">Mean :3.057</td>
+<td style="text-align: left;">Mean :3.758</td>
+<td style="text-align: left;">Mean :1.199</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3rd Qu.:6.400</td>
+<td style="text-align: left;">3rd Qu.:3.300</td>
+<td style="text-align: left;">3rd Qu.:5.100</td>
+<td style="text-align: left;">3rd Qu.:1.800</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">Max. :7.900</td>
+<td style="text-align: left;">Max. :4.400</td>
+<td style="text-align: left;">Max. :6.900</td>
+<td style="text-align: left;">Max. :2.500</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-hash="quarto_demo_cache/html/fig-pairwise_corr_de7fd4abcb64370e01c30a909d3d8e80">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="fig-pairwise_corr" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="quarto_demo_files/figure-html/fig-pairwise_corr-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: A graphical summary</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-hash="quarto_demo_cache/html/fig-pairwise_corr_col_4329345ba4a502e6943153602df2b8a3">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">col=</span>d[,<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="fig-pairwise_corr_col" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="quarto_demo_files/figure-html/fig-pairwise_corr_col-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: A graphical summary with colors</figcaption></figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The summary statistics is shown in <a href="#tbl-summary">Table&nbsp;2</a> and all pairwise correlations are shown in <a href="#fig-pairwise_corr">Figure&nbsp;1</a> and in <a href="#fig-pairwise_corr_col">Figure&nbsp;2</a> with colour-coded species variable. Notice that the table reference does not seem to work within tabsets.</p>
+<section id="columns" class="level2"><h2 class="anchored" data-anchor-id="columns">Columns</h2>
+<p>Sometimes we may want to define columns</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>The average petal length is 3.76 cm and the average petal width is 1.2 cm.</p>
+</div><div class="column" style="width:20%;">
+
+</div><div class="column" style="width:40%;">
+<p>The data dimensions is 150, 5.</p>
+</div>
+</div>
+</section></section><section id="plotting-with-ggplot2" class="level1 page-columns page-full"><h1>Plotting with ggplot2</h1>
+<section id="coloured-by-species" class="level2"><h2 class="anchored" data-anchor-id="coloured-by-species">Coloured by species</h2>
+<div class="cell" data-hash="quarto_demo_cache/html/fig-PL_PW_87d1d3a02917f2aff08d374de1d021ee">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>p <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Petal.Width, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">color=</span><span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Iris Data"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>       <span class="at">subtitle =</span> <span class="st">"Petal Length vs Petal Width"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8"></a>       <span class="at">x =</span> <span class="st">"Petal Width (cm)"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9"></a>       <span class="at">y =</span> <span class="st">"Petal Length (cm)"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10"></a>       <span class="at">color =</span> <span class="st">"Species"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>       <span class="at">shape =</span> <span class="st">"Species"</span>) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co">#  scale_color_manual(values = c("darkorange","purple","cyan4")) </span></span>
+<span id="cb11-14"><a href="#cb11-14"></a></span>
+<span id="cb11-15"><a href="#cb11-15"></a>p</span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="fu">ggsave</span>(<span class="st">'quarto_demo.png'</span>, <span class="at">plot=</span>p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="fig-PL_PW" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="quarto_demo_files/figure-html/fig-PL_PW-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Iris data (colored by Species)</figcaption></figure>
+</div>
+</div>
+</div>
+</section><section id="facet-wrap" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="facet-wrap">Facet Wrap</h2>
+<div class="cell page-columns page-full" data-hash="quarto_demo_cache/html/fig-PL_PW_facet_0d348e33ce8c6d75d51dc784c24325de">
+<details><summary>Code</summary><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>p <span class="sc">+</span>   </span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species), <span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display page-columns page-full">
+<div id="fig-PL_PW_facet" class="quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="figure page-columns page-full"><p><img src="quarto_demo_files/figure-html/fig-PL_PW_facet-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption margin-caption">Figure&nbsp;4: Iris data with caption in margin</figcaption></figure>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p><a href="#fig-PL_PW">Figure&nbsp;3</a> colors species but runs regression over all samples. <a href="#fig-PL_PW_facet">Figure&nbsp;4</a> facets the data by species and shows also the species-specific regression lines. </p><div class="no-row-height column-margin column-container"><span class="">Notice that in this case the caption is put in the margin. And this comment too.</span></div></div>
+<p>Here is just another reference to a figure way back up: <a href="#fig-pairwise_corr">Figure&nbsp;1</a> (But notice that it works only when the corresponding tabset panel is open).</p>
+
+
+<!-- -->
+
+
+</section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Anderson1935" class="csl-entry" role="listitem">
+Anderson, E. (1935). The irises of the gaspe peninsula. In <em>Bulletin of the American Iris Society</em> (pp. 2–5).
+</div>
+<div id="ref-Fisher1936" class="csl-entry" role="listitem">
+Fischer, R. A. (1936). The use of multiple measurements in taxonomic problems. In <em>Annals of Eugenics: Vol. II</em> (pp. 179–188).
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<ol>
+<li id="fn1"><p>Note that we may have filtered the data as part of the pre-processing steps.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">---</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="an">title:</span><span class="co"> "Quarto Intro"</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="an">description:</span><span class="co"> Summary of useful features</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="an">date:</span><span class="co"> 2023/06/01</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="an">date-modified:</span><span class="co"> last-modified</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="an">title-block-banner:</span><span class="co"> true</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="an">categories:</span><span class="co"> </span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co">    - Quarto</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="co">    </span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="an">image:</span><span class="co"> quarto_demo.png</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="an">bibliography:</span><span class="co"> iris.bib</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="an">csl:</span><span class="co"> apa-single-spaced.csl</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#reference-location: margin</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a><span class="co">#citation-location: margin</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a><span class="co">---</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a></span>
+<span id="cb13-20"><a href="#cb13-20"></a><span class="fu"># Preparation</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a></span>
+<span id="cb13-22"><a href="#cb13-22"></a>The generic steps in data analysis is to</span>
+<span id="cb13-23"><a href="#cb13-23"></a></span>
+<span id="cb13-24"><a href="#cb13-24"></a><span class="ss">-   </span>Load software</span>
+<span id="cb13-25"><a href="#cb13-25"></a><span class="ss">-   </span>Load data</span>
+<span id="cb13-26"><a href="#cb13-26"></a><span class="ss">    -   </span>filter</span>
+<span id="cb13-27"><a href="#cb13-27"></a><span class="ss">    -   </span>transformations</span>
+<span id="cb13-28"><a href="#cb13-28"></a><span class="ss">-   </span>Inspect data</span>
+<span id="cb13-29"><a href="#cb13-29"></a><span class="ss">-   </span>Plot data</span>
+<span id="cb13-30"><a href="#cb13-30"></a></span>
+<span id="cb13-31"><a href="#cb13-31"></a>In this summary I follow this paradigm with very simplistic examples - primarily to illustrate quatro functionality, rather than data science.</span>
+<span id="cb13-32"><a href="#cb13-32"></a></span>
+<span id="cb13-33"><a href="#cb13-33"></a><span class="fu">## Load packages</span></span>
+<span id="cb13-34"><a href="#cb13-34"></a></span>
+<span id="cb13-35"><a href="#cb13-35"></a>Every analysis comes wityh certain software requirements (and dependencies). Here we load the frequenly used <span class="in">`tidyverse`</span> which is a collection of R package with many useful tools</span>
+<span id="cb13-36"><a href="#cb13-36"></a></span>
+<span id="cb13-39"><a href="#cb13-39"></a><span class="in">```{r}</span></span>
+<span id="cb13-40"><a href="#cb13-40"></a><span class="co">#| label: load_software</span></span>
+<span id="cb13-41"><a href="#cb13-41"></a><span class="co">#| warning: FALSE</span></span>
+<span id="cb13-42"><a href="#cb13-42"></a><span class="co">#| message: FALSE</span></span>
+<span id="cb13-43"><a href="#cb13-43"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-44"><a href="#cb13-44"></a><span class="in">```</span></span>
+<span id="cb13-45"><a href="#cb13-45"></a></span>
+<span id="cb13-46"><a href="#cb13-46"></a>It's best practice to record all packages</span>
+<span id="cb13-47"><a href="#cb13-47"></a></span>
+<span id="cb13-48"><a href="#cb13-48"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb13-49"><a href="#cb13-49"></a><span class="fu">## sessionInfo</span></span>
+<span id="cb13-50"><a href="#cb13-50"></a></span>
+<span id="cb13-53"><a href="#cb13-53"></a><span class="in">```{r}</span></span>
+<span id="cb13-54"><a href="#cb13-54"></a><span class="co">#| label: sessionInfo</span></span>
+<span id="cb13-55"><a href="#cb13-55"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb13-56"><a href="#cb13-56"></a><span class="in">```</span></span>
+<span id="cb13-57"><a href="#cb13-57"></a>:::</span>
+<span id="cb13-58"><a href="#cb13-58"></a></span>
+<span id="cb13-59"><a href="#cb13-59"></a><span class="fu">## Load data</span></span>
+<span id="cb13-60"><a href="#cb13-60"></a></span>
+<span id="cb13-61"><a href="#cb13-61"></a>Loading data can also be challenging. In the following we will use the pre-compiled <span class="in">`iris`</span> data set for simplicity.</span>
+<span id="cb13-62"><a href="#cb13-62"></a></span>
+<span id="cb13-63"><a href="#cb13-63"></a>::: callout-note</span>
+<span id="cb13-64"><a href="#cb13-64"></a>R has many predefined data sets to illustrate data science concepts and software functionality. You can inspect more of those using <span class="in">`data()`</span>.</span>
+<span id="cb13-65"><a href="#cb13-65"></a>:::</span>
+<span id="cb13-66"><a href="#cb13-66"></a></span>
+<span id="cb13-69"><a href="#cb13-69"></a><span class="in">```{r}</span></span>
+<span id="cb13-70"><a href="#cb13-70"></a><span class="co">#| label: load_data</span></span>
+<span id="cb13-71"><a href="#cb13-71"></a><span class="co">#| echo: true</span></span>
+<span id="cb13-72"><a href="#cb13-72"></a>d <span class="ot">&lt;-</span> iris</span>
+<span id="cb13-73"><a href="#cb13-73"></a><span class="in">```</span></span>
+<span id="cb13-74"><a href="#cb13-74"></a></span>
+<span id="cb13-75"><a href="#cb13-75"></a><span class="co">[</span><span class="ot">An aside: I assign `iris` to a new data frame `d` to keep the workflow generic. But this is optional and I may also have used `iris` instead of `d` below.</span><span class="co">]</span>{.aside}</span>
+<span id="cb13-76"><a href="#cb13-76"></a></span>
+<span id="cb13-77"><a href="#cb13-77"></a>::: {.callout-caution collapse="true"}</span>
+<span id="cb13-78"><a href="#cb13-78"></a><span class="fu">## Unfold this callout if you want to know more about this data set.</span></span>
+<span id="cb13-79"><a href="#cb13-79"></a></span>
+<span id="cb13-80"><a href="#cb13-80"></a>You may refer to the original paper in <span class="co">[</span><span class="ot">@Fisher1936</span><span class="co">]</span> or by @Anderson1935. Those references are defined in the file <span class="in">`iris.bib`</span>.</span>
+<span id="cb13-81"><a href="#cb13-81"></a></span>
+<span id="cb13-82"><a href="#cb13-82"></a>But if you are using R/Rstudio you can also use</span>
+<span id="cb13-83"><a href="#cb13-83"></a></span>
+<span id="cb13-84"><a href="#cb13-84"></a><span class="in">``` r</span></span>
+<span id="cb13-85"><a href="#cb13-85"></a>?iris</span>
+<span id="cb13-86"><a href="#cb13-86"></a><span class="fu">class</span>(iris)</span>
+<span id="cb13-87"><a href="#cb13-87"></a><span class="fu">str</span>(iris)</span>
+<span id="cb13-88"><a href="#cb13-88"></a><span class="in">```</span></span>
+<span id="cb13-89"><a href="#cb13-89"></a></span>
+<span id="cb13-90"><a href="#cb13-90"></a>Notice that this code chunk is not executed during rendering, but you can copy it conveniently from html to your clipboard.</span>
+<span id="cb13-91"><a href="#cb13-91"></a>:::</span>
+<span id="cb13-92"><a href="#cb13-92"></a></span>
+<span id="cb13-93"><a href="#cb13-93"></a>::: {.callout-tip collapse="true"}</span>
+<span id="cb13-94"><a href="#cb13-94"></a><span class="fu">## The iris data can also be read from the following URL.</span></span>
+<span id="cb13-95"><a href="#cb13-95"></a></span>
+<span id="cb13-96"><a href="#cb13-96"></a>The following code block will not be evaluated because of the parameter <span class="in">`eval: false`</span></span>
+<span id="cb13-97"><a href="#cb13-97"></a></span>
+<span id="cb13-100"><a href="#cb13-100"></a><span class="in">```{r}</span></span>
+<span id="cb13-101"><a href="#cb13-101"></a><span class="co">#| label: load_iris_from_url</span></span>
+<span id="cb13-102"><a href="#cb13-102"></a><span class="co">#| echo: true</span></span>
+<span id="cb13-103"><a href="#cb13-103"></a><span class="co">#| eval: false</span></span>
+<span id="cb13-104"><a href="#cb13-104"></a>url <span class="ot">=</span> <span class="st">'https://iris.csv'</span>  <span class="co"># choose valid link!</span></span>
+<span id="cb13-105"><a href="#cb13-105"></a></span>
+<span id="cb13-106"><a href="#cb13-106"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(url) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-107"><a href="#cb13-107"></a>  <span class="fu">drop_na</span>()  <span class="co"># some filtering maybe necessary</span></span>
+<span id="cb13-108"><a href="#cb13-108"></a><span class="in">```</span></span>
+<span id="cb13-109"><a href="#cb13-109"></a>:::</span>
+<span id="cb13-110"><a href="#cb13-110"></a></span>
+<span id="cb13-111"><a href="#cb13-111"></a>More information on additional callouts (warning, caution, important) is available <span class="co">[</span><span class="ot">here</span><span class="co">](https://quarto.org/docs/authoring/callouts.html)</span></span>
+<span id="cb13-112"><a href="#cb13-112"></a></span>
+<span id="cb13-113"><a href="#cb13-113"></a><span class="fu">## Data Inspection</span></span>
+<span id="cb13-114"><a href="#cb13-114"></a></span>
+<span id="cb13-117"><a href="#cb13-117"></a><span class="in">```{r}</span></span>
+<span id="cb13-118"><a href="#cb13-118"></a><span class="co">#| label: tbl-data_inspection</span></span>
+<span id="cb13-119"><a href="#cb13-119"></a><span class="co">#| tbl-cap: A formatted table with knitr::kable</span></span>
+<span id="cb13-120"><a href="#cb13-120"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(d))</span>
+<span id="cb13-121"><a href="#cb13-121"></a><span class="in">```</span></span>
+<span id="cb13-122"><a href="#cb13-122"></a></span>
+<span id="cb13-123"><a href="#cb13-123"></a>@tbl-data_inspection is nicely formatted to show the first few observations of the iris data set. It has <span class="in">`r nrow(d)`</span> rows and <span class="in">`r ncol(d)`</span> columns<span class="ot">[^1]</span>.</span>
+<span id="cb13-124"><a href="#cb13-124"></a></span>
+<span id="cb13-125"><a href="#cb13-125"></a><span class="ot">[^1]: </span>Note that we may have filtered the data as part of the pre-processing steps.</span>
+<span id="cb13-126"><a href="#cb13-126"></a></span>
+<span id="cb13-127"><a href="#cb13-127"></a><span class="fu"># Descriptive statistics</span></span>
+<span id="cb13-128"><a href="#cb13-128"></a></span>
+<span id="cb13-129"><a href="#cb13-129"></a>Below I use panel-tabset to illustrate both text summaries and graphical summaries</span>
+<span id="cb13-130"><a href="#cb13-130"></a></span>
+<span id="cb13-131"><a href="#cb13-131"></a>::: panel-tabset</span>
+<span id="cb13-132"><a href="#cb13-132"></a><span class="fu">#### text</span></span>
+<span id="cb13-133"><a href="#cb13-133"></a></span>
+<span id="cb13-136"><a href="#cb13-136"></a><span class="in">```{r}</span></span>
+<span id="cb13-137"><a href="#cb13-137"></a><span class="co">#| label: tbl-summary</span></span>
+<span id="cb13-138"><a href="#cb13-138"></a><span class="co">#| tbl-cap: A text summary of the data</span></span>
+<span id="cb13-139"><a href="#cb13-139"></a></span>
+<span id="cb13-140"><a href="#cb13-140"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">summary</span>(d))</span>
+<span id="cb13-141"><a href="#cb13-141"></a><span class="in">```</span></span>
+<span id="cb13-142"><a href="#cb13-142"></a></span>
+<span id="cb13-143"><a href="#cb13-143"></a><span class="fu">#### correlations</span></span>
+<span id="cb13-144"><a href="#cb13-144"></a></span>
+<span id="cb13-147"><a href="#cb13-147"></a><span class="in">```{r}</span></span>
+<span id="cb13-148"><a href="#cb13-148"></a><span class="co">#| label: fig-pairwise_corr</span></span>
+<span id="cb13-149"><a href="#cb13-149"></a><span class="co">#| fig-cap: A graphical summary</span></span>
+<span id="cb13-150"><a href="#cb13-150"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>])</span>
+<span id="cb13-151"><a href="#cb13-151"></a><span class="in">```</span></span>
+<span id="cb13-152"><a href="#cb13-152"></a></span>
+<span id="cb13-153"><a href="#cb13-153"></a><span class="fu">#### correlations + colours</span></span>
+<span id="cb13-154"><a href="#cb13-154"></a></span>
+<span id="cb13-157"><a href="#cb13-157"></a><span class="in">```{r}</span></span>
+<span id="cb13-158"><a href="#cb13-158"></a><span class="co">#| label: fig-pairwise_corr_col</span></span>
+<span id="cb13-159"><a href="#cb13-159"></a><span class="co">#| fig-cap: A graphical summary with colors</span></span>
+<span id="cb13-160"><a href="#cb13-160"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">col=</span>d[,<span class="dv">5</span>])</span>
+<span id="cb13-161"><a href="#cb13-161"></a><span class="in">```</span></span>
+<span id="cb13-162"><a href="#cb13-162"></a>:::</span>
+<span id="cb13-163"><a href="#cb13-163"></a></span>
+<span id="cb13-164"><a href="#cb13-164"></a>The summary statistics is shown in @tbl-summary and all pairwise correlations are shown in @fig-pairwise_corr and in @fig-pairwise_corr_col with colour-coded species variable. Notice that the table reference does not seem to work within tabsets.</span>
+<span id="cb13-165"><a href="#cb13-165"></a></span>
+<span id="cb13-166"><a href="#cb13-166"></a><span class="fu">## Columns</span></span>
+<span id="cb13-167"><a href="#cb13-167"></a></span>
+<span id="cb13-168"><a href="#cb13-168"></a>Sometimes we may want to define columns</span>
+<span id="cb13-169"><a href="#cb13-169"></a></span>
+<span id="cb13-170"><a href="#cb13-170"></a>::: columns</span>
+<span id="cb13-171"><a href="#cb13-171"></a>::: {.column width="40%"}</span>
+<span id="cb13-172"><a href="#cb13-172"></a>The average petal length is <span class="in">`r round(mean(d$Petal.Length),2)`</span> cm and the average petal width is <span class="in">`r round(mean(d$Petal.Width),2)`</span> cm.</span>
+<span id="cb13-173"><a href="#cb13-173"></a>:::</span>
+<span id="cb13-174"><a href="#cb13-174"></a></span>
+<span id="cb13-175"><a href="#cb13-175"></a>::: {.column width="20%"}</span>
+<span id="cb13-176"><a href="#cb13-176"></a>:::</span>
+<span id="cb13-177"><a href="#cb13-177"></a></span>
+<span id="cb13-178"><a href="#cb13-178"></a>::: {.column width="40%"}</span>
+<span id="cb13-179"><a href="#cb13-179"></a>The data dimensions is <span class="in">`r dim(iris)`</span>.</span>
+<span id="cb13-180"><a href="#cb13-180"></a>:::</span>
+<span id="cb13-181"><a href="#cb13-181"></a>:::</span>
+<span id="cb13-182"><a href="#cb13-182"></a></span>
+<span id="cb13-183"><a href="#cb13-183"></a><span class="fu"># Plotting with ggplot2</span></span>
+<span id="cb13-184"><a href="#cb13-184"></a></span>
+<span id="cb13-185"><a href="#cb13-185"></a><span class="fu">## Coloured by species</span></span>
+<span id="cb13-186"><a href="#cb13-186"></a></span>
+<span id="cb13-189"><a href="#cb13-189"></a><span class="in">```{r}</span></span>
+<span id="cb13-190"><a href="#cb13-190"></a><span class="co">#| label: fig-PL_PW</span></span>
+<span id="cb13-191"><a href="#cb13-191"></a><span class="co">#| warning: false</span></span>
+<span id="cb13-192"><a href="#cb13-192"></a><span class="co">#| fig-cap: Iris data (colored by Species)</span></span>
+<span id="cb13-193"><a href="#cb13-193"></a>p <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb13-194"><a href="#cb13-194"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Petal.Width, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
+<span id="cb13-195"><a href="#cb13-195"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb13-196"><a href="#cb13-196"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">color=</span><span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb13-197"><a href="#cb13-197"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-198"><a href="#cb13-198"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Iris Data"</span>,</span>
+<span id="cb13-199"><a href="#cb13-199"></a>       <span class="at">subtitle =</span> <span class="st">"Petal Length vs Petal Width"</span>,</span>
+<span id="cb13-200"><a href="#cb13-200"></a>       <span class="at">x =</span> <span class="st">"Petal Width (cm)"</span>,</span>
+<span id="cb13-201"><a href="#cb13-201"></a>       <span class="at">y =</span> <span class="st">"Petal Length (cm)"</span>,</span>
+<span id="cb13-202"><a href="#cb13-202"></a>       <span class="at">color =</span> <span class="st">"Species"</span>,</span>
+<span id="cb13-203"><a href="#cb13-203"></a>       <span class="at">shape =</span> <span class="st">"Species"</span>) <span class="sc">+</span></span>
+<span id="cb13-204"><a href="#cb13-204"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb13-205"><a href="#cb13-205"></a><span class="co">#  scale_color_manual(values = c("darkorange","purple","cyan4")) </span></span>
+<span id="cb13-206"><a href="#cb13-206"></a></span>
+<span id="cb13-207"><a href="#cb13-207"></a>p</span>
+<span id="cb13-208"><a href="#cb13-208"></a><span class="fu">ggsave</span>(<span class="st">'quarto_demo.png'</span>, <span class="at">plot=</span>p)</span>
+<span id="cb13-209"><a href="#cb13-209"></a><span class="in">```</span></span>
+<span id="cb13-210"><a href="#cb13-210"></a></span>
+<span id="cb13-211"><a href="#cb13-211"></a><span class="fu">## Facet Wrap</span></span>
+<span id="cb13-212"><a href="#cb13-212"></a></span>
+<span id="cb13-215"><a href="#cb13-215"></a><span class="in">```{r}</span></span>
+<span id="cb13-216"><a href="#cb13-216"></a><span class="co">#| label: fig-PL_PW_facet</span></span>
+<span id="cb13-217"><a href="#cb13-217"></a><span class="co">#| fig-cap: Iris data with caption in margin</span></span>
+<span id="cb13-218"><a href="#cb13-218"></a><span class="co">#| cap-location: margin</span></span>
+<span id="cb13-219"><a href="#cb13-219"></a><span class="co">#| warning: false</span></span>
+<span id="cb13-220"><a href="#cb13-220"></a>p <span class="sc">+</span>   </span>
+<span id="cb13-221"><a href="#cb13-221"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species), <span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb13-222"><a href="#cb13-222"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Species)</span>
+<span id="cb13-223"><a href="#cb13-223"></a><span class="in">```</span></span>
+<span id="cb13-224"><a href="#cb13-224"></a></span>
+<span id="cb13-225"><a href="#cb13-225"></a>@fig-PL_PW colors species but runs regression over all samples. @fig-PL_PW_facet facets the data by species and shows also the species-specific regression lines. <span class="co">[</span><span class="ot">Notice that in this case the caption is put in the margin. And this comment too.</span><span class="co">]</span>{.aside}</span>
+<span id="cb13-226"><a href="#cb13-226"></a></span>
+<span id="cb13-227"><a href="#cb13-227"></a>Here is just another reference to a figure way back up: @fig-pairwise_corr (But notice that it works only when the corresponding tabset panel is open).</span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br></div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+</div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+<li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

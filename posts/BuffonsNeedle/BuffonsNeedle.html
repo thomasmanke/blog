@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thomas Manke">
+<meta name="dcterms.date" content="2023-07-01">
+
+<title>Thomas - Buffon’s Needle</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../images/Manke_2019.11.17_small.JPG" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<meta name="shinylive:serviceworker_dir" content="../..">
+<script src="../../site_libs/quarto-contrib/shinylive-0.1.3/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.1.3/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.1.3/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Thomas</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../lectures/Rintro2023/index.html" rel="" target="">
+ <span class="dropdown-text">Rintro</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../lectures/ABS2022/index.html" rel="" target="">
+ <span class="dropdown-text">Applied Biostatistics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
+</i> 
+ <span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Buffon’s Needle</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+                                <div class="quarto-categories">
+                <div class="quarto-category">PI</div>
+                <div class="quarto-category">shinylive</div>
+                <div class="quarto-category">simulation</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="thomasmanke1@gmail">Thomas Manke</a> </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 1, 2023</p>
+      </div>
+    </div>
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">July 2, 2023</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#idea" id="toc-idea" class="nav-link active" data-scroll-target="#idea">Idea</a></li>
+  <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="revealjs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="idea" class="level2">
+<h2 class="anchored" data-anchor-id="idea">Idea</h2>
+</section>
+<section id="simulation" class="level2">
+<h2 class="anchored" data-anchor-id="simulation">Simulation</h2>
+<p>Here I simulate Buffon’s Needle Problem (Comte de Buffon: 1707 - 1788) using <code>shinylive</code> and its quarto extension. This package allows to generate html that can run shiny code on the client side (and without the need for a dedicated shiny server).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource shinylive-python number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>#| standalone: true</span>
+<span id="cb1-2"><a href="#cb1-2"></a>#| components: [viewer, editor]</span>
+<span id="cb1-3"><a href="#cb1-3"></a>#| code-folding: true</span>
+<span id="cb1-4"><a href="#cb1-4"></a>#| layout: vertical</span>
+<span id="cb1-5"><a href="#cb1-5"></a>#| viewerHeight: 420</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>## file: app.py</span>
+<span id="cb1-8"><a href="#cb1-8"></a>from shiny import App, reactive, render, ui</span>
+<span id="cb1-9"><a href="#cb1-9"></a>import numpy as np</span>
+<span id="cb1-10"><a href="#cb1-10"></a>import matplotlib.pyplot as plt</span>
+<span id="cb1-11"><a href="#cb1-11"></a>from my_plots import plotHist, plotNeedles</span>
+<span id="cb1-12"><a href="#cb1-12"></a>from my_calcs import simulateNeedles</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a>app_ui = ui.page_fluid(</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    ui.layout_sidebar(</span>
+<span id="cb1-16"><a href="#cb1-16"></a>        ui.panel_sidebar(</span>
+<span id="cb1-17"><a href="#cb1-17"></a>            ui.input_numeric("N", "Needles", 10, min = 2, max = 1e7),</span>
+<span id="cb1-18"><a href="#cb1-18"></a>            ui.input_numeric("NR","Replicates=", 1, min = 1, max = 1000),</span>
+<span id="cb1-19"><a href="#cb1-19"></a>            ui.input_action_button("update", "Update", class_="btn-success"),</span>
+<span id="cb1-20"><a href="#cb1-20"></a>        ),</span>
+<span id="cb1-21"><a href="#cb1-21"></a>        ui.panel_main(</span>
+<span id="cb1-22"><a href="#cb1-22"></a>            ui.output_plot("Buffon"),</span>
+<span id="cb1-23"><a href="#cb1-23"></a>        ),</span>
+<span id="cb1-24"><a href="#cb1-24"></a>    ),</span>
+<span id="cb1-25"><a href="#cb1-25"></a>)</span>
+<span id="cb1-26"><a href="#cb1-26"></a></span>
+<span id="cb1-27"><a href="#cb1-27"></a>def server(input, output, session):</span>
+<span id="cb1-28"><a href="#cb1-28"></a>    @output</span>
+<span id="cb1-29"><a href="#cb1-29"></a>    @render.plot(alt="Buffon")</span>
+<span id="cb1-30"><a href="#cb1-30"></a>    @reactive.event(input.update, ignore_none=False)</span>
+<span id="cb1-31"><a href="#cb1-31"></a>    def Buffon():</span>
+<span id="cb1-32"><a href="#cb1-32"></a>        N=input.N()         # number of needles</span>
+<span id="cb1-33"><a href="#cb1-33"></a>        NR=input.NR()       # number of replicates</span>
+<span id="cb1-34"><a href="#cb1-34"></a>     </span>
+<span id="cb1-35"><a href="#cb1-35"></a>        x0,x1,y0,y1 = simulateNeedles(N*NR)   # simulate  N needles thrown NR times</span>
+<span id="cb1-36"><a href="#cb1-36"></a>        cross = np.floor(x0) != np.floor(x1)  # cross=TRUE if line crossing</span>
+<span id="cb1-37"><a href="#cb1-37"></a>        </span>
+<span id="cb1-38"><a href="#cb1-38"></a>        # interpret N*NR needles as N needles thrown NR times (simulate)</span>
+<span id="cb1-39"><a href="#cb1-39"></a>        cross_r = np.reshape(cross,(N, NR))    # reshape: rows=needles columns=replicates</span>
+<span id="cb1-40"><a href="#cb1-40"></a>        Nc = np.sum(cross_r, axis=0)           # number of crossings (per replicate) (R: colSum(cross))</span>
+<span id="cb1-41"><a href="#cb1-41"></a>        ratio = N / Nc                         # ratios for all replicate</span>
+<span id="cb1-42"><a href="#cb1-42"></a></span>
+<span id="cb1-43"><a href="#cb1-43"></a>        plt.figure(figsize=(10, 5))</span>
+<span id="cb1-44"><a href="#cb1-44"></a>        plt.subplot(1, 2, 1)</span>
+<span id="cb1-45"><a href="#cb1-45"></a>        plotNeedles(x0,x1,y0,y1,cross, N)</span>
+<span id="cb1-46"><a href="#cb1-46"></a>        </span>
+<span id="cb1-47"><a href="#cb1-47"></a>        plt.subplot(1, 2, 2)</span>
+<span id="cb1-48"><a href="#cb1-48"></a>        plotHist(ratio)</span>
+<span id="cb1-49"><a href="#cb1-49"></a></span>
+<span id="cb1-50"><a href="#cb1-50"></a>        plt.tight_layout()</span>
+<span id="cb1-51"><a href="#cb1-51"></a>        plt.show()</span>
+<span id="cb1-52"><a href="#cb1-52"></a></span>
+<span id="cb1-53"><a href="#cb1-53"></a>app = App(app_ui, server)</span>
+<span id="cb1-54"><a href="#cb1-54"></a></span>
+<span id="cb1-55"><a href="#cb1-55"></a>## file: my_calcs.py</span>
+<span id="cb1-56"><a href="#cb1-56"></a>import numpy as np</span>
+<span id="cb1-57"><a href="#cb1-57"></a></span>
+<span id="cb1-58"><a href="#cb1-58"></a>def simulateNeedles(n):</span>
+<span id="cb1-59"><a href="#cb1-59"></a>  # simulate n random start coordinates (x0,y0) and N random angles</span>
+<span id="cb1-60"><a href="#cb1-60"></a>  # notice that for the problem y0,y1 are irrelevant, but distribution across y helps visualization</span>
+<span id="cb1-61"><a href="#cb1-61"></a>  x0 = np.random.uniform(low=0.0, high=3.0, size=n)</span>
+<span id="cb1-62"><a href="#cb1-62"></a>  y0 = np.random.uniform(low=1.0, high=3.0, size=n)</span>
+<span id="cb1-63"><a href="#cb1-63"></a>  alpha = np.random.uniform(low=0.0, high=np.pi, size=n)    </span>
+<span id="cb1-64"><a href="#cb1-64"></a></span>
+<span id="cb1-65"><a href="#cb1-65"></a>  # calculate end coordinates (x1,y1)</span>
+<span id="cb1-66"><a href="#cb1-66"></a>  x1=x0 + 0.5*np.cos(alpha)</span>
+<span id="cb1-67"><a href="#cb1-67"></a>  y1=y0 + 0.5*np.sin(alpha)</span>
+<span id="cb1-68"><a href="#cb1-68"></a></span>
+<span id="cb1-69"><a href="#cb1-69"></a>  return x0,x1,y0,y1</span>
+<span id="cb1-70"><a href="#cb1-70"></a>  </span>
+<span id="cb1-71"><a href="#cb1-71"></a>## file: my_plots.py</span>
+<span id="cb1-72"><a href="#cb1-72"></a>import numpy as np</span>
+<span id="cb1-73"><a href="#cb1-73"></a>import matplotlib.pyplot as plt</span>
+<span id="cb1-74"><a href="#cb1-74"></a></span>
+<span id="cb1-75"><a href="#cb1-75"></a>def plotHist(ratio):</span>
+<span id="cb1-76"><a href="#cb1-76"></a>  # Plot the histogram over all replicate trials, ratio is a vector of length NR</span>
+<span id="cb1-77"><a href="#cb1-77"></a></span>
+<span id="cb1-78"><a href="#cb1-78"></a>  ratio_finite = ratio[np.isfinite(ratio)]</span>
+<span id="cb1-79"><a href="#cb1-79"></a>  plt.hist(ratio_finite, color='green', edgecolor='black')</span>
+<span id="cb1-80"><a href="#cb1-80"></a>  plt.axvline(np.pi, color='red', linewidth=2)</span>
+<span id="cb1-81"><a href="#cb1-81"></a>  plt.xlabel("N/Nc")</span>
+<span id="cb1-82"><a href="#cb1-82"></a>  plt.ylabel("Frequency")</span>
+<span id="cb1-83"><a href="#cb1-83"></a>  plt.title("Histogram of N/Nc")</span>
+<span id="cb1-84"><a href="#cb1-84"></a></span>
+<span id="cb1-85"><a href="#cb1-85"></a>  </span>
+<span id="cb1-86"><a href="#cb1-86"></a>def plotNeedles(x0,x1,y0,y1,cross,N):</span>
+<span id="cb1-87"><a href="#cb1-87"></a>  Nc = np.sum(cross[:N])          # _calculate_ number of crossing for N needles (first replicate) </span>
+<span id="cb1-88"><a href="#cb1-88"></a>  title = "N={} Nc={} --&gt; N/Nc={}".format(N, Nc, round(N/Nc, 4))</span>
+<span id="cb1-89"><a href="#cb1-89"></a>  plt.plot()</span>
+<span id="cb1-90"><a href="#cb1-90"></a>  plt.xlim(-1, 4)</span>
+<span id="cb1-91"><a href="#cb1-91"></a>  plt.ylim(0, 4)</span>
+<span id="cb1-92"><a href="#cb1-92"></a>  plt.xlabel("x")</span>
+<span id="cb1-93"><a href="#cb1-93"></a>  plt.ylabel("y")</span>
+<span id="cb1-94"><a href="#cb1-94"></a>  plt.vlines(np.arange(0, 11), ymin=0, ymax=4, colors='gray')</span>
+<span id="cb1-95"><a href="#cb1-95"></a>  plt.title(title)</span>
+<span id="cb1-96"><a href="#cb1-96"></a>  </span>
+<span id="cb1-97"><a href="#cb1-97"></a>  Nmax = min(N, 1000)                                      # _plot_ at most 1000 needles</span>
+<span id="cb1-98"><a href="#cb1-98"></a>  colors = ['red' if c else 'blue' for c in cross[:Nmax]]  # plot crossing lines 'red'</span>
+<span id="cb1-99"><a href="#cb1-99"></a>  for i in range(Nmax):</span>
+<span id="cb1-100"><a href="#cb1-100"></a>    plt.plot([x0[i], x1[i]], [y0[i], y1[i]], color=colors[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Buffon%27s_needle_problem">Wikipedia</a></li>
+<li><a href="https://github.com/quarto-ext/shinylive">shinylive github</a></li>
+<li><a href="https://shinylive.io/py/examples/">shinylive.io</a></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+watermark
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> watermark</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> pkg_resources</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#import os</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#print("Local variables:", locals())</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#print("Global variables:", globals())</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co"># Display watermark information</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="bu">print</span>(watermark.watermark())</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co"># Get installed module versions</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>installed_packages <span class="op">=</span> pkg_resources.working_set</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co"># Print module versions</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="bu">print</span>(<span class="st">"Installed Packages:"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="cf">for</span> package <span class="kw">in</span> installed_packages:</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="bu">print</span>(package.key, package.version)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Last updated: 2023-07-01T19:09:02.155829+02:00
+
+Python implementation: CPython
+Python version       : 3.11.4
+IPython version      : 8.12.0
+
+Compiler    : Clang 15.0.7 
+OS          : Darwin
+Release     : 21.6.0
+Machine     : x86_64
+Processor   : i386
+CPU cores   : 8
+Architecture: 64bit
+
+Installed Packages:
+jinja2 3.1.2
+markupsafe 2.1.2
+pillow 9.4.0
+pyqt5 5.15.7
+pyqt5-sip 12.11.0
+pysocks 1.7.1
+pyyaml 6.0
+pygments 2.14.0
+qtpy 2.3.1
+sqlalchemy 2.0.16
+send2trash 1.8.0
+altair 5.0.1
+anyio 3.6.2
+appdirs 1.4.4
+appnope 0.1.3
+argon2-cffi 21.3.0
+argon2-cffi-bindings 21.2.0
+asgiref 3.7.2
+asttokens 2.2.1
+attrs 22.2.0
+backcall 0.2.0
+backports.functools-lru-cache 1.6.4
+beautifulsoup4 4.12.0
+bleach 6.0.0
+brotlipy 0.7.0
+certifi 2023.5.7
+cffi 1.15.1
+charset-normalizer 3.1.0
+click 8.1.3
+comm 0.1.3
+contextvars 2.4
+contourpy 1.0.7
+cryptography 40.0.1
+cycler 0.11.0
+debugpy 1.6.6
+decorator 5.1.1
+defusedxml 0.7.1
+entrypoints 0.4
+executing 1.2.0
+fastjsonschema 2.16.3
+flit-core 3.8.0
+fonttools 4.39.3
+greenlet 2.0.2
+h11 0.14.0
+htmltools 0.2.1
+idna 3.4
+immutables 0.19
+importlib-metadata 6.1.0
+importlib-resources 5.12.0
+ipykernel 6.22.0
+ipython 8.12.0
+ipython-genutils 0.2.0
+ipywidgets 8.0.6
+jedi 0.18.2
+jsonschema 4.17.3
+jupyter 1.0.0
+jupyter-cache 0.6.1
+jupyter-client 8.1.0
+jupyter-console 6.6.3
+jupyter-core 5.3.0
+jupyter-events 0.6.3
+jupyter-server 2.5.0
+jupyter-server-terminals 0.4.4
+jupyterlab-pygments 0.2.2
+jupyterlab-widgets 3.0.7
+kaleido 0.2.1
+kiwisolver 1.4.4
+linkify-it-py 2.0.2
+markdown-it-py 3.0.0
+matplotlib 3.7.1
+matplotlib-inline 0.1.6
+mdit-py-plugins 0.4.0
+mdurl 0.1.2
+mistune 2.0.5
+munkres 1.1.4
+nbclassic 0.5.3
+nbclient 0.7.4
+nbconvert 7.2.9
+nbformat 5.9.0
+nest-asyncio 1.5.6
+notebook 6.5.3
+notebook-shim 0.2.2
+numpy 1.23.5
+packaging 23.0
+pandas 2.0.3
+pandocfilters 1.5.0
+parso 0.8.3
+patsy 0.5.3
+pexpect 4.8.0
+pickleshare 0.7.5
+pip 23.1.2
+pkgutil-resolve-name 1.3.10
+platformdirs 3.2.0
+plotly 5.15.0
+ply 3.11
+pooch 1.7.0
+prometheus-client 0.16.0
+prompt-toolkit 3.0.38
+psutil 5.9.4
+ptyprocess 0.7.0
+pure-eval 0.2.2
+pyopenssl 23.1.1
+pycparser 2.21
+pyparsing 3.0.9
+pyrsistent 0.19.3
+python-dateutil 2.8.2
+python-json-logger 2.0.7
+python-multipart 0.0.6
+pytz 2023.3
+pyzmq 25.0.2
+qtconsole 5.4.2
+requests 2.28.2
+rfc3339-validator 0.1.4
+rfc3986-validator 0.1.1
+rpy2 3.5.11
+scipy 1.10.1
+seaborn 0.12.2
+setuptools 67.6.1
+shiny 0.4.0
+shinylive 0.0.14
+simplegeneric 0.8.1
+sip 6.7.7
+six 1.16.0
+sniffio 1.3.0
+soupsieve 2.3.2.post1
+stack-data 0.6.2
+starlette 0.28.0
+statsmodels 0.14.0
+tabulate 0.9.0
+tenacity 8.2.2
+terminado 0.17.1
+tinycss2 1.2.1
+toml 0.10.2
+toolz 0.12.0
+tornado 6.2
+traitlets 5.9.0
+typing-extensions 4.5.0
+tzdata 2023.3
+tzlocal 5.0.1
+uc-micro-py 1.0.2
+urllib3 1.26.15
+uvicorn 0.22.0
+watchfiles 0.19.0
+watermark 2.3.1
+wcwidth 0.2.6
+webencodings 0.5.1
+websocket-client 1.5.1
+websockets 11.0.3
+wheel 0.40.0
+widgetsnbextension 4.0.7
+zipp 3.15.0</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">---</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="an">title:</span><span class="co"> Buffon's Needle</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="an">date:</span><span class="co"> 2023/07/01</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="an">date-modified:</span><span class="co"> last-modified</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="an">categories:</span><span class="co"> </span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="co">  - PI</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">  - shinylive</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">  - simulation</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">  </span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="an">image:</span><span class="co"> Buffon.png</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="an">filters:</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">  - shinylive</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">---</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="fu">## Idea</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="fu">## Simulation</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a></span>
+<span id="cb4-21"><a href="#cb4-21"></a>Here I simulate Buffon's Needle Problem (Comte de Buffon: 1707 - 1788) using <span class="in">`shinylive`</span> and its quarto extension. This package allows to generate html that can run shiny code on the client side (and without the need for a dedicated shiny server).</span>
+<span id="cb4-22"><a href="#cb4-22"></a></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="in">``` {shinylive-python}</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#| standalone: true</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#| components: [viewer, editor]</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#| code-folding: true</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#| layout: vertical</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#| viewerHeight: 420</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co">## file: app.py</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="ex">from</span> shiny import App, reactive, render, ui</span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="ex">import</span> numpy as np</span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="ex">import</span> matplotlib.pyplot as plt</span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="ex">from</span> my_plots import plotHist, plotNeedles</span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="ex">from</span> my_calcs import simulateNeedles</span>
+<span id="cb4-36"><a href="#cb4-36"></a></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="ex">app_ui</span> = ui.page_fluid<span class="er">(</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a>    <span class="ex">ui.layout_sidebar</span><span class="er">(</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a>        <span class="ex">ui.panel_sidebar</span><span class="er">(</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>            <span class="ex">ui.input_numeric</span><span class="er">(</span><span class="st">"N"</span><span class="ex">,</span> <span class="st">"Needles"</span>, 10, min = 2, max = 1e7<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>            <span class="ex">ui.input_numeric</span><span class="er">(</span><span class="st">"NR"</span><span class="ex">,</span><span class="st">"Replicates="</span><span class="ex">,</span> 1, min = 1, max = 1000<span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a>            <span class="ex">ui.input_action_button</span><span class="er">(</span><span class="st">"update"</span><span class="ex">,</span> <span class="st">"Update"</span>, class_=<span class="st">"btn-success"</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>        <span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a>        <span class="ex">ui.panel_main</span><span class="er">(</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a>            <span class="ex">ui.output_plot</span><span class="er">(</span><span class="st">"Buffon"</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-46"><a href="#cb4-46"></a>        <span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a>    <span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb4-48"><a href="#cb4-48"></a><span class="kw">)</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a></span>
+<span id="cb4-50"><a href="#cb4-50"></a><span class="ex">def</span> server<span class="er">(</span><span class="ex">input,</span> output, session<span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a>    <span class="ex">@output</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a>    <span class="ex">@render.plot</span><span class="er">(</span><span class="va">alt</span><span class="op">=</span><span class="st">"Buffon"</span><span class="kw">)</span></span>
+<span id="cb4-53"><a href="#cb4-53"></a>    <span class="ex">@reactive.event</span><span class="er">(</span><span class="ex">input.update,</span> ignore_none=False<span class="kw">)</span></span>
+<span id="cb4-54"><a href="#cb4-54"></a>    <span class="ex">def</span> Buffon<span class="er">(</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a>        <span class="va">N</span><span class="op">=</span>input.N<span class="kw">()</span>         <span class="co"># number of needles</span></span>
+<span id="cb4-56"><a href="#cb4-56"></a>        <span class="va">NR</span><span class="op">=</span>input.NR<span class="kw">()</span>       <span class="co"># number of replicates</span></span>
+<span id="cb4-57"><a href="#cb4-57"></a>     </span>
+<span id="cb4-58"><a href="#cb4-58"></a>        <span class="ex">x0,x1,y0,y1</span> = simulateNeedles<span class="er">(</span><span class="ex">N*NR</span><span class="kw">)</span>   <span class="co"># simulate  N needles thrown NR times</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>        <span class="ex">cross</span> = np.floor<span class="er">(</span><span class="ex">x0</span><span class="kw">)</span> <span class="ex">!=</span> np.floor<span class="er">(</span><span class="ex">x1</span><span class="kw">)</span>  <span class="co"># cross=TRUE if line crossing</span></span>
+<span id="cb4-60"><a href="#cb4-60"></a>        </span>
+<span id="cb4-61"><a href="#cb4-61"></a>        <span class="co"># interpret N*NR needles as N needles thrown NR times (simulate)</span></span>
+<span id="cb4-62"><a href="#cb4-62"></a>        <span class="ex">cross_r</span> = np.reshape<span class="er">(</span><span class="ex">cross,</span><span class="er">(</span><span class="ex">N,</span> NR<span class="kw">))</span>    <span class="co"># reshape: rows=needles columns=replicates</span></span>
+<span id="cb4-63"><a href="#cb4-63"></a>        <span class="ex">Nc</span> = np.sum<span class="er">(</span><span class="ex">cross_r,</span> axis=0<span class="kw">)</span>           <span class="co"># number of crossings (per replicate) (R: colSum(cross))</span></span>
+<span id="cb4-64"><a href="#cb4-64"></a>        <span class="ex">ratio</span> = N / Nc                         <span class="co"># ratios for all replicate</span></span>
+<span id="cb4-65"><a href="#cb4-65"></a></span>
+<span id="cb4-66"><a href="#cb4-66"></a>        <span class="ex">plt.figure</span><span class="er">(</span><span class="va">figsize</span><span class="op">=</span><span class="va">(</span>10, 5<span class="va">)</span><span class="kw">)</span></span>
+<span id="cb4-67"><a href="#cb4-67"></a>        <span class="ex">plt.subplot</span><span class="er">(</span><span class="ex">1,</span> 2, 1<span class="kw">)</span></span>
+<span id="cb4-68"><a href="#cb4-68"></a>        <span class="ex">plotNeedles</span><span class="er">(</span><span class="ex">x0,x1,y0,y1,cross,</span> N<span class="kw">)</span></span>
+<span id="cb4-69"><a href="#cb4-69"></a>        </span>
+<span id="cb4-70"><a href="#cb4-70"></a>        <span class="ex">plt.subplot</span><span class="er">(</span><span class="ex">1,</span> 2, 2<span class="kw">)</span></span>
+<span id="cb4-71"><a href="#cb4-71"></a>        <span class="ex">plotHist</span><span class="er">(</span><span class="ex">ratio</span><span class="kw">)</span></span>
+<span id="cb4-72"><a href="#cb4-72"></a></span>
+<span id="cb4-73"><a href="#cb4-73"></a>        <span class="fu">plt.tight_layout()</span></span>
+<span id="cb4-74"><a href="#cb4-74"></a>        <span class="fu">plt.show()</span></span>
+<span id="cb4-75"><a href="#cb4-75"></a></span>
+<span id="cb4-76"><a href="#cb4-76"></a><span class="ex">app</span> = App<span class="er">(</span><span class="ex">app_ui,</span> server<span class="kw">)</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a></span>
+<span id="cb4-78"><a href="#cb4-78"></a><span class="co">## file: my_calcs.py</span></span>
+<span id="cb4-79"><a href="#cb4-79"></a><span class="ex">import</span> numpy as np</span>
+<span id="cb4-80"><a href="#cb4-80"></a></span>
+<span id="cb4-81"><a href="#cb4-81"></a><span class="ex">def</span> simulateNeedles<span class="er">(</span><span class="ex">n</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-82"><a href="#cb4-82"></a>  <span class="co"># simulate n random start coordinates (x0,y0) and N random angles</span></span>
+<span id="cb4-83"><a href="#cb4-83"></a>  <span class="co"># notice that for the problem y0,y1 are irrelevant, but distribution across y helps visualization</span></span>
+<span id="cb4-84"><a href="#cb4-84"></a>  <span class="ex">x0</span> = np.random.uniform<span class="er">(</span><span class="va">low</span><span class="op">=</span>0.0, <span class="va">high</span><span class="op">=</span>3.0, <span class="va">size</span><span class="op">=</span>n<span class="kw">)</span></span>
+<span id="cb4-85"><a href="#cb4-85"></a>  <span class="ex">y0</span> = np.random.uniform<span class="er">(</span><span class="va">low</span><span class="op">=</span>1.0, <span class="va">high</span><span class="op">=</span>3.0, <span class="va">size</span><span class="op">=</span>n<span class="kw">)</span></span>
+<span id="cb4-86"><a href="#cb4-86"></a>  <span class="ex">alpha</span> = np.random.uniform<span class="er">(</span><span class="va">low</span><span class="op">=</span>0.0, <span class="va">high</span><span class="op">=</span>np.pi, <span class="va">size</span><span class="op">=</span>n<span class="kw">)</span>    </span>
+<span id="cb4-87"><a href="#cb4-87"></a></span>
+<span id="cb4-88"><a href="#cb4-88"></a>  <span class="co"># calculate end coordinates (x1,y1)</span></span>
+<span id="cb4-89"><a href="#cb4-89"></a>  <span class="va">x1</span><span class="op">=</span>x0 <span class="ex">+</span> 0.5<span class="pp">*</span>np.cos<span class="er">(</span><span class="ex">alpha</span><span class="kw">)</span></span>
+<span id="cb4-90"><a href="#cb4-90"></a>  <span class="va">y1</span><span class="op">=</span>y0 <span class="ex">+</span> 0.5<span class="pp">*</span>np.sin<span class="er">(</span><span class="ex">alpha</span><span class="kw">)</span></span>
+<span id="cb4-91"><a href="#cb4-91"></a></span>
+<span id="cb4-92"><a href="#cb4-92"></a>  <span class="cf">return</span> <span class="ex">x0,x1,y0,y1</span></span>
+<span id="cb4-93"><a href="#cb4-93"></a>  </span>
+<span id="cb4-94"><a href="#cb4-94"></a><span class="co">## file: my_plots.py</span></span>
+<span id="cb4-95"><a href="#cb4-95"></a><span class="ex">import</span> numpy as np</span>
+<span id="cb4-96"><a href="#cb4-96"></a><span class="ex">import</span> matplotlib.pyplot as plt</span>
+<span id="cb4-97"><a href="#cb4-97"></a></span>
+<span id="cb4-98"><a href="#cb4-98"></a><span class="ex">def</span> plotHist<span class="er">(</span><span class="ex">ratio</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-99"><a href="#cb4-99"></a>  <span class="co"># Plot the histogram over all replicate trials, ratio is a vector of length NR</span></span>
+<span id="cb4-100"><a href="#cb4-100"></a></span>
+<span id="cb4-101"><a href="#cb4-101"></a>  <span class="ex">ratio_finite</span> = ratio[np.isfinite<span class="er">(</span><span class="ex">ratio</span><span class="kw">)</span><span class="ex">]</span></span>
+<span id="cb4-102"><a href="#cb4-102"></a>  <span class="ex">plt.hist</span><span class="er">(</span><span class="ex">ratio_finite,</span> color=<span class="st">'green'</span>, edgecolor=<span class="st">'black'</span><span class="kw">)</span></span>
+<span id="cb4-103"><a href="#cb4-103"></a>  <span class="ex">plt.axvline</span><span class="er">(</span><span class="ex">np.pi,</span> color=<span class="st">'red'</span>, linewidth=2<span class="kw">)</span></span>
+<span id="cb4-104"><a href="#cb4-104"></a>  <span class="ex">plt.xlabel</span><span class="er">(</span><span class="st">"N/Nc"</span><span class="kw">)</span></span>
+<span id="cb4-105"><a href="#cb4-105"></a>  <span class="ex">plt.ylabel</span><span class="er">(</span><span class="st">"Frequency"</span><span class="kw">)</span></span>
+<span id="cb4-106"><a href="#cb4-106"></a>  <span class="ex">plt.title</span><span class="er">(</span><span class="st">"Histogram of N/Nc"</span><span class="kw">)</span></span>
+<span id="cb4-107"><a href="#cb4-107"></a></span>
+<span id="cb4-108"><a href="#cb4-108"></a>  </span>
+<span id="cb4-109"><a href="#cb4-109"></a><span class="ex">def</span> plotNeedles<span class="er">(</span><span class="ex">x0,x1,y0,y1,cross,N</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-110"><a href="#cb4-110"></a>  <span class="ex">Nc</span> = np.sum<span class="er">(</span><span class="va">cross</span><span class="op">[</span>:N<span class="op">]</span><span class="kw">)</span>          <span class="co"># _calculate_ number of crossing for N needles (first replicate) </span></span>
+<span id="cb4-111"><a href="#cb4-111"></a>  <span class="ex">title</span> = <span class="st">"N={} Nc={} --&gt; N/Nc={}"</span>.format<span class="er">(</span><span class="ex">N,</span> Nc, round<span class="er">(</span><span class="ex">N/Nc,</span> 4<span class="kw">))</span></span>
+<span id="cb4-112"><a href="#cb4-112"></a>  <span class="fu">plt.plot()</span></span>
+<span id="cb4-113"><a href="#cb4-113"></a>  <span class="ex">plt.xlim</span><span class="er">(</span><span class="ex">-1,</span> 4<span class="kw">)</span></span>
+<span id="cb4-114"><a href="#cb4-114"></a>  <span class="ex">plt.ylim</span><span class="er">(</span><span class="ex">0,</span> 4<span class="kw">)</span></span>
+<span id="cb4-115"><a href="#cb4-115"></a>  <span class="ex">plt.xlabel</span><span class="er">(</span><span class="st">"x"</span><span class="kw">)</span></span>
+<span id="cb4-116"><a href="#cb4-116"></a>  <span class="ex">plt.ylabel</span><span class="er">(</span><span class="st">"y"</span><span class="kw">)</span></span>
+<span id="cb4-117"><a href="#cb4-117"></a>  <span class="ex">plt.vlines</span><span class="er">(</span><span class="ex">np.arange</span><span class="er">(</span><span class="ex">0,</span> 11<span class="kw">)</span><span class="ex">,</span> ymin=0, ymax=4, colors=<span class="st">'gray'</span><span class="kw">)</span></span>
+<span id="cb4-118"><a href="#cb4-118"></a>  <span class="ex">plt.title</span><span class="er">(</span><span class="ex">title</span><span class="kw">)</span></span>
+<span id="cb4-119"><a href="#cb4-119"></a>  </span>
+<span id="cb4-120"><a href="#cb4-120"></a>  <span class="ex">Nmax</span> = min<span class="er">(</span><span class="ex">N,</span> 1000<span class="kw">)</span>                                      <span class="co"># _plot_ at most 1000 needles</span></span>
+<span id="cb4-121"><a href="#cb4-121"></a>  <span class="ex">colors</span> = [<span class="st">'red'</span> if c else <span class="st">'blue'</span> for c in cross<span class="pp">[</span><span class="ss">:Nmax</span><span class="pp">]</span>]  <span class="co"># plot crossing lines 'red'</span></span>
+<span id="cb4-122"><a href="#cb4-122"></a>  <span class="cf">for</span> i <span class="kw">in</span> range<span class="er">(</span><span class="ex">Nmax</span><span class="kw">)</span><span class="bu">:</span></span>
+<span id="cb4-123"><a href="#cb4-123"></a>    <span class="ex">plt.plot</span><span class="er">(</span><span class="ex">[x0[i],</span> x1<span class="pp">[</span><span class="ss">i</span><span class="pp">]</span>], [y0<span class="pp">[</span><span class="ss">i</span><span class="pp">]</span>, y1<span class="pp">[</span><span class="ss">i</span><span class="pp">]</span>], color=colors<span class="pp">[</span><span class="ss">i</span><span class="pp">]</span><span class="kw">)</span></span>
+<span id="cb4-124"><a href="#cb4-124"></a><span class="kw">```</span></span>
+<span id="cb4-125"><a href="#cb4-125"></a></span>
+<span id="cb4-126"><a href="#cb4-126"></a><span class="co">## References</span></span>
+<span id="cb4-127"><a href="#cb4-127"></a></span>
+<span id="cb4-128"><a href="#cb4-128"></a><span class="ex">-</span>   <span class="pp">[</span><span class="ss">Wikipedia</span><span class="pp">]</span><span class="er">(</span><span class="ex">https://en.wikipedia.org/wiki/Buffon%27s_needle_problem</span><span class="kw">)</span></span>
+<span id="cb4-129"><a href="#cb4-129"></a><span class="ex">-</span>   [shinylive github]<span class="er">(</span><span class="ex">https://github.com/quarto-ext/shinylive</span><span class="kw">)</span></span>
+<span id="cb4-130"><a href="#cb4-130"></a><span class="ex">-</span>   <span class="pp">[</span><span class="ss">shinylive.io</span><span class="pp">]</span><span class="er">(</span><span class="ex">https://shinylive.io/py/examples/</span><span class="kw">)</span></span>
+<span id="cb4-131"><a href="#cb4-131"></a></span>
+<span id="cb4-132"><a href="#cb4-132"></a><span class="ex">:::</span> {.callout-tip collapse=<span class="st">"true"</span>}</span>
+<span id="cb4-133"><a href="#cb4-133"></a><span class="co">#### watermark</span></span>
+<span id="cb4-134"><a href="#cb4-134"></a></span>
+<span id="cb4-137"><a href="#cb4-137"></a><span class="in">```{python}</span></span>
+<span id="cb4-138"><a href="#cb4-138"></a><span class="ex">import</span> watermark</span>
+<span id="cb4-139"><a href="#cb4-139"></a><span class="ex">import</span> pkg_resources</span>
+<span id="cb4-140"><a href="#cb4-140"></a></span>
+<span id="cb4-141"><a href="#cb4-141"></a><span class="co">#import os</span></span>
+<span id="cb4-142"><a href="#cb4-142"></a><span class="co">#print("Local variables:", locals())</span></span>
+<span id="cb4-143"><a href="#cb4-143"></a><span class="co">#print("Global variables:", globals())</span></span>
+<span id="cb4-144"><a href="#cb4-144"></a></span>
+<span id="cb4-145"><a href="#cb4-145"></a><span class="co"># Display watermark information</span></span>
+<span id="cb4-146"><a href="#cb4-146"></a><span class="ex">print</span><span class="er">(</span><span class="fu">watermark.watermark()</span><span class="kw">)</span></span>
+<span id="cb4-147"><a href="#cb4-147"></a></span>
+<span id="cb4-148"><a href="#cb4-148"></a><span class="co"># Get installed module versions</span></span>
+<span id="cb4-149"><a href="#cb4-149"></a><span class="ex">installed_packages</span> = pkg_resources.working_set</span>
+<span id="cb4-150"><a href="#cb4-150"></a></span>
+<span id="cb4-151"><a href="#cb4-151"></a><span class="co"># Print module versions</span></span>
+<span id="cb4-152"><a href="#cb4-152"></a><span class="ex">print</span><span class="er">(</span><span class="st">"Installed Packages:"</span><span class="kw">)</span></span>
+<span id="cb4-153"><a href="#cb4-153"></a><span class="cf">for</span> package <span class="kw">in</span> installed_packages:</span>
+<span id="cb4-154"><a href="#cb4-154"></a>    <span class="ex">print</span><span class="er">(</span><span class="ex">package.key,</span> package.version<span class="kw">)</span></span>
+<span id="cb4-155"><a href="#cb4-155"></a><span class="kw">```</span></span>
+<span id="cb4-156"><a href="#cb4-156"></a><span class="ex">:::</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

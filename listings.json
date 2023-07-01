@@ -1,0 +1,55 @@
+[
+  {
+    "listing": "/posts/index.html",
+    "items": [
+      "/posts/BuffonsNeedle/BuffonsNeedle.html",
+      "/posts/trees_R/trees_R.html",
+      "/posts/gapminder_python/gapminder.html",
+      "/posts/wordcloud/wordCloud.html",
+      "/posts/gapminder_R/gapminder.html",
+      "/posts/maps/maps.html",
+      "/posts/trees_python/trees_python.html",
+      "/posts/python_ipynb/python_ipynb.html",
+      "/posts/python_qmd/python_qmd.html",
+      "/posts/quarto_demo/quarto_demo.html",
+      "/posts/variance_stabilization/vst.html"
+    ]
+  },
+  {
+    "listing": "/lectures/ABS2022/index.html",
+    "items": [
+      "/lectures/ABS2022/Jupyter/Notebooks_000.html",
+      "/lectures/ABS2022/MarkovChains/MC_000_Sampling.html",
+      "/lectures/ABS2022/MarkovChains/MC_001_MCSampling.html",
+      "/lectures/ABS2022/MarkovChains/MC_002_Properties.html",
+      "/lectures/ABS2022/MarkovChains/MC_003_Applications.html",
+      "/lectures/ABS2022/MarkovChains/MC_004_MCMC.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_000_Intro.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_001_Forward.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_001_ForwardShort.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_002_Viterbi.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_003_Casino.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_003_Casino_Solution.html",
+      "/lectures/ABS2022/HiddenMarkovModels/HMM_005_project.html",
+      "/lectures/ABS2022/ANN/ANN_001_Intro.html",
+      "/lectures/ABS2022/ANN/ANN_002_LogRegression.html",
+      "/lectures/ABS2022/ANN/ANN_003_Spirals.html",
+      "/lectures/ABS2022/ANN/ANN_004_ImageClassification.html",
+      "/lectures/ABS2022/ANN/ANN_005_CNN.html",
+      "/lectures/ABS2022/ANN/ANN_006_Sequences.html",
+      "/lectures/ABS2022/ANN/ANN_outlook.html"
+    ]
+  },
+  {
+    "listing": "/lectures/Rintro2023/index.html",
+    "items": [
+      "/lectures/Rintro2023/00_Introduction.html",
+      "/lectures/Rintro2023/01_FirstSteps.html",
+      "/lectures/Rintro2023/02_HighDimData.html",
+      "/lectures/Rintro2023/03_GettingData.html",
+      "/lectures/Rintro2023/04_DataDescriptions.html",
+      "/lectures/Rintro2023/05_DataModels.html",
+      "/lectures/Rintro2023/06_DataVisualization.html"
+    ]
+  }
+]

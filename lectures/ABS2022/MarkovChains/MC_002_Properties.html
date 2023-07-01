@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thomas Manke">
+
+<title>Thomas - Analysing Markov chain properties</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/Manke_2019.11.17_small.JPG" rel="icon" type="image/jpeg">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Thomas</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../../lectures/Rintro2023/index.html" rel="" target="">
+ <span class="dropdown-text">Rintro</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../lectures/ABS2022/index.html" rel="" target="">
+ <span class="dropdown-text">Applied Biostatistics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
+</i> 
+ <span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Analysing Markov chain properties</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Markov Chains</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Manke </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/thomasmanke/ABS/blob/main/Notebooks/MarkovChains/MC_002_Properties.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Open In Colab</figcaption>
+</figure>
+</div>
+<section id="preparations" class="level2">
+<h2 class="anchored" data-anchor-id="preparations">Preparations</h2>
+<p>Import Required Modules and Define Convenience Functions</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_sequence(P, s<span class="op">=</span><span class="dv">0</span>, T<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> P.shape[<span class="dv">0</span>]<span class="op">==</span>P.shape[<span class="dv">1</span>],         <span class="st">"generate_sequence: P should be a squared matrix"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> np.allclose( P.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), <span class="dv">1</span>), <span class="st">"generate_sequence: P should be a stochastic matrix"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  ns <span class="op">=</span> P.shape[<span class="dv">0</span>] <span class="co"># number of states</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  L <span class="op">=</span> [s]         <span class="co"># initial state</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># loop for T time steps</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(T):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> np.random.choice( ns, p <span class="op">=</span> P[s, :] )</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    L.append(s)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> L</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Let’s make sure we start from the same model (transition probabilities)</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    [[<span class="fl">0.8</span>, <span class="fl">0.2</span>], </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     [<span class="fl">0.1</span>, <span class="fl">0.9</span>]]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>generate_sequence(P)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="op">*</span>X, sep<span class="op">=</span><span class="st">''</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="probability-of-a-sequence" class="level2">
+<h2 class="anchored" data-anchor-id="probability-of-a-sequence">Probability of a Sequence</h2>
+<p>The probability of an observed state sequence <span class="math inline">\(X=(X_1, X_2, \ldots X_T)=X_{1:T}\)</span> is an important quantity:</p>
+<p><span class="math display">\[
+Pr(X|P) = Pr(X_1) Pr(X_2|X_1) Pr(X_3|X_2) \cdots Pr(X_T|X_{T-1})
+\]</span></p>
+<p>It may be used to classify a given observation <span class="math inline">\(X\)</span> as more or less likely to emerge from different models</p>
+<p><span class="math display">\[
+Pr(X|P_1) &lt; Pr(X|P_2)
+\]</span></p>
+<p><strong>Group Task (20 min)</strong>: Strange coins</p>
+<p>Your favorite casino seems to use very strange coins and you try 2 different Markov models to model the occurence of heads (0) and tails (1). The transition probabilities read <span class="math display">\[
+P_1 = \begin{bmatrix}
+0.2   &amp;  0.8 \\
+0.8   &amp;  0.2
+\end{bmatrix}
+\]</span></p>
+<p><br>
+</p>
+<p><span class="math display">\[
+P_2 = \begin{bmatrix}
+0.8   &amp;  0.2 \\
+0.8   &amp;  0.2
+\end{bmatrix}
+\]</span></p>
+<p>You also assume that the initial probability for observing heads (0) or tails (1) is 50% in both cases.</p>
+<ol type="1">
+<li>Give a verbal account of the model and contrast this with a fair coin.</li>
+<li>Complete the code block below to calculate the probability of the sequence <span class="math inline">\(X=0010000011\)</span> under your model.</li>
+<li>Can you calculate the probability for a fair coin analytically (with a simple formula)?</li>
+<li>Exchange the results with the other group and decide which model is more likely.</li>
+</ol>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> ...</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> ...                     <span class="co"># initial probability: P(x_1=0)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># loop over all edges in chain </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>( ... ):</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    x1<span class="op">=</span> ...                   <span class="co"># current state</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    x2<span class="op">=</span> ...                   <span class="co"># next state</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    prob <span class="op">=</span> prob<span class="op">*</span> ...          <span class="co"># probability update</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># you might want to print for debugging</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'t=</span><span class="sc">{}</span><span class="st">, x1=</span><span class="sc">{}</span><span class="st">, x2=</span><span class="sc">{}</span><span class="st"> P[s1,s2]=</span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(t,x1,x2, P[x1,x2]) )</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'prob (model)     ='</span>, prob)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'prob (fair coin) ='</span>, ... formula ? ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Follow up:</strong> Duplicate (repeat) the sequence <span class="math inline">\(X\)</span> to obtain a new <span class="math inline">\(X\)</span> with twice the length? What can you say about the probability?</p>
+<p><strong>Messages</strong> - Markov Models are probabilistic models: given the transition matrix <span class="math inline">\(P\)</span> we can calculate many interesting probabilities - More specifically: the probability of a given sequences. Decreases with sequence length - better use logs for long sequences! - Two approaches: Mathematical Treatment of stochastic matrices vs Numerical Simulations (algorithmic efficiency)</p>
+</section>
+<section id="counting-occurrences" class="level2">
+<h2 class="anchored" data-anchor-id="counting-occurrences">counting occurrences</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define new transition matrix</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array( [[<span class="fl">0.8</span>, <span class="fl">0.2</span>], [<span class="fl">0.1</span>, <span class="fl">0.9</span>]] )</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> generate_sequence(P, s<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>states, counts <span class="op">=</span> np.unique(X, return_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> plt.bar(states.astype(<span class="bu">str</span>), counts, align<span class="op">=</span><span class="st">'center'</span>, width<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Task (5 min):</strong></p>
+<p>Repeat the above plot for different initial states s and different length of sequences.</p>
+<p>What do you observe?</p>
+<hr>
+</section>
+<section id="calculating-higher-order-probabilities" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-higher-order-probabilities">Calculating higher order probabilities</h2>
+<p>A Markov Model is defined by all 1-step transition probabilities: <span class="math inline">\(P_{ij}\)</span> (for <span class="math inline">\(i \to j\)</span>).</p>
+<p>What is the probability for transitions <span class="math inline">\(i \to j\)</span> in 2 steps, 3 steps, …t-steps?</p>
+<p><span class="math display">\[P_{ij}(t) = P(X_t = j | X_0 = i)\]</span></p>
+<p><strong>Group task (15 min):</strong> Consider a specific case for the given <span class="math inline">\(P\)</span> above. Starting at <span class="math inline">\(t=0\)</span> in <em>state i=0</em>, what are the probabilities at time <span class="math inline">\(t\)</span></p>
+<p>Group 1: to be in <em>state j=0</em>?</p>
+<p>Group 2: to be in <em>state j=1</em>?</p>
+<p>In other words: Group 1 <span class="math inline">\(\to\)</span> Calculate <span class="math inline">\(P_{00}(t)\)</span>. Group 2 <span class="math inline">\(\to\)</span> Calculate <span class="math inline">\(P_{01}(t)\)</span>.</p>
+<ol type="a">
+<li><p>at time t=1 ?</p></li>
+<li><p>at time t=2 ?</p></li>
+</ol>
+<p><strong>Hint:</strong> Consider all paths that go from <span class="math inline">\(i \to j\)</span></p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'P01(t=1): '</span>, ... )</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'P01(t=2): '</span>, ... )</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'P00(t=1): '</span>, ... ) </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'P00(t=2): '</span>, ... ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>For larger <span class="math inline">\(t\)</span>, these calculations can fast become cumbersome …</p>
+<section id="generalization-and-simplification" class="level3">
+<h3 class="anchored" data-anchor-id="generalization-and-simplification">Generalization and Simplification</h3>
+<p>Required Tools: 1. Matrix Multiplication: <span class="math inline">\(C_{ij} = \sum_k A_{ik}B_{kj}\)</span> 2. Marginalization: <span class="math inline">\(P(A) = \sum_B P(A|B) P(B)\)</span></p>
+<ol type="1">
+<li><strong>Initialization:</strong> <span class="math inline">\(P_{ij}(t=0) = \delta_{ij}\)</span></li>
+<li><strong>1-step probabilties:</strong> <span class="math inline">\(P_{ij}(t=1) = P_{ij}\)</span> (Definition of Markov Chain)</li>
+<li><strong>Recursion:</strong> (marginalization over all states at time <span class="math inline">\(t\)</span>)</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+Pr(X_{t+1}=j|X_0=i) &amp;= \sum_k Pr(X_{t+1}=j | X_t=k, X_0=i) \cdot Pr(X_t=k|X_0=i) \\
+&amp;= \sum_k Pr(X_{t+1}=j | X_t=k) \cdot Pr(X_t=k|X_0=i) \\
+P_{ij}(t+1) &amp;= \sum_k P_{kj} \cdot P_{ik}(t) = (P^{t+1})_{ij}
+\end{align}
+\]</span></p>
+<p><span class="math inline">\(\sum_k\)</span> is the sum over all connections from state <span class="math inline">\(k\)</span> to <span class="math inline">\(j\)</span>, and <span class="math inline">\(p_{ik}(t)\)</span> is the previous result over all possible pathways from <span class="math inline">\(i\)</span> to <span class="math inline">\(k\)</span></p>
+<p>The above is for the t-step transition matrix. For the probability distribution over states we have:</p>
+<p><span class="math display">\[
+\begin{align}
+Pr(X_{t}=j) &amp;= \sum_k Pr(X_t=j | X_o=k) \cdot Pr(X_0=k) \\
+             &amp;= \sum_k P_{kj}(t) \cdot Pr(X_0=k)
+\end{align}
+\]</span></p>
+<p><strong>Simplification</strong>: (in vector notation)</p>
+<p><span class="math display">\[\pi(t) = \pi(0) \cdot P^t\]</span></p>
+<p><strong>Task (5min)</strong>: Matrix Power</p>
+<p>Explore the function matrix_power() and apply this function to <span class="math inline">\(P\)</span> with an increasing value of <span class="math inline">\(t\)</span></p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> matrix_power</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>matrix_power( ... )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="alert alert-block alert-warning">
+<p><strong>Task (10 min):</strong> Deja-vu</p>
+<p>Starting in state 0 at t=0, calculate the probabilities to be in state 1</p>
+<ol type="a">
+<li><p>at time t=1 ?</p></li>
+<li><p>at time t=2 ?</p></li>
+<li><p>at time t=20 ?</p></li>
+</ol>
+<p>Solve it using matrix multiplication: https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_power.html</p>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> matrix_power</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>pi_0 <span class="op">=</span>        <span class="co"># initial probability</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pi_t <span class="op">=</span>        <span class="co"># dot product of initial probability with P^k</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="alert alert-block alert-warning">
+<p><strong>Task (5 min):</strong></p>
+<p>Repeat the above question with state 1 at t=0.</p>
+<ol type="a">
+<li><p>at time t=1 ?</p></li>
+<li><p>at time t=2 ?</p></li>
+<li><p>at time t=20 ?</p></li>
+</ol>
+<p><strong>Extra:</strong> Repeat the above with an uncertain state <span class="math inline">\(\pi=[0.5, 0.5]\)</span></p>
+</div>
+<p><strong>Question:</strong> What is different?</p>
+<p><strong>Lessons</strong>:</p>
+<ol type="1">
+<li>Importance of recursions</li>
+<li>Matrix multiplication is powerful tool (and easy with Python/Numpy)!</li>
+<li>Matrix powers of <span class="math inline">\((P^t)_{ij}\)</span> give the t-step transition probabilities from <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(\pi(t) = \pi(0) \cdot P^t\)</span> gives the state probability distribution at time <span class="math inline">\(t\)</span></li>
+<li>Important role of linear algebra, efficient algorithms and tools</li>
+<li>Convergence and Independence of Initial State</li>
+</ol>
+</section>
+</section>
+<section id="long-time-properties" class="level2">
+<h2 class="anchored" data-anchor-id="long-time-properties">Long-time Properties</h2>
+<p>Given this image of a Markov Chain, can you speculate on its long-time properties?</p>
+<div>
+<p>&lt;img src=“https://github.com/thomasmanke/ABS/raw/main/figures/MC_AbsorbingGraph.jpg”, align=left width=“800”&gt;</p>
+</div>
+<p><strong>Task (5 min):</strong></p>
+<p>Let’s test it numerically! Define the corresponding transition matrix <span class="math inline">\(P\)</span> and run the code cell below.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>P<span class="op">=</span> ....</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> generate_sequence(P)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="op">*</span>X, sep<span class="op">=</span><span class="st">''</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>states, counts <span class="op">=</span> np.unique(X, return_counts<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> plt.bar(states.astype(<span class="bu">str</span>), counts, align<span class="op">=</span><span class="st">'center'</span>, width<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Task (5 min)</strong>: What was the initial state? Modify the above code to chose a different initial state. How does the output change?</p>
+<p><strong>Lesson:</strong> Some Markov Chains (transition matrices) can have <strong>absorbing states</strong>. More generally there could be multiple absorbing states.</p>
+</section>
+<section id="visualizating-matrix-powers" class="level2">
+<h2 class="anchored" data-anchor-id="visualizating-matrix-powers">Visualizating Matrix Powers</h2>
+<p>Let’s make the temporal analysis more visually pleasing.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> matrix_power</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>i<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">10</span>,<span class="dv">100</span>]:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  S<span class="op">=</span>matrix_power(P,t)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  im<span class="op">=</span>ax[i].imshow(S, cmap<span class="op">=</span>plt.cm.Blues)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ax[i].set_title(t)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>cax <span class="op">=</span> fig.add_axes([<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.05</span>])</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fig.colorbar(im, cax<span class="op">=</span>cax, orientation<span class="op">=</span><span class="st">'horizontal'</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Discussion</strong>: What do we see here?</p>
+<p>I’m proud of the above visualization, so let’s make it a (slightly more flexible) function.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_transition_matrix(P, tmax<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># some sanity checks</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> P.shape[<span class="dv">0</span>]<span class="op">==</span>P.shape[<span class="dv">1</span>],         <span class="st">"P should be a squared matrix"</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> np.allclose( P.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), <span class="dv">1</span>), <span class="st">"P should be a stochastic matrix"</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  fig, ax <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  i<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> t <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">10</span>,tmax]:</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    S<span class="op">=</span>matrix_power(P,t)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    im<span class="op">=</span>ax[i].imshow(S, cmap<span class="op">=</span>plt.cm.Blues)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    ax[i].set_title(t)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  cax <span class="op">=</span> fig.add_axes([<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.05</span>])</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  fig.colorbar(im, cax<span class="op">=</span>cax, orientation<span class="op">=</span><span class="st">'horizontal'</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="convergence-rate" class="level2">
+<h2 class="anchored" data-anchor-id="convergence-rate">Convergence Rate</h2>
+<p>We saw that the Markov chain above converges to some asymptotic state - let’s explore and modify this behaviour.</p>
+<p><strong>Group Tasks (30min):</strong> Adjust the parameters in <span class="math inline">\(P\)</span> to</p>
+<ol type="1">
+<li><strong>delay the convergence</strong> to the absorbing state 3.</li>
+<li>generates <strong>two absorbing states</strong></li>
+<li>avoid absorbing states</li>
+</ol>
+<div class="cell" data-tags="[]">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before eexeecution</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>P1<span class="op">=</span>np.array(...)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>P2<span class="op">=</span>np.array(...)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>P3<span class="op">=</span>np.array(...)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plot_transition_matrix(P1, <span class="dv">100</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plot_transition_matrix(P2, <span class="dv">100</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>plot_transition_matrix(P3, <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Lessons:</strong> The long time behaviour depends on model structure and parameters</p>
+<ol type="1">
+<li>Parameters may control convergence rate</li>
+<li>structural aspects (state accessibilty)may cause multiple absorbing states. The Markov chain will still converge. But <span class="math inline">\(\to\)</span> initial state sensitivity</li>
+<li>some (interesting) Markov chains have a unique stationary state that is independent from the initial state.</li>
+</ol>
+<p><strong>Notice:</strong></p>
+<ul>
+<li>stationary distribution (sometimes called steady state distribution) <strong>does not</strong> mean that the states don’t change, but that the probability distribution is constant over time (and independent of the initial state)</li>
+<li>the power method is a simple but expensive way to determine the stationary distribution <span class="math inline">\(\pi\)</span>, but there are more effcient ways using the eigenvalue formulation <span class="math display">\[\pi = \pi \cdot P\]</span></li>
+<li>this formula also exends the idea of the stationary distribution beyond the long-term behaviour of a Markov chain; a stationary distribution is a distribution that stays fixed after application of <span class="math inline">\(P\)</span> (regardless of whether it can be reached through an asymptotic process)</li>
+<li>a Markov chain can have several stationary distributions</li>
+<li>Many Markov chains have a unique stationary distribution and they are usually the most interesting/important ones. However, we need to be aware of - and protect against - other possibilities (see below)</li>
+</ul>
+</section>
+<section id="periodic-states" class="level2">
+<h2 class="anchored" data-anchor-id="periodic-states">Periodic States</h2>
+<p>Often we want to avoid periodicity as another “pathological” condition.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>P<span class="op">=</span>np.array([[<span class="fl">0.0</span>,<span class="fl">1.0</span>,<span class="fl">0.0</span>],</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">0.5</span>,<span class="fl">0.0</span>,<span class="fl">0.5</span>],</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>            [<span class="fl">0.0</span>,<span class="fl">1.0</span>,<span class="fl">0.0</span>]])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>plot_transition_matrix(P, <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Notice:</strong> any self-transition (<span class="math inline">\(P_{ii} \ne 0\)</span>) will result in an aperiodic Markov chain.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>We have seen different possible behaviours of Markov chains 1. convergence to unique state (stationary or absorbing) 2. convergence to non-unique state: inital state sensitivity 3. periodic behaviour</p>
+<p>“Nice” Markov chains are “ergodic” (everything that can happen will eventually happen) and “non-periodic”</p>
+</section>
+<section id="expected-times-convergence-and-return" class="level2">
+<h2 class="anchored" data-anchor-id="expected-times-convergence-and-return">Expected Times: Convergence and Return</h2>
+<section id="convergence-time" class="level3">
+<h3 class="anchored" data-anchor-id="convergence-time">Convergence Time</h3>
+<p>The convergence of a Markov chain <span class="math inline">\(P\)</span> to its stationary distribution <span class="math inline">\(\pi\)</span> is a very important property.</p>
+<p>Starting from state <span class="math inline">\(\pi_0=(1, 0)\)</span> the approximation to the stationary distribution is given by</p>
+<p><span class="math display">\[
+\pi_t = \pi_0 P^t
+\]</span></p>
+<p>The distance from the stationary distribution is given by the Euclidean norm <span class="math display">\[
+\delta(t) = ||\pi_t - \pi||
+\]</span></p>
+<p>see also numpy: np.linalg.norm()</p>
+<p><strong>Task (10 min)</strong>:</p>
+<p>Asymptotically the Markov chain defined by <span class="math inline">\(P\)</span> (above) has stationary distribution <span class="math inline">\(\pi=(1/3, 2/3)\)</span>. Calculate the distance of <span class="math inline">\(\delta(t)\)</span> and plot it logarithmically against <span class="math inline">\(t=1 \ldots 50\)</span>.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> matrix_power</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>P  <span class="op">=</span> np.array([[<span class="fl">0.8</span>, <span class="fl">0.2</span>],[<span class="fl">0.1</span>,<span class="fl">0.9</span>]])  <span class="co"># transition matrix</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>pi <span class="op">=</span> np.array([<span class="fl">1.</span><span class="op">/</span><span class="dv">3</span>, <span class="fl">2.</span><span class="op">/</span><span class="dv">3</span>])            <span class="co"># stationatry distribution</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>T  <span class="op">=</span> <span class="dv">50</span>                                <span class="co"># maximal number of times</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>pi_0 <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">0</span>])                 <span class="co"># initial distribution</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> np.zeros(T)                     <span class="co"># initialize T distances</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(T):</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  pi_t <span class="op">=</span>        <span class="co"># hint: P^t</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  dist[t] <span class="op">=</span> ... <span class="co"># calculate distance --&gt; hint: np.linalg.norm</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  print(pi_t, dist[t])</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.plot(dist)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">'log'</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'time'</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'distance from stationary'</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Message</strong>: The convergence is exponential. The precise rate is controlled by matrix properties of <span class="math inline">\(P\)</span> (its eigenvalues).</p>
+</section>
+<section id="state-duration" class="level3">
+<h3 class="anchored" data-anchor-id="state-duration">State Duration</h3>
+<p>How long is the expected stay <span class="math inline">\(E[t_i]\)</span> in a given state <span class="math inline">\(i\)</span>?</p>
+<p><span class="math display">\[
+Pr(X_1=i, X_2=i, \ldots X_{t}=i, X_{t+1} \ne i) = p_{ii}^{t-1} (1-p_{ii}) \equiv p_i(t) \\ \\
+E[t_i] = \sum_{t=1}^\infty t p_i(t) = (1-p_{ii}) \sum_t t p_{ii}^{t-1} = \frac{1}{1-p_{ii}}
+\]</span></p>
+<p><strong>Task (10 min):</strong> Define your favorite Markov Model (transition matrix) and generate a (sufficiently) long sequence from it. Pick a specific state <span class="math inline">\(i\)</span> and confirm the above formula. A simple helper function is provided below, but try to understand it.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> StateDuration(L, s<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># helper function to calculate the "duration" of a given element s in list L</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># --&gt; calculate the length of consecutive occurences</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  count<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  res<span class="op">=</span>[]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> e <span class="kw">in</span> L:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> e<span class="op">==</span>s:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      count <span class="op">+=</span><span class="dv">1</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (count <span class="op">&gt;</span> <span class="dv">0</span>):</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        res.append(count)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      count<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (count<span class="op">&gt;</span><span class="dv">0</span>):</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    res.append(count)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.array( ... your choice here)  <span class="co"># chose transition matrix</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>i<span class="op">=</span><span class="dv">0</span>                                   <span class="co"># chose states</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>generate_sequence(P, T<span class="op">=</span> ... )</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>exp <span class="op">=</span> ... <span class="co"># expected duration</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> StateDuration(...)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'expected duration: </span><span class="sc">{}</span><span class="st"> average: </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(exp, <span class="bu">sum</span>(res)<span class="op">/</span><span class="bu">len</span>(res)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="parameter-estimation" class="level1">
+<h1>Parameter Estimation</h1>
+<p>Given transition rates <span class="math inline">\(P_{ij}\)</span> we can calculate (or simulate) many interesting quantities (path probabilities, stationary states, absorbing states, mixing times, …).</p>
+<p>How can we estimate (learn) these model parameters?</p>
+<p>Frequency interpretation:</p>
+<p><span class="math display">\[
+P_{ij} = \frac{N_{ij}}{\sum_j N_{ij}}
+\]</span></p>
+<p>Remember: All models are wrong, some are useful.</p>
+<p><strong>Group Task (15 min):</strong> Given a sequence of states. Complete the code below to obtain the parameters of the Markov Chain.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo Edit before executing</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>L<span class="op">=</span> ...      <span class="co"># length of observed sequence</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>N<span class="op">=</span><span class="dv">2</span>         <span class="co"># number of states </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> np.zeros((N,N))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>( .... ):</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  [ ... fill P_ij_ ...]</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize rows</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> P<span class="op">/</span>np.<span class="bu">sum</span>(P,axis<span class="op">=</span><span class="dv">1</span>, keepdims<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'estimated transition matrix: </span><span class="ch">\n</span><span class="st">'</span>, P)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Question:</strong> How would you estimate the intial probabiltiy?</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../../about.html">About</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

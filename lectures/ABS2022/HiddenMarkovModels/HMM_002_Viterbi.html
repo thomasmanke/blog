@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Thomas Manke">
+<meta name="dcterms.date" content="2022-09-14">
+
+<title>Thomas - 002 - More Algorithms (Viterbi and Baum-Welch)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../images/Manke_2019.11.17_small.JPG" rel="icon" type="image/jpeg">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Thomas</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-book" role="img">
+</i> 
+ <span class="menu-text">Lectures</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
+    <a class="dropdown-item" href="../../../lectures/Rintro2023/index.html" rel="" target="">
+ <span class="dropdown-text">Rintro</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../../lectures/ABS2022/index.html" rel="" target="">
+ <span class="dropdown-text">Applied Biostatistics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
+</i> 
+ <span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">002 - More Algorithms (Viterbi and Baum-Welch)</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Hidden Markov Models</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Thomas Manke </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 14, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="status-quo-where-are-we" class="level1">
+<h1>Status Quo: Where are we ?</h1>
+<p>We have an HMM model and parameters (emissions, transitions and initial probability).</p>
+<p>Remember the travel analogy: we used countries (as hidden states) and food (as observables) - but we could have chosen many other stories.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pi<span class="op">=</span>np.array( [<span class="fl">0.75</span>, <span class="fl">0.25</span>] )                          <span class="co"># initial state probability</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span>np.array([ [<span class="fl">0.8</span>, <span class="fl">0.2</span>], [<span class="fl">0.1</span>, <span class="fl">0.9</span>] ])              <span class="co"># transition probabilites</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span>np.array([ [<span class="fl">0.7</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>], [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>] ])    <span class="co"># emission probabilities</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>With these parameters we can generate state sequences <span class="math inline">\(Z\)</span> and observations <span class="math inline">\(X\)</span>, but in typical applications the state sequences <span class="math inline">\(Z\)</span> are unobserved. We should think about <span class="math inline">\(Z\)</span> probabilistically. Until now we have encountered the following distributions:</p>
+<ul>
+<li>“the joint” <span class="math inline">\(P(X,Z)\)</span>: nice theoretical form (graphical model), but in general not calculable (<span class="math inline">\(Z\)</span> unknown)</li>
+<li>“scoring” <span class="math inline">\(P(X)\)</span>: how to sum over all <span class="math inline">\(Z\)</span> efficiently <span class="math inline">\(\to\)</span> <strong>Forward algorithm</strong></li>
+<li>“monitoring” <span class="math inline">\(P(Z_t=i|X_{1:t})\)</span>: similar to <span class="math inline">\(P(X)\)</span> but with extra normalization (Bayesian update)</li>
+</ul>
+<p>Naively, these probabilites are very expensive to calculate <span class="math inline">\(\to\)</span> use efficient <strong>recursion</strong> (thanks to the Markov property).</p>
+<p>Remember our remaining goals:</p>
+<ul>
+<li><span class="math inline">\(P(Z_t=i| X)\)</span> what are the state probabilities at <span class="math inline">\(t\)</span> given <strong>all</strong> observations <span class="math inline">\(X=X_{1:T}\)</span> (past, present and future)</li>
+<li><span class="math inline">\(argmax_Z P(Z|X)\)</span> what is the most likely path <span class="math inline">\(Z\)</span></li>
+<li><span class="math inline">\(argmax_\Theta P(\Theta|X)\)</span> what are the best parameters</li>
+</ul>
+</section>
+<section id="pz_t-x_1t-hindsight-forward-backward" class="level1">
+<h1><span class="math inline">\(P(Z_t | X_{1:T})\)</span> : Hindsight (Forward-Backward)</h1>
+<section id="the-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="the-algorithm">The Algorithm</h2>
+<p>Now we want to calculate the state probability at time <span class="math inline">\(t\)</span> given <strong>all</strong> observations <span class="math inline">\(X_{1:T}\)</span>. This is also called <em>smoothing</em> or posterior decoding.</p>
+<p><span class="math display">\[
+\gamma_{ti} = P(Z_t=i|X_{1:T}) = Pr(Z_t=i| X_{1:t} X_{t+1:T}) \propto  Pr(Z_t=i|X_{1:t}) \cdot Pr(X_{t+1:T}|Z_t=i)
+\]</span></p>
+<p>The first factor is <span class="math inline">\(\alpha_{ti}\)</span> from the <strong>Forward Algorithm</strong>. The second factor denotes the likelihood of future observations, given <span class="math inline">\(Z_t\)</span>.</p>
+<p>It can be calculated analoguously by the <strong>Backward Algorithm</strong></p>
+<p><span class="math display">\[
+\begin{align}
+\beta_{ti} &amp;= Pr( X_{t+1:T} | Z_t=i) \\
+&amp;= \sum_k Pr(X_{t+2:T}|Z_{t+1}=k) Pr(X_{t+1} | Z_{t+1}=k) Pr(Z_{t+1=}k|Z_t=i) \\
+&amp;= \sum_k \beta_{t+1 k} Pr(X_{t+1}|Z_{t+1}=k) Pr(Z_{t+1=}k|Z_t=i)
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\mbox{Initalisation (t=T):}~~~ \beta_{Ti} = 1~~~~~~~~
+\mbox{Termination (t=1):}~~~\sum_i \beta_{1i} = Pr(X) \\
+\]</span></p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<div>
+<p>&lt;img src=“https://github.com/thomasmanke/ABS/raw/main/figures/HMM_ForwardBackward.jpg”, width=“1200”&gt;</p>
+</div>
+<p>Ultimately this leads to <strong>Forward-Backward Algorithm</strong> (+ Normalization)</p>
+<p><span class="math display">\[
+Pr(Z_t = i | X_{1:T}) = \gamma_{ti} = \frac{\alpha_{ti} \beta_{ti}}{\sum_k \alpha_{tk} \beta_{tk}}
+\]</span></p>
+</section>
+<section id="uses" class="level2">
+<h2 class="anchored" data-anchor-id="uses">Uses</h2>
+<ul>
+<li>assign a posterior state probabilities to each time<br>
+</li>
+<li>sample <span class="math inline">\(Z_t|X\)</span> beyond just the best <span class="math inline">\(Z_t\)</span></li>
+<li>parameter estimates: couple with EM (Baum-Welch)</li>
+</ul>
+</section>
+</section>
+<section id="the-good-news-there-is-software" class="level1">
+<h1>The good news: There is software</h1>
+<p>Bad news: there are many different packages. Here we use hmmlearn.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#%%script echo install only once</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install hmmlearn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="hmmlearn-generating-sequences-and-observations" class="level2">
+<h2 class="anchored" data-anchor-id="hmmlearn-generating-sequences-and-observations">HMMlearn: Generating Sequences and Observations</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> hmmlearn <span class="im">import</span> hmm</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pi<span class="op">=</span>np.array( [<span class="fl">0.75</span>, <span class="fl">0.25</span>] )                          <span class="co"># initial state probability</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span>np.array([ [<span class="fl">0.8</span>, <span class="fl">0.2</span>], [<span class="fl">0.1</span>, <span class="fl">0.9</span>] ])              <span class="co"># transition probabilites</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span>np.array([ [<span class="fl">0.7</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>], [<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>] ])    <span class="co"># emission probabilities</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)                       <span class="co"># only for reproducibiltiy</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># define HMM and set parameters</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> hmm.MultinomialHMM(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>model.startprob_ <span class="op">=</span> pi                    <span class="co"># initial state prob</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>model.transmat_  <span class="op">=</span> P                     <span class="co"># transition prob</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>model.emissionprob_ <span class="op">=</span> E                  <span class="co"># emission prob</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># generate sequence</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>X,Z <span class="op">=</span> model.sample(<span class="dv">50</span>)                   <span class="co"># c.f. Z, X = generate_HMM(P,pi,E)</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'states Z       ='</span>,<span class="op">*</span>Z.flatten())</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'observations X ='</span>,<span class="op">*</span>X.flatten())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="hmmlearn-calculating-prx" class="level2">
+<h2 class="anchored" data-anchor-id="hmmlearn-calculating-prx">HMMlearn: Calculating <span class="math inline">\(Pr(X)\)</span></h2>
+<p>Remember that the Forward Algorithm is used to circumvent the difficult calculation</p>
+<p><span class="math display">\[
+Pr(X) = \sum_Z Pr(X,Z)
+\]</span></p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> model.score(X) </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'score Pr(X) = '</span>, score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Discussion</strong>: What’s the meaning of this score? Consult the help pages to find out more about this score.</p>
+</section>
+<section id="hmmlearn-calculating-prz_ti-x" class="level2">
+<h2 class="anchored" data-anchor-id="hmmlearn-calculating-prz_ti-x">HMMlearn: Calculating <span class="math inline">\(Pr(Z_t=i | X)\)</span></h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PrZ <span class="op">=</span> model.predict_proba(X) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use Pandas for dataframes and powerful plotting</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>pd.DataFrame(data<span class="op">=</span>PrZ,index<span class="op">=</span>Z)  <span class="co"># convert PrZ to dataframe and add true Z as index</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>pp<span class="op">=</span>df.plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">20</span>,<span class="dv">5</span>), title<span class="op">=</span><span class="st">'P(Z_t|X)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This is how the posterior probability of <span class="math inline">\(Z_t =i\)</span> changes over time.</p>
+<p><strong>Individual task (15 min)</strong>: Take some time and try to understand the results and data structures above. Does the plot make sense? If this shows the “posterior” state probability; what is the “prior” state probability and how could you obtain it?</p>
+</section>
+</section>
+<section id="decoding-finding-the-best-state-sequence" class="level1">
+<h1>Decoding: Finding the Best State Sequence</h1>
+<section id="option-1-maximal-posterior" class="level2">
+<h2 class="anchored" data-anchor-id="option-1-maximal-posterior">Option 1: Maximal Posterior</h2>
+<p>The above calculation <span class="math inline">\(Pr(Z_t=i|X_{1:T})\)</span> suggests a simple way to define the “best” state sequence.</p>
+<p>For example, one might simply collect the state sequence with the largest <span class="math inline">\(Pr(Z_t=i|X)\)</span> for each time <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+Z_t = \underset{i}{argmax} Pr(Z_t=i | X)
+\]</span></p>
+<p><strong>Discussion</strong>:</p>
+<p>Refer back to the above figure for <span class="math inline">\(Pr(Z_t=i|X)\)</span> and see whether this is a good prescription (remember that in this case we know the true <span class="math inline">\(Z\)</span>). What could be possible problems with it?</p>
+</section>
+<section id="option-2-viterbi-decoding" class="level2">
+<h2 class="anchored" data-anchor-id="option-2-viterbi-decoding">Option 2: Viterbi Decoding</h2>
+<p>Using the maximal posterior (as above) may lead to forbidden state transition <span class="math inline">\(Z_t \to Z_{t+1}\)</span>, where the corresponding transition probability is 0.</p>
+<p>For this reason, we are also looking for a <strong>valid path</strong> <span class="math inline">\(Z_{1:T}\)</span> that maximizes the conditional probability given all observations <span class="math inline">\(X_{1:T}\)</span>.</p>
+<p><span class="math display">\[
+Z^\ast = \underset{Z}{argmax} Pr(Z|X) \propto \underset{Z}{argmax} Pr(Z,X) \\
+\]</span></p>
+<section id="recursion-again" class="level3">
+<h3 class="anchored" data-anchor-id="recursion-again">Recursion: again</h3>
+<p>Again we will utilize the <strong>recursion principle</strong> - this time assuming that for a given time <span class="math inline">\(t\)</span> we know - the path with maximum probability that ends in <span class="math inline">\(Z_t=i\)</span> - the last link of that path that connects to <span class="math inline">\(Z_t=i\)</span>, i.e.&nbsp;it’s origin.</p>
+<p><strong>Goal:</strong> maximize over all previous</p>
+<p><span class="math display">\[
+\mu_{ti} = \max_{Z_{1:t-1}} Pr(Z_t=i, Z_{1:t-1}, X_{1:t})
+\]</span></p>
+<p>For time <span class="math inline">\(t+1\)</span> we can use the usual propagation of probabilities.</p>
+<div>
+<p>&lt;img src=“https://github.com/thomasmanke/ABS/raw/main/figures/HMM_Viterbi.jpg”, width=“1500”&gt;</p>
+</div>
+<p>Notice:</p>
+<ul>
+<li>This is the Forward Algorithm with <span class="math inline">\(\sum_k \to \max_k\)</span></li>
+<li><span class="math inline">\(\max_i \mu_{Ti} = \max_{Z} Pr(Z,X)\)</span></li>
+<li>forbidden paths would have some transitions <span class="math inline">\(Pr(Z_{t+1}=j | Z_{t}=i) = 0 \longrightarrow\)</span> they would never be maximal.</li>
+<li>complexity: <span class="math inline">\(O(T) \ll O(N^T)\)</span></li>
+<li>also need to keep track of last links <span class="math inline">\(\lambda_{ti}\)</span> (the maximizing transitions) <span class="math inline">\(\to\)</span> back-tracking</li>
+</ul>
+</section>
+</section>
+<section id="hmmlearn-decoding" class="level2">
+<h2 class="anchored" data-anchor-id="hmmlearn-decoding">HMMlearn: Decoding</h2>
+<p>The hmmlearn implementation is very easy to use</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>_, Zv <span class="op">=</span> model.decode(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo This would be an alternative approach (also <span class="cf">with</span> hmmlearn)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># alternatives</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>PrZ <span class="op">=</span> model.predict_proba(X)    <span class="co"># maximum posterior probability </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Zm <span class="op">=</span> PrZ.argmax(axis<span class="op">=</span><span class="dv">1</span>)         <span class="co"># get maximum</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>Zv <span class="op">=</span> model.predict(X)            <span class="co"># Viterbi pathh</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Group Task (30 min)</strong>:</p>
+<ol type="1">
+<li>Sample the HMM model again with T=50</li>
+<li>Consult the help for model.decode() and identify two different methods to predict a hidden state sequence for a given X.</li>
+<li>Try both algorithms and look for differences in the prediced sequences.</li>
+<li>Compare the predicted state sequence with the “hidden” sequence Z</li>
+<li>Increase the generated sequence length to 1000 and repeat the comparisons.</li>
+</ol>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>script echo edit before execution</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>T<span class="op">=</span><span class="dv">1000</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X,Z <span class="op">=</span> ... sample T timesteps <span class="im">from</span> model ...</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># get two different "best" paths from two methods </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>[ model.decode( ... method <span class="dv">1</span> ...) ]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>[ model.decode( ... method <span class="dv">2</span> ...) ]</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Check differences</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'differences (Z1-Z):  '</span>, np.<span class="bu">sum</span>(Z1 <span class="op">!=</span> Z))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'differences (Z2-Z):  '</span>, np.<span class="bu">sum</span>(Z2 <span class="op">!=</span> Z))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="hmmlearn-fitting" class="level1">
+<h1>HMMLearn: Fitting</h1>
+<p>This is by far the comoutationally most demanding task</p>
+<p>In an <em>observable</em> Markov model, the transition probabilities could be estimated from the observed transition frequencies <span class="math inline">\((Z_t=i \to Z_{t+1}=j)\)</span> <span class="math display">\[
+\hat{P}_{ij} = \frac{N_{ij}}{\sum_l N_{il}}
+\]</span></p>
+<p>If <span class="math inline">\(Z\)</span> was observable, one could define similar estimates for the emission probabilities <span class="math inline">\(\hat E_{ik}\)</span> from observed emission frequencies <span class="math inline">\((Z_t=i \to X_{t}=k)\)</span> However, the hidden states <span class="math inline">\(Z\)</span> are <strong>not</strong> observable.</p>
+<section id="if-z-was-observable-skip" class="level2">
+<h2 class="anchored" data-anchor-id="if-z-was-observable-skip">If Z was observable (skip)</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>L<span class="op">=</span><span class="bu">len</span>(Z)    <span class="co"># length of observed sequence</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>trans<span class="op">=</span>{}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  pair <span class="op">=</span> <span class="st">'</span><span class="sc">{}</span><span class="st">-&gt;</span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(Z[i],Z[i<span class="op">+</span><span class="dv">1</span>])</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  trans[pair] <span class="op">=</span> trans.get(pair, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>emiss<span class="op">=</span>{}</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  pair <span class="op">=</span> <span class="st">'</span><span class="sc">{}</span><span class="st">-&gt;</span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(Z[i],X[i])</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  emiss[pair] <span class="op">=</span> emiss.get(pair, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'transitions:'</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> trans.items():</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(k,v)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'emissions:'</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> emiss.items():</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(k,v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Discussion:</strong> Why would this not necessarily be a good estimate? (Longer chains vs multiple chains)</p>
+</section>
+<section id="if-z-is-hidden-baum-welch" class="level2">
+<h2 class="anchored" data-anchor-id="if-z-is-hidden-baum-welch">If Z is hidden (Baum-Welch)</h2>
+<ol type="1">
+<li>Initialize all probabilities randomly</li>
+<li>Re-estimation: change parameters iteratively to maximize <span class="math inline">\(Pr(X)\)</span></li>
+</ol>
+<p>The re-estimation procedure makes clever use of Forward and Backward algorithm, but one could also use gradient techniques for optimization.</p>
+<p>The iteration will converge to <strong>local maxima</strong> and will generally depend on the initial conditions, and the number of iterations.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_fit <span class="op">=</span> hmm.MultinomialHMM(n_components<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model_fit.fit(X)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> model_fit.score(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../../about.html">About</a>
+  </li>  
+</ul>
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/thomasmanke/blog">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
