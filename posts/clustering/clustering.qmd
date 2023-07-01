@@ -8,15 +8,15 @@ categories:
   - shiny
 
 echo: true
-eval: true
+eval: false
 draft: true
 
 format:
   html: default
   revealjs: 
-    output-file: clustering_revealjs.html
+    output-file: revealjs.html
 
-server: shiny
+#server: shiny
 ---
 
 ```{r}
