@@ -20,7 +20,7 @@ website:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/thomasmanke/blog
 
   page-footer: 
     left: |
@@ -29,7 +29,7 @@ website:
       - about.qmd
     right:
       - icon: github
-        href: https://github.com
+        href: https://github.com/thomasmanke/blog
     background: "grey"
     
 #  sidebar:
