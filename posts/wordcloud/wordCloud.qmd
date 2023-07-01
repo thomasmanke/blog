@@ -8,6 +8,11 @@ categories:
   - web scraping
 
 image: wordcloud.png
+
+format:
+  html: default
+  revealjs: 
+    output-file: revealjs.html
 ---
 
 # Setup
