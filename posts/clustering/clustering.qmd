@@ -1,6 +1,5 @@
 ---
 title: "Clustering"
-author: "Thomas Manke"
 date: 2023/06/09
 date-modified: last-modified
 categories: 
@@ -10,17 +9,31 @@ categories:
 
 echo: true
 eval: true
+draft: true
 
-format: 
-  html:
-    page-layout: custom
+format:
+  html: default
+  revealjs: 
+    output-file: clustering_revealjs.html
+
 server: shiny
 ---
 
+```{r}
+library(shiny)
+```
+
 # Introduction
-This is a shiny application. It requires a shiny server to run properly.
-The latter could be as part of Rstudio or some cloud server (e.g. shinyapps.io, quarto).
-Without it will not render properly, but I used it hear to illustrate how quarto can be used to define a simple shiny app.
+
+This is a shiny application. It requires a shiny server to run properly. The latter could be as part of Rstudio or some cloud server (e.g. shinyapps.io, quarto). Without it will not render properly, but I used it here to illustrate how quarto can be used to define a simple shiny app.
+
+Notice 1: For this to run it also requires rmarkdown 2.20++, but this would require downgrading
+quarto=1.3+ to quarto=1.2, and I don't want to downgrade.
+Make sure you have the appropriate environment.
+
+Notice 2: There is a `shinylive` for python and shinylive extension for quarto, which enables 
+`shiny` on client side browser and without any dedicated server. See also: 
+[BuffonsNeedle](posts/BuffonsNeedle/BuffonsNeedle.html)
 
 ```{r}
 #| panel: sidebar
@@ -35,8 +48,8 @@ numericInput('k', '#clusters', 3, min=1, max=9)
 plotOutput('plot1')
 ```
 
-
 Notice that we have to define the `context` of the following code block.
+
 ```{r}
 #| context: server
 #| label: server_code
