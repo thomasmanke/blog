@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Thomas Manke">
 <meta name="dcterms.date" content="2023-03-26">
+
 <title>Thomas - 06: Data Visualization</title>
 <style>
 code{white-space: pre-wrap;}
@@ -55,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
@@ -73,7 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -92,12 +97,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="../../styles.css">
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
+
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Thomas</span>
@@ -109,14 +122,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-<li class="nav-item dropdown ">
+  <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-book" role="img">
 </i> 
  <span class="menu-text">Lectures</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">
-<li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
     <a class="dropdown-item" href="../../lectures/Rintro2023/index.html" rel="" target="">
  <span class="dropdown-text">Rintro</span></a>
   </li>  
@@ -125,15 +138,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Applied Biostatistics</span></a>
   </li>  
     </ul>
-</li>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
 </i> 
  <span class="menu-text">Posts</span></a>
   </li>  
 </ul>
-<ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
     <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
@@ -143,17 +156,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
 <h1 class="title">06: Data Visualization</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Scaling</div>
@@ -185,105 +204,155 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="goal-1-show-me-all-the-data" class="level1"><h1>Goal 1: Show me all the data</h1>
-<section id="scaling" class="level2"><h2 class="anchored" data-anchor-id="scaling">Scaling</h2>
+</header>
+
+<section id="goal-1-show-me-all-the-data" class="level1">
+<h1>Goal 1: Show me all the data</h1>
+<section id="scaling" class="level2">
+<h2 class="anchored" data-anchor-id="scaling">Scaling</h2>
 <p>It’s good practice to normalize the different variables</p>
 <div class="cell" data-hash="06_DataVisualization_cache/html/scaling_e5240f9dbfc57926778dd6bbfdfc0c35">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">=</span><span class="va">iris</span><span class="op">[</span>,<span class="op">-</span><span class="fl">5</span><span class="op">]</span>   <span class="co"># numerical iris data (without speciee) </span></span>
-<span><span class="va">ds</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>   <span class="co"># scaled iris data (column-wise)</span></span>
-<span></span>
-<span><span class="va">br</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="fl">7</span>,by<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>                                           <span class="co"># set common break points for the histograms below</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">d</span><span class="op">[</span>,<span class="st">"Sepal.Width"</span><span class="op">]</span>, breaks <span class="op">=</span> <span class="va">br</span><span class="op">)</span>                          <span class="co"># illustrate scaling for specific column</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">ds</span><span class="op">[</span>,<span class="st">"Sepal.Width"</span><span class="op">]</span>, breaks <span class="op">=</span> <span class="va">br</span>, add<span class="op">=</span><span class="cn">TRUE</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span>    <span class="co"># add histogram to current plot</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"orig"</span>,<span class="st">"scaled"</span><span class="op">)</span>, fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d<span class="ot">=</span>iris[,<span class="sc">-</span><span class="dv">5</span>]   <span class="co"># numerical iris data (without speciee) </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ds<span class="ot">=</span><span class="fu">scale</span>(d)   <span class="co"># scaled iris data (column-wise)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>br<span class="ot">=</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">7</span>,<span class="at">by=</span><span class="fl">0.5</span>)                                           <span class="co"># set common break points for the histograms below</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(d[,<span class="st">"Sepal.Width"</span>], <span class="at">breaks =</span> br)                          <span class="co"># illustrate scaling for specific column</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ds[,<span class="st">"Sepal.Width"</span>], <span class="at">breaks =</span> br, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col=</span><span class="st">"red"</span>)    <span class="co"># add histogram to current plot</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"orig"</span>,<span class="st">"scaled"</span>), <span class="at">fill=</span><span class="fu">c</span>(<span class="st">"white"</span>, <span class="st">"red"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <p><img src="06_DataVisualization_files/figure-html/scaling-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="heatmaps" class="level2"><h2 class="anchored" data-anchor-id="heatmaps">Heatmaps</h2>
+</section>
+<section id="heatmaps" class="level2">
+<h2 class="anchored" data-anchor-id="heatmaps">Heatmaps</h2>
 <p>Heatmaps are color-coded representations of numerical matrices.</p>
 <p>Typically the rows and columns are re-ordered according to some distance measure (default: Euclidean) and hierarchical clustering method (default: complete)</p>
 <p>There are many tools to draw heatmaps in R. Here we use the <code>pheatmap</code> package to provide this powerful functionality</p>
 <div class="cell" data-hash="06_DataVisualization_cache/html/pheatmap_bd2a80ac104be2b0d7504b823e14c8dd">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#install.packages("pheatmap")  # That's how we install new packages - more later</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">pheatmap</span><span class="op">)</span>              <span class="co"># make packaged functions available</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">'loaded pheatmap version:'</span>, <span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">'pheatmap'</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("pheatmap")  # That's how we install new packages - more later</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)              <span class="co"># make packaged functions available</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">'loaded pheatmap version:'</span>, <span class="fu">packageVersion</span>(<span class="st">'pheatmap'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>[1] "loaded pheatmap version: 1.0.12"</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ds</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>,<span class="op">-</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>                <span class="co"># scaled data for heatmap</span></span>
-<span><span class="va">ann</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>Species <span class="op">=</span> <span class="va">iris</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span>  <span class="co"># meta data for annotations</span></span>
-<span></span>
-<span><span class="co"># explicitly set rownames to retain association between data and metadata</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">ann</span><span class="op">)</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap</a></span><span class="op">(</span><span class="va">ds</span>, </span>
-<span>         annotation_row <span class="op">=</span> <span class="va">ann</span>,</span>
-<span>         show_rownames <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>         <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ds  <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="sc">-</span><span class="dv">5</span>])                <span class="co"># scaled data for heatmap</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ann <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">Species =</span> iris[,<span class="dv">5</span>])  <span class="co"># meta data for annotations</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># explicitly set rownames to retain association between data and metadata</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(ds)<span class="ot">=</span><span class="fu">rownames</span>(iris)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(ann)<span class="ot">=</span><span class="fu">rownames</span>(iris)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(ds, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">annotation_row =</span> ann,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">show_rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <p><img src="06_DataVisualization_files/figure-html/pheatmap-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>There is many more parameters for more control - if you have lots of time read “?pheatmap”</p>
-<hr></section><section id="sending-plots-to-files" class="level2"><h2 class="anchored" data-anchor-id="sending-plots-to-files">Sending plots to files</h2>
+<hr>
+</section>
+<section id="sending-plots-to-files" class="level2">
+<h2 class="anchored" data-anchor-id="sending-plots-to-files">Sending plots to files</h2>
 <p>In Rstudio, we can export figures from the “Plots” tab. On the console we can define a pdf file as a new device for all subsequent figures. This is usually done only <em>after</em> the image is sufficiently optimized</p>
 <div class="cell" data-hash="06_DataVisualization_cache/html/pdf_68b87a688d889c90d2ef2d09eb487718">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/pdf.html">pdf</a></span><span class="op">(</span><span class="st">"output/heatmap.pdf"</span><span class="op">)</span>                                        <span class="co"># similar for jpeg, png, ...</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap</a></span><span class="op">(</span><span class="va">ds</span>, annotation_row <span class="op">=</span> <span class="va">ann</span>, show_rownames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>                                                 <span class="co"># close device = pdf file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"output/heatmap.pdf"</span>)                                        <span class="co"># similar for jpeg, png, ...</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(ds, <span class="at">annotation_row =</span> ann, <span class="at">show_rownames =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()                                                 <span class="co"># close device = pdf file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>pdf 
   3 </code></pre>
 </div>
 </div>
-<hr></section></section><section id="goal-2-show-me-all-the-data-in-lower-dimensions" class="level1"><h1>Goal 2: Show me all the data (in lower dimensions)</h1>
+<hr>
+</section>
+</section>
+<section id="goal-2-show-me-all-the-data-in-lower-dimensions" class="level1">
+<h1>Goal 2: Show me all the data (in lower dimensions)</h1>
 <div class="cell" data-hash="06_DataVisualization_cache/html/df2mat_2954ec1b811b7b0fa3546f0754a8731e">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">M</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>,<span class="op">-</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>     <span class="co"># numerical data, some operations below require matrices not data frames (%*%)</span></span>
-<span><span class="va">s</span><span class="op">=</span><span class="va">iris</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span>                 <span class="co"># species attributes (factor)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>M<span class="ot">=</span><span class="fu">as.matrix</span>(iris[,<span class="sc">-</span><span class="dv">5</span>])     <span class="co"># numerical data, some operations below require matrices not data frames (%*%)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>s<span class="ot">=</span>iris[,<span class="dv">5</span>]                 <span class="co"># species attributes (factor)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="pca-goals" class="level2"><h2 class="anchored" data-anchor-id="pca-goals">PCA Goals</h2>
+<section id="pca-goals" class="level2">
+<h2 class="anchored" data-anchor-id="pca-goals">PCA Goals</h2>
 <ul>
 <li>simplify description of data matrix <span class="math inline">\(M\)</span>: data reduction &amp; extract most important information</li>
 <li>maximal variance: look for direction in which data shows maximal variation</li>
 <li>minimal error: allow accurate reconstruction of original data</li>
 </ul>
 <p><img src="images/PCA.gif" class="img-fluid" alt="PCA goal"> from amoeba @ https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues</p>
-</section><section id="pca-with-r" class="level2"><h2 class="anchored" data-anchor-id="pca-with-r">PCA with R</h2>
+</section>
+<section id="pca-with-r" class="level2">
+<h2 class="anchored" data-anchor-id="pca-with-r">PCA with R</h2>
 <div class="cell" data-hash="06_DataVisualization_cache/html/run_pca_e7352a3eec69a5c7d3f5775ef6b8b93e">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pca</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/prcomp.html">prcomp</a></span><span class="op">(</span><span class="va">M</span>, scale<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">=</span> <span class="fu">prcomp</span>(M, <span class="at">scale=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>Task</strong>: What kind of object is pca?</p>
-</section><section id="covariance-structure" class="level2"><h2 class="anchored" data-anchor-id="covariance-structure">Covariance Structure</h2>
+</section>
+<section id="covariance-structure" class="level2">
+<h2 class="anchored" data-anchor-id="covariance-structure">Covariance Structure</h2>
 <div class="cell" data-hash="06_DataVisualization_cache/html/pca_cov_edd13e7f6b8e4f4d44dc78e54f229871">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">S</span><span class="op">=</span><span class="va">pca</span><span class="op">$</span><span class="va">x</span>          <span class="co"># score matrix = rotated and scaled data matrix</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">S</span>, col<span class="op">=</span><span class="va">s</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>S<span class="ot">=</span>pca<span class="sc">$</span>x          <span class="co"># score matrix = rotated and scaled data matrix</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(S, <span class="at">col=</span>s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <p><img src="06_DataVisualization_files/figure-html/pca_cov-1.png" class="img-fluid" width="672"></p>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cov</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span><span class="op">)</span> <span class="co"># original covariance matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(<span class="fu">cov</span>(M)) <span class="co"># original covariance matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <p><img src="06_DataVisualization_files/figure-html/pca_cov-2.png" class="img-fluid" width="672"></p>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># covariance matrix of scores is diagonal (by design)</span></span>
-<span><span class="co"># --&gt; principal components are uncorrelated</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pheatmap/man/pheatmap.html">pheatmap</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cov</a></span><span class="op">(</span><span class="va">S</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># covariance matrix of scores is diagonal (by design)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># --&gt; principal components are uncorrelated</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(<span class="fu">cov</span>(S)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <p><img src="06_DataVisualization_files/figure-html/pca_cov-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Notice that the higher components do not add much to the variance, so we may as well represent the transformed data in only the <strong>first two dimensions</strong>:</p>
 <div class="cell" data-hash="06_DataVisualization_cache/html/plot_PC1_PC2_6750204017cab61b18920b1ac8796466">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">S</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>,pch<span class="op">=</span><span class="fl">21</span>, bg<span class="op">=</span><span class="va">s</span><span class="op">)</span>  <span class="co"># score-plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(S[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],<span class="at">pch=</span><span class="dv">21</span>, <span class="at">bg=</span>s)  <span class="co"># score-plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <p><img src="06_DataVisualization_files/figure-html/plot_PC1_PC2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<hr></section></section><section id="review" class="level1"><h1>Review</h1>
+<hr>
+</section>
+</section>
+<section id="review" class="level1">
+<h1>Review</h1>
 <ul>
 <li>use heatmaps to visualize large matrices</li>
 <li>data transformation: scale()</li>
@@ -293,7 +362,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -642,27 +714,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Made with Quatro<br></div>   
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
-<li class="nav-item">
+    <li class="nav-item">
     <a class="nav-link" href="../../about.html">About</a>
   </li>  
 </ul>
-</div>
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-<li class="nav-item compact">
+    <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/thomasmanke/blog">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-</div>
+    </div>
   </div>
 </footer>
+
 
 
 </body></html>

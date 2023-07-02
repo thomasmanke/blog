@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Thomas Manke">
 <meta name="dcterms.date" content="2023-03-26">
+
 <title>Thomas - 02: Higher Dimensional Data</title>
 <style>
 code{white-space: pre-wrap;}
@@ -55,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
@@ -73,7 +77,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -92,12 +97,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><link rel="stylesheet" href="../../styles.css">
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
+
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Thomas</span>
@@ -109,14 +120,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-<li class="nav-item dropdown ">
+  <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-book" role="img">
 </i> 
  <span class="menu-text">Lectures</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">
-<li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
     <a class="dropdown-item" href="../../lectures/Rintro2023/index.html" rel="" target="">
  <span class="dropdown-text">Rintro</span></a>
   </li>  
@@ -125,15 +136,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Applied Biostatistics</span></a>
   </li>  
     </ul>
-</li>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
 </i> 
  <span class="menu-text">Posts</span></a>
   </li>  
 </ul>
-<ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
     <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
@@ -143,17 +154,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
 <h1 class="title">02: Higher Dimensional Data</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
@@ -183,34 +200,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p><strong>Goal</strong>:<br>
+</header>
+
+<p><strong>Goal</strong>:<br>
 Real data is much more complex than simple vectors of numbers or strings.<br>
 Here we introduce new data structures, important functions, and some more jargon.</p>
-<section id="data" class="level2"><h2 class="anchored" data-anchor-id="data">data()</h2>
-<p>R comes with many pre-defined data sets. They are often used to illustrate statistical problems, data science concepts and functionality of software packages. Just type <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code> to get an overview.</p>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">data()</h2>
+<p>R comes with many pre-defined data sets. They are often used to illustrate statistical problems, data science concepts and functionality of software packages. Just type <code>data()</code> to get an overview.</p>
 <div class="cell" data-hash="02_HighDimData_cache/html/data_pre_14e87b5e5a44754eb15371d6e88952ad">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>One particularly famous data set is <code>iris</code>. We will use it throughout this course:</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="images/sepal_petal.jpeg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Flower Measurements</figcaption></figure>
+<figure class="figure">
+<p><img src="images/sepal_petal.jpeg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Flower Measurements</figcaption>
+</figure>
 </div>
 <p>(Image from blog of mathieu.guillame-bert.com)</p>
 <p><strong>Tasks</strong>: Explore the <code>iris</code> data set</p>
 <ul>
-<li>Try <code><a href="https://rdrr.io/r/datasets/iris.html">?iris</a></code> to learn more about this data set.</li>
+<li>Try <code>?iris</code> to learn more about this data set.</li>
 <li>Type <code>iris</code> or <code>View(iris)</code>. Why is this not the best way to explore data?</li>
 </ul>
 <p><strong>Query:</strong><br>
 How many samples and variables does this data set contain?</p>
-<hr></section><section id="data-frames" class="level2"><h2 class="anchored" data-anchor-id="data-frames">Data Frames</h2>
+<hr>
+</section>
+<section id="data-frames" class="level2">
+<h2 class="anchored" data-anchor-id="data-frames">Data Frames</h2>
 <p>This iris data object is more complex than simple vectors discussed before.</p>
 <p>Typical commands to explore such data objects are:</p>
 <div class="cell" data-hash="02_HighDimData_cache/html/explore_dab7094df6c44feee4a6e9e6c5f4f873">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>      <span class="co"># the structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(iris)      <span class="co"># the structure</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   150 obs. of  5 variables:
  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
@@ -218,8 +248,11 @@ How many samples and variables does this data set contain?</p>
  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
  $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>     <span class="co"># the first few lines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)     <span class="co"># the first few lines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 1          5.1         3.5          1.4         0.2  setosa
 2          4.9         3.0          1.4         0.2  setosa
@@ -228,19 +261,28 @@ How many samples and variables does this data set contain?</p>
 5          5.0         3.6          1.4         0.2  setosa
 6          5.4         3.9          1.7         0.4  setosa</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">iris</span>,n<span class="op">=</span><span class="fl">3</span><span class="op">)</span> <span class="co"># last n lines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(iris,<span class="at">n=</span><span class="dv">3</span>) <span class="co"># last n lines</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
 148          6.5         3.0          5.2         2.0 virginica
 149          6.2         3.4          5.4         2.3 virginica
 150          5.9         3.0          5.1         1.8 virginica</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>    <span class="co"># data frame is a "class"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(iris)    <span class="co"># data frame is a "class"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>[1] "data.frame"</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>  <span class="co"># works well with data_frames</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(iris)  <span class="co"># works well with data_frames</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>  Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
@@ -256,44 +298,64 @@ How many samples and variables does this data set contain?</p>
                 
                 </code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>      <span class="co"># data frames ar 2D objects: rows x columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(iris)      <span class="co"># data frames ar 2D objects: rows x columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>[1] 150   5</code></pre>
 </div>
 </div>
 <p>Data Frames are built from vectors with identical lengths.</p>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="images/DataTypes.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Image adopted from Michael Stadler (FMI)</figcaption></figure>
+<figure class="figure">
+<p><img src="images/DataTypes.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Image adopted from Michael Stadler (FMI)</figcaption>
+</figure>
 </div>
-<hr></section><section id="data-frame-access" class="level2"><h2 class="anchored" data-anchor-id="data-frame-access">Data Frame Access</h2>
+<hr>
+</section>
+<section id="data-frame-access" class="level2">
+<h2 class="anchored" data-anchor-id="data-frame-access">Data Frame Access</h2>
 <p>Programmatic access to specific subsets of data is key to all analyses.<br>
 There are many basic ways to achieve this - and even more in later sections.</p>
 <div class="cell" data-hash="02_HighDimData_cache/html/iris_access_cd38ef92f9394e6ab0c4944525f836d1">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">=</span><span class="va">iris</span>    <span class="co"># just to reduce typing</span></span>
-<span></span>
-<span><span class="va">ir</span><span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>    <span class="co"># vector of row indices</span></span>
-<span><span class="va">ic</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">5</span><span class="op">)</span> <span class="co"># vector of col indices</span></span>
-<span><span class="va">d</span><span class="op">[</span><span class="va">ir</span>,<span class="va">ic</span><span class="op">]</span>  <span class="co"># selecting specific elements in 2D data frame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d<span class="ot">=</span>iris    <span class="co"># just to reduce typing</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>ir<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>    <span class="co"># vector of row indices</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>ic<span class="ot">=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>) <span class="co"># vector of col indices</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>d[ir,ic]  <span class="co"># selecting specific elements in 2D data frame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>  Sepal.Width Species
 1         3.5  setosa
 2         3.0  setosa
 3         3.2  setosa</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">20</span>,<span class="fl">19</span>,<span class="fl">69</span><span class="op">)</span>   <span class="co"># just some arbitrary choice of indices</span></span>
-<span><span class="va">d</span><span class="op">[</span><span class="va">ir</span>,<span class="st">"Species"</span><span class="op">]</span>      <span class="co"># access by index and column by name</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ir <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">20</span>,<span class="dv">19</span>,<span class="dv">69</span>)   <span class="co"># just some arbitrary choice of indices</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>d[ir,<span class="st">"Species"</span>]      <span class="co"># access by index and column by name</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>[1] setosa     setosa     setosa     versicolor
 Levels: setosa versicolor virginica</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">$</span><span class="va">Species</span><span class="op">[</span><span class="va">ir</span><span class="op">]</span>        <span class="co"># the same, more common </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Species[ir]        <span class="co"># the same, more common </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>[1] setosa     setosa     setosa     versicolor
 Levels: setosa versicolor virginica</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">[</span>,<span class="op">-</span><span class="fl">5</span><span class="op">]</span>               <span class="co"># unselecting column 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d[,<span class="sc">-</span><span class="dv">5</span>]               <span class="co"># unselecting column 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>    Sepal.Length Sepal.Width Petal.Length Petal.Width
 1            5.1         3.5          1.4         0.2
 2            4.9         3.0          1.4         0.2
@@ -447,13 +509,19 @@ Levels: setosa versicolor virginica</code></pre>
 150          5.9         3.0          5.1         1.8</code></pre>
 </div>
 </div>
-<hr></section><section id="conditional-access" class="level2"><h2 class="anchored" data-anchor-id="conditional-access">Conditional Access</h2>
+<hr>
+</section>
+<section id="conditional-access" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-access">Conditional Access</h2>
 <p>Usually we want to access (or subset) data if certain conditions are met</p>
 <div class="cell" data-hash="02_HighDimData_cache/html/cond_access_ab68f75a48307058fc57411beb0de3fd">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># select only species "setosa"</span></span>
-<span><span class="va">ib</span> <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">Species</span> <span class="op">==</span> <span class="st">"setosa"</span> </span>
-<span><span class="va">d</span><span class="op">[</span><span class="va">ib</span>,<span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select only species "setosa"</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>ib <span class="ot">=</span> d<span class="sc">$</span>Species <span class="sc">==</span> <span class="st">"setosa"</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>d[ib,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 1           5.1         3.5          1.4         0.2  setosa
 2           4.9         3.0          1.4         0.2  setosa
@@ -506,10 +574,13 @@ Levels: setosa versicolor virginica</code></pre>
 49          5.3         3.7          1.5         0.2  setosa
 50          5.0         3.3          1.4         0.2  setosa</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># select species "setosa" and "small Sepal.Width")</span></span>
-<span><span class="va">ib</span><span class="op">=</span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Species</span><span class="op">==</span><span class="st">"setosa"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">Sepal.Width</span><span class="op">&lt;</span><span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">d</span><span class="op">[</span><span class="va">ib</span>,<span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select species "setosa" and "small Sepal.Width")</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ib<span class="ot">=</span>(d<span class="sc">$</span>Species<span class="sc">==</span><span class="st">"setosa"</span>) <span class="sc">&amp;</span> (d<span class="sc">$</span>Sepal.Width<span class="sc">&lt;</span><span class="dv">3</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>d[ib,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
 9           4.4         2.9          1.4         0.2  setosa
 42          4.5         2.3          1.3         0.3  setosa</code></pre>
@@ -519,11 +590,17 @@ Levels: setosa versicolor virginica</code></pre>
 <ul>
 <li>Look at the vector <code>ib</code> in the above examples and understand what is meant with “access by truth value”.</li>
 <li>Modify the criteria and try your own selections.</li>
-</ul></section><section id="adding-data" class="level2"><h2 class="anchored" data-anchor-id="adding-data">Adding Data</h2>
+</ul>
+</section>
+<section id="adding-data" class="level2">
+<h2 class="anchored" data-anchor-id="adding-data">Adding Data</h2>
 <div class="cell" data-hash="02_HighDimData_cache/html/adding_data_17115f02c0982e6cd2b937c937b5566c">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">d</span><span class="op">$</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>   <span class="co"># simple, but useless</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">d</span>,<span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>x <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>   <span class="co"># simple, but useless</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(d,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species x
 1           5.1         3.5          1.4         0.2  setosa 1
 2           4.9         3.0          1.4         0.2  setosa 2
@@ -537,7 +614,10 @@ Levels: setosa versicolor virginica</code></pre>
 10          4.9         3.1          1.5         0.1  setosa 1</code></pre>
 </div>
 </div>
-<hr></section><section id="review" class="level1"><h1>Review</h1>
+<hr>
+</section>
+<section id="review" class="level1">
+<h1>Review</h1>
 <ul>
 <li>pre-compiled data sets</li>
 <li>data_frames as a class with new functions</li>
@@ -545,7 +625,10 @@ Levels: setosa versicolor virginica</code></pre>
 </ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -894,27 +977,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Made with Quatro<br></div>   
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
-<li class="nav-item">
+    <li class="nav-item">
     <a class="nav-link" href="../../about.html">About</a>
   </li>  
 </ul>
-</div>
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-<li class="nav-item compact">
+    <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/thomasmanke/blog">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-</div>
+    </div>
   </div>
 </footer>
+
 
 
 </body></html>

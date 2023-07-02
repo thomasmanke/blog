@@ -1,0 +1,1 @@
+Sitemap: https://thomasmanke.github.io/blog/sitemap.xml

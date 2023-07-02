@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Thomas Manke">
 <meta name="dcterms.date" content="2023-06-01">
 <meta name="description" content="Summary of useful features">
+
 <title>Thomas - Quarto Intro</title>
 <style>
 code{white-space: pre-wrap;}
@@ -75,6 +78,7 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
+
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
@@ -93,7 +97,8 @@ div.csl-indent {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -112,12 +117,18 @@ div.csl-indent {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script><link rel="stylesheet" href="../../styles.css">
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
+
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Thomas</span>
@@ -129,14 +140,14 @@ div.csl-indent {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-<li class="nav-item dropdown ">
+  <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-lectures" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-book" role="img">
 </i> 
  <span class="menu-text">Lectures</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">
-<li>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-lectures">    
+        <li>
     <a class="dropdown-item" href="../../lectures/Rintro2023/index.html" rel="" target="">
  <span class="dropdown-text">Rintro</span></a>
   </li>  
@@ -145,15 +156,15 @@ div.csl-indent {
  <span class="dropdown-text">Applied Biostatistics</span></a>
   </li>  
     </ul>
-</li>
+  </li>
   <li class="nav-item">
     <a class="nav-link" href="../../posts/index.html" rel="" target=""><i class="bi bi-mailbox" role="img">
 </i> 
  <span class="menu-text">Posts</span></a>
   </li>  
 </ul>
-<ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
     <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
@@ -163,12 +174,16 @@ div.csl-indent {
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-<div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Quarto Intro</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
                   <div>
@@ -213,34 +228,36 @@ div.csl-indent {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-<li>
-<a href="#preparation" id="toc-preparation" class="nav-link active" data-scroll-target="#preparation">Preparation</a>
+  <li><a href="#preparation" id="toc-preparation" class="nav-link active" data-scroll-target="#preparation">Preparation</a>
   <ul class="collapse">
-<li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">Load packages</a></li>
+  <li><a href="#load-packages" id="toc-load-packages" class="nav-link" data-scroll-target="#load-packages">Load packages</a></li>
   <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
   <li><a href="#data-inspection" id="toc-data-inspection" class="nav-link" data-scroll-target="#data-inspection">Data Inspection</a></li>
-  </ul>
-</li>
-  <li>
-<a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics">Descriptive statistics</a>
+  </ul></li>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link" data-scroll-target="#descriptive-statistics">Descriptive statistics</a>
   <ul class="collapse">
-<li><a href="#columns" id="toc-columns" class="nav-link" data-scroll-target="#columns">Columns</a></li>
-  </ul>
-</li>
-  <li>
-<a href="#plotting-with-ggplot2" id="toc-plotting-with-ggplot2" class="nav-link" data-scroll-target="#plotting-with-ggplot2">Plotting with ggplot2</a>
+  <li><a href="#columns" id="toc-columns" class="nav-link" data-scroll-target="#columns">Columns</a></li>
+  </ul></li>
+  <li><a href="#plotting-with-ggplot2" id="toc-plotting-with-ggplot2" class="nav-link" data-scroll-target="#plotting-with-ggplot2">Plotting with ggplot2</a>
   <ul class="collapse">
-<li><a href="#coloured-by-species" id="toc-coloured-by-species" class="nav-link" data-scroll-target="#coloured-by-species">Coloured by species</a></li>
+  <li><a href="#coloured-by-species" id="toc-coloured-by-species" class="nav-link" data-scroll-target="#coloured-by-species">Coloured by species</a></li>
   <li><a href="#facet-wrap" id="toc-facet-wrap" class="nav-link" data-scroll-target="#facet-wrap">Facet Wrap</a></li>
+  </ul></li>
   </ul>
-</li>
-  </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="revealjs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="revealjs.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><section id="preparation" class="level1 page-columns page-full"><h1>Preparation</h1>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="preparation" class="level1 page-columns page-full">
+<h1>Preparation</h1>
 <p>The generic steps in data analysis is to</p>
 <ul>
 <li>Load software</li>
@@ -248,16 +265,18 @@ div.csl-indent {
 <ul>
 <li>filter</li>
 <li>transformations</li>
-</ul>
-</li>
+</ul></li>
 <li>Inspect data</li>
 <li>Plot data</li>
 </ul>
 <p>In this summary I follow this paradigm with very simplistic examples - primarily to illustrate quatro functionality, rather than data science.</p>
-<section id="load-packages" class="level2"><h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
 <p>Every analysis comes wityh certain software requirements (and dependencies). Here we load the frequenly used <code>tidyverse</code> which is a collection of R package with many useful tools</p>
 <div class="cell" data-hash="quarto_demo_cache/html/load_software_0e879f4a626fa1f86cf1b17c0297acea">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>It’s best practice to record all packages</p>
@@ -274,8 +293,11 @@ sessionInfo
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell" data-hash="quarto_demo_cache/html/sessionInfo_9d76ed85bc9dad8e315aa147751b5c52">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>R version 4.2.3 (2023-03-15)
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 Running under: macOS Big Sur ... 10.16
@@ -309,7 +331,9 @@ loaded via a namespace (and not attached):
 </div>
 </div>
 </div>
-</section><section id="load-data" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="load-data">Load data</h2>
+</section>
+<section id="load-data" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="load-data">Load data</h2>
 <p>Loading data can also be challenging. In the following we will use the pre-compiled <code>iris</code> data set for simplicity.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -321,11 +345,13 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>R has many predefined data sets to illustrate data science concepts and software functionality. You can inspect more of those using <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code>.</p>
+<p>R has many predefined data sets to illustrate data science concepts and software functionality. You can inspect more of those using <code>data()</code>.</p>
 </div>
 </div>
 <div class="cell" data-hash="quarto_demo_cache/html/load_data_fd7fd5f32b78dfcceb00c2979bdea2f7">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>d <span class="ot">&lt;-</span> iris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>d <span class="ot">&lt;-</span> iris</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="">An aside: I assign <code>iris</code> to a new data frame <code>d</code> to keep the workflow generic. But this is optional and I may also have used <code>iris</code> instead of <code>d</code> below.</span></div></div>
@@ -364,7 +390,9 @@ The iris data can also be read from the following URL.
 <div class="callout-body-container callout-body">
 <p>The following code block will not be evaluated because of the parameter <code>eval: false</code></p>
 <div class="cell" data-hash="quarto_demo_cache/html/load_iris_from_url_fea532124c65d20a552023bcc76b812e">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>url <span class="ot">=</span> <span class="st">'https://iris.csv'</span>  <span class="co"># choose valid link!</span></span>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>url <span class="ot">=</span> <span class="st">'https://iris.csv'</span>  <span class="co"># choose valid link!</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(url) <span class="sc">%&gt;%</span> </span>
 <span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">drop_na</span>()  <span class="co"># some filtering maybe necessary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -374,20 +402,27 @@ The iris data can also be read from the following URL.
 </div>
 </div>
 <p>More information on additional callouts (warning, caution, important) is available <a href="https://quarto.org/docs/authoring/callouts.html">here</a></p>
-</section><section id="data-inspection" class="level2"><h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
+</section>
+<section id="data-inspection" class="level2">
+<h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
 <div class="cell" data-hash="quarto_demo_cache/html/tbl-data_inspection_2e94577f44078253d99efc58ab35a580">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <div id="tbl-data_inspection" class="anchored">
 <table class="table table-sm table-striped small">
 <caption>Table&nbsp;1: A formatted table with knitr::kable</caption>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: right;">Sepal.Length</th>
 <th style="text-align: right;">Sepal.Width</th>
 <th style="text-align: right;">Petal.Length</th>
 <th style="text-align: right;">Petal.Width</th>
 <th style="text-align: left;">Species</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">5.1</td>
@@ -437,19 +472,21 @@ The iris data can also be read from the following URL.
 </div>
 </div>
 <p><a href="#tbl-data_inspection">Table&nbsp;1</a> is nicely formatted to show the first few observations of the iris data set. It has 150 rows and 5 columns<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-</section></section><section id="descriptive-statistics" class="level1"><h1>Descriptive statistics</h1>
+</section>
+</section>
+<section id="descriptive-statistics" class="level1">
+<h1>Descriptive statistics</h1>
 <p>Below I use panel-tabset to illustrate both text summaries and graphical summaries</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">text</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">correlations</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">correlations + colours</a></li>
-</ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">text</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">correlations</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">correlations + colours</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell" data-hash="quarto_demo_cache/html/tbl-summary_3c0f0749d4db404bf4f0a5b4a3270536">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">summary</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">summary</span>(d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <div id="tbl-summary" class="anchored">
 <table class="table table-sm table-striped small">
 <caption>Table&nbsp;2: A text summary of the data</caption>
@@ -461,14 +498,16 @@ The iris data can also be read from the following URL.
 <col style="width: 19%">
 <col style="width: 19%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th style="text-align: left;"></th>
 <th style="text-align: left;">Sepal.Length</th>
 <th style="text-align: left;">Sepal.Width</th>
 <th style="text-align: left;">Petal.Length</th>
 <th style="text-align: left;">Petal.Width</th>
 <th style="text-align: left;">Species</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"></td>
@@ -526,22 +565,32 @@ The iris data can also be read from the following URL.
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell" data-hash="quarto_demo_cache/html/fig-pairwise_corr_de7fd4abcb64370e01c30a909d3d8e80">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <div id="fig-pairwise_corr" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="quarto_demo_files/figure-html/fig-pairwise_corr-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: A graphical summary</figcaption></figure>
+<figure class="figure">
+<p><img src="quarto_demo_files/figure-html/fig-pairwise_corr-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: A graphical summary</figcaption>
+</figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="cell" data-hash="quarto_demo_cache/html/fig-pairwise_corr_col_4329345ba4a502e6943153602df2b8a3">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">col=</span>d[,<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">plot</span>(d[,<span class="sc">-</span><span class="dv">5</span>], <span class="at">col=</span>d[,<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <div id="fig-pairwise_corr_col" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="quarto_demo_files/figure-html/fig-pairwise_corr_col-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: A graphical summary with colors</figcaption></figure>
+<figure class="figure">
+<p><img src="quarto_demo_files/figure-html/fig-pairwise_corr_col-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: A graphical summary with colors</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -549,7 +598,8 @@ The iris data can also be read from the following URL.
 </div>
 </div>
 <p>The summary statistics is shown in <a href="#tbl-summary">Table&nbsp;2</a> and all pairwise correlations are shown in <a href="#fig-pairwise_corr">Figure&nbsp;1</a> and in <a href="#fig-pairwise_corr_col">Figure&nbsp;2</a> with colour-coded species variable. Notice that the table reference does not seem to work within tabsets.</p>
-<section id="columns" class="level2"><h2 class="anchored" data-anchor-id="columns">Columns</h2>
+<section id="columns" class="level2">
+<h2 class="anchored" data-anchor-id="columns">Columns</h2>
 <p>Sometimes we may want to define columns</p>
 <div class="columns">
 <div class="column" style="width:40%;">
@@ -560,10 +610,16 @@ The iris data can also be read from the following URL.
 <p>The data dimensions is 150, 5.</p>
 </div>
 </div>
-</section></section><section id="plotting-with-ggplot2" class="level1 page-columns page-full"><h1>Plotting with ggplot2</h1>
-<section id="coloured-by-species" class="level2"><h2 class="anchored" data-anchor-id="coloured-by-species">Coloured by species</h2>
+</section>
+</section>
+<section id="plotting-with-ggplot2" class="level1 page-columns page-full">
+<h1>Plotting with ggplot2</h1>
+<section id="coloured-by-species" class="level2">
+<h2 class="anchored" data-anchor-id="coloured-by-species">Coloured by species</h2>
 <div class="cell" data-hash="quarto_demo_cache/html/fig-PL_PW_87d1d3a02917f2aff08d374de1d021ee">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>p <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>p <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Petal.Width, <span class="at">y =</span> Petal.Length)) <span class="sc">+</span> </span>
 <span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">color=</span><span class="st">"grey"</span>) <span class="sc">+</span></span>
@@ -579,22 +635,32 @@ The iris data can also be read from the following URL.
 <span id="cb11-14"><a href="#cb11-14"></a></span>
 <span id="cb11-15"><a href="#cb11-15"></a>p</span>
 <span id="cb11-16"><a href="#cb11-16"></a><span class="fu">ggsave</span>(<span class="st">'quarto_demo.png'</span>, <span class="at">plot=</span>p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
+</details>
+<div class="cell-output-display">
 <div id="fig-PL_PW" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="quarto_demo_files/figure-html/fig-PL_PW-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;3: Iris data (colored by Species)</figcaption></figure>
+<figure class="figure">
+<p><img src="quarto_demo_files/figure-html/fig-PL_PW-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Iris data (colored by Species)</figcaption>
+</figure>
 </div>
 </div>
 </div>
-</section><section id="facet-wrap" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="facet-wrap">Facet Wrap</h2>
+</section>
+<section id="facet-wrap" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="facet-wrap">Facet Wrap</h2>
 <div class="cell page-columns page-full" data-hash="quarto_demo_cache/html/fig-PL_PW_facet_0d348e33ce8c6d75d51dc784c24325de">
-<details><summary>Code</summary><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>p <span class="sc">+</span>   </span>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>p <span class="sc">+</span>   </span>
 <span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color=</span>Species), <span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display page-columns page-full">
+</details>
+<div class="cell-output-display page-columns page-full">
 <div id="fig-PL_PW_facet" class="quarto-figure quarto-figure-center anchored page-columns page-full">
-<figure class="figure page-columns page-full"><p><img src="quarto_demo_files/figure-html/fig-PL_PW_facet-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption margin-caption">Figure&nbsp;4: Iris data with caption in margin</figcaption></figure>
+<figure class="figure page-columns page-full">
+<p><img src="quarto_demo_files/figure-html/fig-PL_PW_facet-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption margin-caption">Figure&nbsp;4: Iris data with caption in margin</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -605,7 +671,11 @@ The iris data can also be read from the following URL.
 <!-- -->
 
 
-</section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-Anderson1935" class="csl-entry" role="listitem">
 Anderson, E. (1935). The irises of the gaspe peninsula. In <em>Bulletin of the American Iris Society</em> (pp. 2–5).
 </div>
@@ -613,9 +683,12 @@ Anderson, E. (1935). The irises of the gaspe peninsula. In <em>Bulletin of the A
 Fischer, R. A. (1936). The use of multiple measurements in taxonomic problems. In <em>Annals of Eugenics: Vol. II</em> (pp. 179–188).
 </div>
 </div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
 <ol>
 <li id="fn1"><p>Note that we may have filtered the data as part of the pre-processing steps.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1224,27 +1297,30 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Made with Quatro<br></div>   
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Made with Quatro<br>
+</div>   
     <div class="nav-footer-center">
       <ul class="footer-items list-unstyled">
-<li class="nav-item">
+    <li class="nav-item">
     <a class="nav-link" href="../../about.html">About</a>
   </li>  
 </ul>
-</div>
+    </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-<li class="nav-item compact">
+    <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/thomasmanke/blog">
       <i class="bi bi-github" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-</div>
+    </div>
   </div>
 </footer>
+
 
 
 </body></html>
