@@ -9,6 +9,11 @@ categories:
   - gapminder
 
 image: trees.png
+
+format:
+  html: default
+  revealjs:
+     output-file: revealjs.html 
 ---
 
 ## Setup

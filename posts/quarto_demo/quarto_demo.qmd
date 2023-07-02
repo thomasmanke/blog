@@ -10,6 +10,11 @@ categories:
     
 image: quarto_demo.png
 
+format:
+  html: default
+  revealjs:
+     output-file: revealjs.html 
+     
 bibliography: iris.bib
 link-citations: true
 csl: apa-single-spaced.csl

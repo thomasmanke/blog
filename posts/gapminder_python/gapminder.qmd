@@ -15,7 +15,7 @@ image: gapminder_animated.png
 format:
   html: default
   revealjs:
-     output-file: gapminder_revealjs.html  
+     output-file: revealjs.html  
 ---
 
 # Setup

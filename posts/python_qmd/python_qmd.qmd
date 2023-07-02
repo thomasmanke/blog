@@ -10,7 +10,7 @@ image: python_qmd.png
 format:
   html: default
   revealjs:
-     output-file: python_qmd_revealjs.html  
+     output-file: revealjs.html  
 ---
 
 ## Polar Axis

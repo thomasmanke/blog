@@ -9,7 +9,11 @@ categories:
   
 image: Buffon.png
 
-format: html
+format:
+  html: default
+  revealjs:
+     output-file: revealjs.html 
+
 filters:
   - shinylive
 ---

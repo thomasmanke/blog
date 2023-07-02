@@ -10,7 +10,7 @@ image: sunburst_python.png
 format:
   html: default
   revealjs:
-     output-file: trees_python_revealjs.html  
+     output-file: revealjs.html  
 ---
 
 ## Setup

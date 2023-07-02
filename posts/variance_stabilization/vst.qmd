@@ -7,6 +7,11 @@ categories:
   - transformations
   
 image: vst.png
+
+format:
+  html: default
+  revealjs:
+     output-file: revealjs.html 
 ---
 
 ## Error Propagation {.smaller}

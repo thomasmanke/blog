@@ -6,6 +6,11 @@ categories:
   - geographic maps
   
 image: maps.png
+
+format:
+  html: default
+  revealjs:
+     output-file: revealjs.html 
 ---
 
 # Setup
