@@ -41,9 +41,15 @@ jobs:
         run: |
           micromamba activate web
 
-      - name: Add quarto-ext/shinylive 
-        run: |
-          quarto add quarto-ext/shinylive
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install shinylive
+        run: pip install shinylive
+        
+#      - name: Add quarto-ext/shinylive 
+#        run: |
+#          quarto add quarto-ext/shinylive
           
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
