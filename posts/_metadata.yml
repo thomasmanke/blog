@@ -36,7 +36,8 @@ format:
     tbl-cap-location: bottom
     chalkboard: true
     slide-number: true
+    output-file: revealjs.html
     # ideally I would like to have a variable output-file name here.
     # It should depend on the input.qmd or input.ipynb
     # but I could not find a solution for this
-    output-file: revealjs.html
+    # WARNING: do not add below comment lines - those fields might be ignored!
