@@ -1,0 +1,4 @@
+.scrolling {
+  max-height: 2500px;
+  overflow-y: auto;
+}
