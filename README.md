@@ -13,12 +13,30 @@ mamba env create -f env.yml
 mamba env update -f env.yml
 ```
 
+For Apple M1/M2 (arm64) many package are not yet available.
+Use instead:
+```
+# CONDA_SUBDIR=osx-64 micromamba create -f env.yml
+micromamba create -f env_apple.yml
+```
+### Delete envrionment
+
+```
+micromamba remove --name web_apple --all
+```
+
 ### Add quarto extension
 
 ```         
 quarto add quarto-ext/shinylive
 ```
 
+### Add shinylive-R
+```
+install.packages('devtools')
+library(devtools)
+install_github("posit-dev/r-shinylive")
+```
 ### Render web site
 
 ```         
