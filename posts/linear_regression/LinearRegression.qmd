@@ -13,8 +13,8 @@ format:
   html:
     grid:
       body-width: 1400px
-    resources: 
-      shinylive-sw.js
+#    resources: 
+#      shinylive-sw.js
 
   revealjs:
      output-file: revealjs.html 
@@ -35,6 +35,7 @@ Here I simulate data for a linear model $y=f(x,w,b)$ and illustrate how the para
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 1200
+
 # Load the required libraries
 library(shiny)
 library(plotly)
@@ -44,20 +45,21 @@ ui <- fluidPage(
   titlePanel("Linear Regression"),
   sidebarLayout(
     sidebarPanel(
+      width=2,
       titlePanel("Data Model:"),
-      style = "width: 30%;",  # Set the width of the sidebarPanel
+#      style = "width: 30%;",  # Set the width of the sidebarPanel
       numericInput("w_value", "Select w:", min = -10, max = 10, value = 1),
       numericInput("b_value", "Select b:", min = -10, max = 10, value = 0),
       numericInput("sigma_value", "Select sigma:", min = 0, max = 5, value = 1)
     ),
     
     mainPanel(
-      style = "width: 70%;",  # Increase the width of the mainPanel
+      style = "width: 65%;",  # Increase the width of the mainPanel
       tabsetPanel(
         tabPanel("Visualization", 
                  fluidRow(
-                   column(6, plotlyOutput("data_plot")),
-                   column(6, plotlyOutput("parameter_plot")),
+                   column(5, plotlyOutput("data_plot")),
+                   column(5, plotlyOutput("parameter_plot")),
                  )
         ),
         tabPanel("Session Info", verbatimTextOutput("session_info"))
@@ -155,7 +157,13 @@ server <- function(input, output, session) {
     })
     
     # Create a contour plot with MSE values
-    plot_ly(data = plane_data, x = ~w, y = ~b, z = mse_values, type = "contour", contours = list(coloring = "heatmap"), source = "parameter_plot", name = "parameter") %>%
+    cs = list(c(0, 1), c('blue', 'red'))
+    plot_ly(data = plane_data, x = ~w, y = ~b, z = mse_values, type = "heatmap", 
+#            colorscale = cs, 
+            colors = 'RdBu',
+            reversescale=TRUE,
+#            contours = list(coloring = "heatmap"),
+            source = "parameter_plot", name = "parameter") %>%
       layout(title = "Parameter Plot", margin = list(l=2,r=2,t=100,b=20)) %>%
       colorbar(title="MSE")
   })
