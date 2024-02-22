@@ -49,7 +49,7 @@ jobs:
 
       - name: Install shinylive extension
         run: |
-          quarto add quarto-ext/shinylive
+          quarto add --no-prompt quarto-ext/shinylive
 
       - name: Install R-packages
         run: |
