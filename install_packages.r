@@ -1,0 +1,1 @@
+pak::pak("posit-dev/r-shinylive")
