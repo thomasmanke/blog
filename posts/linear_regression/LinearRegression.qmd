@@ -10,9 +10,9 @@ categories:
 #image: Buffon.png
 
 format:
-  html:
-    grid:
-      body-width: 1400px
+  html: default
+#    grid:
+#      body-width: 900px
 #    resources: 
 #      shinylive-sw.js
 
@@ -25,16 +25,27 @@ filters:
   - shinylive
 ---
 
-## Idea
+## Linear Regression
+
+$$
+y_i=f(x_i,w,b) = w \cdot x_i + b = \beta \cdot x_i
+$$ 
+
+## Analytical Solution
+$$
+\beta = (X^T X)^{-1} X^T Y
+$$
 
 ## Simulation
 
-Here I simulate data for a linear model $y=f(x,w,b)$ and illustrate how the parameter landscape
+Here I simulate data for a linear model 
+
+and illustrate how the parameter landscape
 
 
 ```{shinylive-r}
 #| standalone: true
-#| viewerHeight: 1200
+#| viewerHeight: 600
 
 # Load the required libraries
 library(shiny)
@@ -46,20 +57,18 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       width=2,
-      titlePanel("Data Model:"),
-#      style = "width: 30%;",  # Set the width of the sidebarPanel
-      numericInput("w_value", "Select w:", min = -10, max = 10, value = 1),
-      numericInput("b_value", "Select b:", min = -10, max = 10, value = 0),
-      numericInput("sigma_value", "Select sigma:", min = 0, max = 5, value = 1)
+#      titlePanel("Data Model:"),
+      numericInput("w_value", "w:", min = -10, max = 10, value = 1),
+      numericInput("b_value", "b:", min = -10, max = 10, value = 0),
+      numericInput("sigma_value", "sigma:", min = 0, max = 5, value = 1)
     ),
     
     mainPanel(
-      style = "width: 65%;",  # Increase the width of the mainPanel
       tabsetPanel(
         tabPanel("Visualization", 
                  fluidRow(
-                   column(5, plotlyOutput("data_plot")),
-                   column(5, plotlyOutput("parameter_plot")),
+                   column(6, plotlyOutput("data_plot", width="auto")),
+                   column(6, plotlyOutput("parameter_plot")),
                  )
         ),
         tabPanel("Session Info", verbatimTextOutput("session_info"))
@@ -130,7 +139,7 @@ server <- function(input, output, session) {
     title_string <-  paste("Data. MSE = ", format(mse_value, digits=4))
     # Plot data
     data_plot <- plot_ly(data = generated_data(), x = ~x, y = ~y, type = "scatter", mode = "markers", marker = list(color = "blue"), source = "data_plot", name = "data") %>%
-      layout(title = title_string, margin= list(l=2,r=2,t=100,b=20))
+      layout(title = title_string, margin= list(l=2,r=2,t=50,b=2), legend = list(orientation = 'h'))
     
     # Add regression line based on hovered parameter values
     hover_values <- debounced_hovered_parameter()
@@ -164,8 +173,9 @@ server <- function(input, output, session) {
             reversescale=TRUE,
 #            contours = list(coloring = "heatmap"),
             source = "parameter_plot", name = "parameter") %>%
-      layout(title = "Parameter Plot", margin = list(l=2,r=2,t=100,b=20)) %>%
-      colorbar(title="MSE")
+      layout(title = "Parameter Plot", margin = list(l=2,r=2,t=50,b=2)) %>%
+#      colorbar(title="MSE", orientation="h", y=-1, len=1, thickness=5, ypad=0)
+      colorbar(len=1, thickness=5)
   })
   
   # Display session info
