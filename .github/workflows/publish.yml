@@ -47,13 +47,17 @@ jobs:
 #      - name: Install shinylive
 #        run: pip install shinylive
 
-      - name: Install shinylive extension
+      - name: Install shinylive extension and package
         run: |
-          quarto add --no-prompt quarto-ext/shinylive
+          ./install_packages.sh
 
-      - name: Install R-packages
-        run: |
-          Rscript install_packages.r
+#      - name: Install shinylive extension
+#        run: |
+#          quarto add --no-prompt quarto-ext/shinylive
+
+#      - name: Install R-packages
+#        run: |
+#          Rscript install_packages.r
         
       - name: List quarto extensions
         run: quarto list extensions

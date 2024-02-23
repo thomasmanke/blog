@@ -7,10 +7,11 @@ channels:
   - defaults
 dependencies:
   - python=3
+  - quarto
   - jupyter
   - jupyter-cache
-  - matplotlib
   - numpy
+  - matplotlib
   - pandas
   - scikit-learn
   - seaborn
