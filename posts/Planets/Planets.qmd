@@ -99,7 +99,7 @@ ui <- fluidPage(
     column(12, actionButton("update", "Update Parameters") ),
     
     tabsetPanel(
-      tabPanel("Orbits", plotlyOutput('planets',width = "1600px", height = "800px")),
+      tabPanel("Orbits", plotlyOutput('planets',width = "600px", height = "300px")),
       tabPanel("Parameters", DTOutput("params", width="50%")),
       tabPanel("Session Info", verbatimTextOutput("session_info"))
     )
