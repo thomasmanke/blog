@@ -39,6 +39,7 @@ dependencies:
   - r-stopwords
   - r-shiny
   - r-pak
+  - r-desolve
   - pip
   - pip:
     - tensorflow-macos
