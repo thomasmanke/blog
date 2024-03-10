@@ -19,6 +19,7 @@ format:
 
 filters:
   - shinylive
+  - include-code-files
 ---
 
 ## Recentered Ellipses
@@ -41,148 +42,152 @@ This repo maybe more useful for local exploration.
 
 
 ## The app
-```{shinylive-r}
+```{.shinylive-r include="app.R" standalone="true", viewerHeight=600}
+```
+
+#```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
-library(shiny)
-library(shinyalert)
-library(plotly)
-library(dplyr)
-library(DT)
 
-### Define Planetary data #####
-planets = data.frame(
-  name=c("Mercury", "Venus", "Earth", "Mars"),
-  a=c(0.386, 0.724, 1.00, 1.52),         # semi-major axis in AU (for Earth: a=1.00)
-  e=c(0.2056, 0.068, 0.0167, 0.0934),    # eccentricity
-  w=c(0.241, 0.615, 1.00, 1.00),         # orbital velocities - will be overwritten by Kepler
-  show=c(T, T, T, T)                     # include/exclude in plot
-)
-# semi-minor axis b from eccentricity: b = a*(1-e^2)
-# orbital velocity w from Kepler's law: T ~ sqrt(a^3)
-planets = planets %>% mutate(b=a*(1 - e^2), w = 1/sqrt(a^3))   
-rownames(planets)=planets$name      # assign rownames
+# library(shiny)
+# library(shinyalert)
+# library(plotly)
+# library(dplyr)
+# library(DT)
 
-### Define Ellipses #####
-createEllipses <- function(Tmax=360, dT=20,params=planets){
-  t = seq(from=0,to=Tmax, by=dT)             # timesteps in days
-  d = data.frame(x=0,y=0,day=t, name="Sun")  # sun in center (0,0) for all t
-  for (name in rownames(params)) {
-    if (!params[name,"show"]) { next } # skip if planet unselected
-    a = params[name, "a"]
-    b = params[name, "b"]
-    w = params[name, "w"]
-    phi <- 2*pi*w*t/365.242   # angles for all time t
-    d <- rbind(d, data.frame(x = a*cos(phi), y = b*sin(phi), day=t, name=name))
-  }
-  return(d)
-}
+# ### Define Planetary data #####
+# planets = data.frame(
+#   name=c("Mercury", "Venus", "Earth", "Mars"),
+#   a=c(0.386, 0.724, 1.00, 1.52),         # semi-major axis in AU (for Earth: a=1.00)
+#   e=c(0.2056, 0.068, 0.0167, 0.0934),    # eccentricity
+#   w=c(0.241, 0.615, 1.00, 1.00),         # orbital velocities - will be overwritten by Kepler
+#   show=c(T, T, T, T)                     # include/exclude in plot
+# )
+# # semi-minor axis b from eccentricity: b = a*(1-e^2)
+# # orbital velocity w from Kepler's law: T ~ sqrt(a^3)
+# planets = planets %>% mutate(b=a*(1 - e^2), w = 1/sqrt(a^3))   
+# rownames(planets)=planets$name      # assign rownames
 
-ui <- fluidPage(
-  titlePanel('Planetary Motion'),
+# ### Define Ellipses #####
+# createEllipses <- function(Tmax=360, dT=20,params=planets){
+#   t = seq(from=0,to=Tmax, by=dT)             # timesteps in days
+#   d = data.frame(x=0,y=0,day=t, name="Sun")  # sun in center (0,0) for all t
+#   for (name in rownames(params)) {
+#     if (!params[name,"show"]) { next } # skip if planet unselected
+#     a = params[name, "a"]
+#     b = params[name, "b"]
+#     w = params[name, "w"]
+#     phi <- 2*pi*w*t/365.242   # angles for all time t
+#     d <- rbind(d, data.frame(x = a*cos(phi), y = b*sin(phi), day=t, name=name))
+#   }
+#   return(d)
+# }
+
+# ui <- fluidPage(
+#   titlePanel('Planetary Motion'),
   
-  fluidRow(
-    column(2,
-           numericInput('Tmax', 'Tmax', min=10, max=1000,step=1, value=365),
-    ),
+#   fluidRow(
+#     column(2,
+#            numericInput('Tmax', 'Tmax', min=10, max=1000,step=1, value=365),
+#     ),
     
-    column(2, 
-           numericInput('dT', 'dT', min=1, max=30,step=1, value=10.0),
-    ),
-    column(2, 
-           numericInput('ms', 'millisecond per frame', min=0, step=20, value=100),
-    ),
-    column(6,
-           selectInput('center', 'choose center', c("Sun",rownames(planets))),
-    ),
+#     column(2, 
+#            numericInput('dT', 'dT', min=1, max=30,step=1, value=10.0),
+#     ),
+#     column(2, 
+#            numericInput('ms', 'millisecond per frame', min=0, step=20, value=100),
+#     ),
+#     column(6,
+#            selectInput('center', 'choose center', c("Sun",rownames(planets))),
+#     ),
     
-    column(12, actionButton("update", "Update Parameters") ),
+#     column(12, actionButton("update", "Update Parameters") ),
     
-    tabsetPanel(
-      tabPanel("Orbits", plotlyOutput('planets',width = "600px", height = "300px")),
-      tabPanel("Parameters", DTOutput("params", width="50%")),
-      tabPanel("Session Info", verbatimTextOutput("session_info"))
-    )
-  )
-)
+#     tabsetPanel(
+#       tabPanel("Orbits", plotlyOutput('planets',width = "600px", height = "300px")),
+#       tabPanel("Parameters", DTOutput("params", width="50%")),
+#       tabPanel("Session Info", verbatimTextOutput("session_info"))
+#     )
+#   )
+# )
 
-######
-server<-function(input,output,session){
+# ######
+# server<-function(input,output,session){
 
-  options(warn = -1) 
+#   options(warn = -1) 
   
-  rv <- reactiveValues( 
-    ellipses = createEllipses(360, 20), 
-    planets = planets
-  )
+#   rv <- reactiveValues( 
+#     ellipses = createEllipses(360, 20), 
+#     planets = planets
+#   )
   
-  # observe update button
-  observeEvent(input$update, {
-    n_frames <- input$Tmax / input$dT
-    msg1 <- paste("Number of frames = ", n_frames)
-    msg2 <- 'This may take some time'
-    if (n_frames > 80) {
-      shinyalert(msg1, msg2, type = "info")
-    }
-    rv$ellipses <- createEllipses(input$Tmax, input$dT, rv$planets)
-  })
+#   # observe update button
+#   observeEvent(input$update, {
+#     n_frames <- input$Tmax / input$dT
+#     msg1 <- paste("Number of frames = ", n_frames)
+#     msg2 <- 'This may take some time'
+#     if (n_frames > 80) {
+#       shinyalert(msg1, msg2, type = "info")
+#     }
+#     rv$ellipses <- createEllipses(input$Tmax, input$dT, rv$planets)
+#   })
    
-  # observe editing of parameters 
-  observeEvent(input$params_cell_edit, {
-    info = input$params_cell_edit
-    str(info)
-    planets <<- editData(planets, input$params_cell_edit, 'params')
-    rv$planets <- planets
+#   # observe editing of parameters 
+#   observeEvent(input$params_cell_edit, {
+#     info = input$params_cell_edit
+#     str(info)
+#     planets <<- editData(planets, input$params_cell_edit, 'params')
+#     rv$planets <- planets
     
-    # ensure that logical stays logical
-    rv$planets <- rv$planets %>% mutate(show=as.logical(show))
-  })
+#     # ensure that logical stays logical
+#     rv$planets <- rv$planets %>% mutate(show=as.logical(show))
+#   })
   
-  ### recenter ellipses if center is changed by user
-  recenter_ellipses <- reactive({
-    center <- input$center
-    df_r <- rv$ellipses
+#   ### recenter ellipses if center is changed by user
+#   recenter_ellipses <- reactive({
+#     center <- input$center
+#     df_r <- rv$ellipses
     
-    # n_obj = number of objects in df_r (planets + sun)
-    # n_obj may change in response to parameter editing --> input$params_cell_edit
-    n_obj <- df_r %>% select(name) %>% n_distinct()
+#     # n_obj = number of objects in df_r (planets + sun)
+#     # n_obj may change in response to parameter editing --> input$params_cell_edit
+#     n_obj <- df_r %>% select(name) %>% n_distinct()
     
-    df_c <- df_r %>% filter(name==center)  # get all coordinates for new center
+#     df_c <- df_r %>% filter(name==center)  # get all coordinates for new center
     
-    # expand df_c n_obj times (to same length as df_r)
-    # here is a strong assumption that the times will match
-    # could be generalized by proper pivoting
-    df_c <- df_c[rep(seq_len(nrow(df_c)), n_obj), ]
+#     # expand df_c n_obj times (to same length as df_r)
+#     # here is a strong assumption that the times will match
+#     # could be generalized by proper pivoting
+#     df_c <- df_c[rep(seq_len(nrow(df_c)), n_obj), ]
     
-    df_r[,1:2] <- df_r[,1:2] - df_c[,1:2]    # recenter
-    df_r
-  })
+#     df_r[,1:2] <- df_r[,1:2] - df_c[,1:2]    # recenter
+#     df_r
+#   })
   
-  ### render plot: careful not to use too many frames (>100) --> very slow
-  output$planets<-renderPlotly({
+#   ### render plot: careful not to use too many frames (>100) --> very slow
+#   output$planets<-renderPlotly({
 
-    # heliocentric view
-    helio <- rv$ellipses %>%
-      plot_ly(x = ~x, y = ~y, color = ~name, type='scatter', mode='lines') %>%
-      add_trace(mode='markers', size=18, frame = ~day, showlegend=FALSE) 
+#     # heliocentric view
+#     helio <- rv$ellipses %>%
+#       plot_ly(x = ~x, y = ~y, color = ~name, type='scatter', mode='lines') %>%
+#       add_trace(mode='markers', size=18, frame = ~day, showlegend=FALSE) 
     
-    # other view
-    other <- recenter_ellipses() %>% 
-      plot_ly(x = ~x, y = ~y, color = ~name, type='scatter', mode='lines', showlegend=FALSE) %>%
-      add_trace(mode='markers', size=18, frame = ~day,  showlegend=FALSE)
+#     # other view
+#     other <- recenter_ellipses() %>% 
+#       plot_ly(x = ~x, y = ~y, color = ~name, type='scatter', mode='lines', showlegend=FALSE) %>%
+#       add_trace(mode='markers', size=18, frame = ~day,  showlegend=FALSE)
                    
-    subplot(helio, other) %>% animation_opts(frame=input$ms, transition=input$ms, redraw=FALSE)
-  })
-  ### parameter table - editable
-  output$params <- renderDT(rv$planets, selection='none', editable='cell')
+#     subplot(helio, other) %>% animation_opts(frame=input$ms, transition=input$ms, redraw=FALSE)
+#   })
+#   ### parameter table - editable
+#   output$params <- renderDT(rv$planets, selection='none', editable='cell')
   
-  ### sessionInfo()
-  output$session_info <- renderPrint( sessionInfo() )
+#   ### sessionInfo()
+#   output$session_info <- renderPrint( sessionInfo() )
   
-  }
+#   }
 
-shinyApp(ui = ui, server = server)
-```
+# shinyApp(ui = ui, server = server)
+#```
 
 
 ## References
