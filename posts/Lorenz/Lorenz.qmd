@@ -15,9 +15,6 @@ categories:
 format:
   html: default
 
-#  revealjs:
-#     output-file: revealjs.html 
-
 #css: styles.css
 
 filters:
@@ -26,7 +23,7 @@ filters:
 
 ## Lorenz Attractor (1963)
 
-This blog shows how the `desolve` package can be used to solve non-linear ODE numerically.
+This blog shows how the `deSolve` package can be used to solve non-linear ODE numerically.
 Here at the example of the Lorenz Attractor:
 
 $$
@@ -45,11 +42,11 @@ This set of equation is meant to model convection in a 2D fluid layer.
 
 For specific choices of parameters, this system is known to be chaotic: $a=10, b=28, c=8/3$
 
-A standalone shiny app can be found here: https://github.com/thomasmanke/shiny/tree/main/lorenz
+
 
 ## Lorenz and climate 
 
-In the app one can run the simulation for many initial conditions.
+The app can calculate many initial conditions simultaenously.
 This illustrates the *butterfly effect*: For chaotic systems, small differences in initial conditions 
 can have large differences after some time $t$.
 
@@ -136,10 +133,10 @@ server <- function(input, output, session) {
     })
 
     output$animated<-renderPlotly({
-      plot_ly(data=vals$out, x = ~X, y = ~Y, type='scatter', mode='line') %>%
-      add_trace(data= vals$df, x = ~X, y = ~Y, mode='markers', size=18, frame = ~time, color='red', showlegend=FALSE) %>%
-      animation_opts(frame=input$ms, transition=input$ms, redraw=FALSE)
-
+      p = plot_ly(data=vals$out, x = ~X, y = ~Y, type='scatter', mode='line') %>%
+        add_trace(data= vals$df, x = ~X, y = ~Y, mode='markers', size=18, frame = ~time, color='red', showlegend=FALSE) %>%
+        animation_opts(frame=input$ms, transition=input$ms, redraw=FALSE)
+      p
     })
 
     output$session_info <- renderPrint( sessionInfo() )
@@ -151,5 +148,6 @@ shinyApp(ui = ui, server = server)
 
 ## References
 
--   [Wikipedia](https://en.wikipedia.org/wiki/Lorenz_system)
+- [Wikipedia](https://en.wikipedia.org/wiki/Lorenz_system)
+- [standalone shiny app](https://github.com/thomasmanke/shiny/tree/main/lorenz)
 
