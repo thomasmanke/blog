@@ -63,6 +63,7 @@ jobs:
         run: quarto list extensions
           
       - name: Render
+        #continue-on-error: true. # only for error tracking
         run: quarto render
         
       - name: Upload

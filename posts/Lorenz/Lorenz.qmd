@@ -15,8 +15,8 @@ categories:
 format:
   html: default
 
-  revealjs:
-     output-file: revealjs.html 
+#  revealjs:
+#     output-file: revealjs.html 
 
 #css: styles.css
 
@@ -110,7 +110,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   options(warn = -1) 
-  
+
   vals <- reactiveValues()
     observe({
         parameters <- c(a = input$param_a, b = input$param_b, c = input$param_c)
