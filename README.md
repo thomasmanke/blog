@@ -25,10 +25,11 @@ micromamba create -f env_apple.yml
 micromamba remove --name web_apple --all
 ```
 
-### Add quarto extension
+### Add quarto extensions
 
 ```         
 quarto add quarto-ext/shinylive
+quarto add quarto-ext/include-code-files
 ```
 
 ### Add shinylive-R

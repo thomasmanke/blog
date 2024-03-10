@@ -6,5 +6,8 @@
 # add quarto extension shinylive
 quarto add --no-prompt quarto-ext/shinylive
 
+# add quarto extension include-code-files
+quarto add --no-prompt quarto-ext/include-code-files
+
 # add R-package shinylive
 Rscript -e 'pak::pak("posit-dev/r-shinylive")'
