@@ -27,12 +27,14 @@ micromamba remove --name web_apple --all
 
 ### Add quarto extensions
 
-```         
-quarto add quarto-ext/shinylive
-quarto add quarto-ext/include-code-files
+```
+./install_packages.sh     
+# quarto add quarto-ext/shinylive
+# quarto add quarto-ext/include-code-files
 ```
 
-### Add shinylive-R
+### Add r-shinylive
+`r-shinylive` should be installed with `install_packages.sh` above. Here is an alternative method:
 ```
 install.packages('devtools')
 library(devtools)
