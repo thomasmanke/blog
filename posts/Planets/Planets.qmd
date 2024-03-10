@@ -91,7 +91,7 @@ ui <- fluidPage(
            numericInput('dT', 'dT', min=1, max=30,step=1, value=10.0),
     ),
     column(2, 
-           numericInput('ms', 'millisecond per frame', min=0, step=20, value=100),
+           numericInput('ms', 'ms per frame', min=0, step=20, value=100),
     ),
     column(6,
            selectInput('center', 'choose center', c("Sun",rownames(planets))),

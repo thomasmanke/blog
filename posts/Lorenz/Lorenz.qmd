@@ -3,8 +3,9 @@ title: Lorenz Attractor
 date: 2024/03/10
 date-modified: last-modified
 categories: 
-  - dyamical system
+  - dynamical system
   - Lorenz
+  - chaos
   - desolve
   - plotly
   - shinylive
@@ -57,7 +58,7 @@ can have large differences after some time $t$.
 #| standalone: true
 #| viewerHeight: 600
 library(shiny)
-library(tidyverse)
+library(dplyr)
 library(deSolve)
 library(plotly)
 
@@ -99,7 +100,7 @@ ui <- fluidPage(
     column(3, sliderInput("ini_sd", label = "ini_sd:", min = 0, max = 10, value = 1, step=0.01)),
     column(6, sliderInput("ms", label = "ms / frame", min = 0, max = 500, value = 200, step=1)),
     tabsetPanel(
-        tabPanel("Lorenz Attractor",plotlyOutput("animated",width="600px",height="300px")),
+#        tabPanel("Lorenz Attractor",plotlyOutput("animated",width="600px",height="300px")),
         tabPanel("(X,Y,Z) vs Time",plotOutput("time_series")),
         tabPanel("Session Info",verbatimTextOutput("session_info"))
     )
