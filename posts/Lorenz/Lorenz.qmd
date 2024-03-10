@@ -38,17 +38,13 @@ $$
 
 This set of equation is meant to model convection in a 2D fluid layer.
 
-$X \propto$ rate of convection,  $a = \sigma \propto$ Prandtl number
-
-$Y \propto$ horizontal temperature variation ($b = \rho \propto$ Rayleigh number)
-
-$Z \propto$ vertical temperature variation ($c = \beta \propto$ layer dimensions)
+- $X \propto$ rate of convection,  $a = \sigma \propto$ Prandtl number
+- $Y \propto$ horizontal temperature variation ($b = \rho \propto$ Rayleigh number)
+- $Z \propto$ vertical temperature variation ($c = \beta \propto$ layer dimensions)
 
 For specific choices of parameters, this system is known to be chaotic: $a=10, b=28, c=8/3$
 
 A standalone shiny app can be found here: https://github.com/thomasmanke/shiny/tree/main/lorenz
-
-
 
 ## Lorenz and climate 
 
@@ -68,8 +64,7 @@ library(plotly)
 #The lorenz functions in a for deSolve can understand
 Lorenz<-function(t, state, parameters) {
     with(as.list(c(state, parameters)),{
-        # rate of change
-
+        # ODE
         dX <- a * (Y-X)
         dY <- X * (b-Z) - Y
         dZ <- X*Y - c*Z        
@@ -104,7 +99,6 @@ ui <- fluidPage(
     column(3, sliderInput("ini_sd", label = "ini_sd:", min = 0, max = 10, value = 1, step=0.01)),
     column(6, sliderInput("ms", label = "ms / frame", min = 0, max = 500, value = 200, step=1)),
     tabsetPanel(
-#        tabPanel("Lorenz Attractor",plotOutput("plots_2d")),
         tabPanel("Lorenz Attractor",plotlyOutput("animated",width="800px",height="800px")),
         tabPanel("(X,Y,Z) vs Time",plotOutput("time_series")),
         tabPanel("Session Info",verbatimTextOutput("session_info"))
@@ -137,22 +131,6 @@ server <- function(input, output) {
           facet_wrap(~coord)
     })
 
-    output$plots_2d <- renderPlot({
-        out=vals$out
-
-        XY<-out %>%
-          ggplot(aes(x=X,y=Y,colour=time)) +
-          geom_path() +
-          coord_fixed()
-        
-        XZ<-out %>%
-          ggplot(aes(x=X,y=Z,colour=time)) +
-          geom_path() +
-          coord_fixed()
-
-        XY
-    })
-
     output$animated<-renderPlotly({
       plot_ly(data=vals$out, x = ~X, y = ~Y, type='scatter', mode='line') %>%
       add_trace(data= vals$df, x = ~X, y = ~Y, mode='markers', size=18, frame = ~time, color='red', showlegend=FALSE) %>%
@@ -163,7 +141,6 @@ server <- function(input, output) {
     output$session_info <- renderPrint( sessionInfo() )
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
 ```
 

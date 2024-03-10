@@ -7,7 +7,7 @@ categories:
   - shinylive
   - simulation
   
-#image: Buffon.png
+image: linreg.png
 
 format:
   html: default

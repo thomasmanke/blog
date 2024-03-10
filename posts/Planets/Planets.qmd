@@ -7,7 +7,7 @@ categories:
   - plotly
   - shinylive
   
-#image: Buffon.png
+image: planets.png
 
 format:
   html: default
