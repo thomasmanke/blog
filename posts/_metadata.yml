@@ -30,6 +30,7 @@ format:
   revealjs:
     footer: "Thomas Manke"
     overview: true
+    theme: night
     toc: false
     code-block-bg: #ded9ca
     scrollable: true
