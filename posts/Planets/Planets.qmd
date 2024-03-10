@@ -37,7 +37,7 @@ Notice I have a standalone shiny app here: https://github.com/thomasmanke/shiny/
 This repo maybe more useful for local exploration.
 
 
-## newton and Planets 
+## Newton and Planets 
 
 
 ## The app
@@ -190,6 +190,6 @@ shinyApp(ui = ui, server = server)
 -   [Wikipedia](https://en.wikipedia.org/wiki/Elliptic_orbit)
 -   [DT and shiny](https://rstudio.github.io/DT/shiny.html)
 -   [shiny reactivity](https://shiny.posit.co/r/getstarted/shiny-basics/lesson6/)
--   [plotly with R] (https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/plot_ly)
+-   [plotly with R](https://www.rdocumentation.org/packages/plotly/versions/4.10.4/topics/plot_ly)
 -   [shinylive-r](https://github.com/coatless-quarto/r-shinylive-demo)
 
