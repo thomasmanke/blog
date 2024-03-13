@@ -51,36 +51,16 @@ This illustrates the *butterfly effect*: For chaotic systems, small differences 
 can have large differences after some time $t$.
 
 
-
-## Recentered Ellipses
-
-This is mostly a record on how to use shiny together with plotly to animate planetary motions from various view points.
-
-For the sake of illustration I focus only on the first 4 planets.
-
-Most of the work went into how to work with frames. 
-
-- Keep the number of frame $Tmax/dT < 100$. Beyond the animation will become very small.
-- too large $dT>5$ will make the inner (faster) planets  
-
-Notice I have a standalone shiny app here: https://github.com/thomasmanke/shiny/tree/main/planets
-
-This repo maybe more useful for local exploration.
-
-
-## Newton and Planets 
-
-
 ## The app
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
 
 library(shiny)
-library(shinyalert)
-library(plotly)
 library(dplyr)
-library(DT)
+library(tidyr)
+library(deSolve)
+library(plotly)
 
 ### Define Planetary data #####
 planets = data.frame(
@@ -110,6 +90,33 @@ createEllipses <- function(Tmax=360, dT=20,params=planets){
   return(d)
 }
 
+#The lorenz functions in a for deSolve can understand
+Lorenz<-function(t, state, parameters) {
+    with(as.list(c(state, parameters)),{
+        # ODE
+        dX <- a * (Y-X)
+        dY <- X * (b-Z) - Y
+        dZ <- X*Y - c*Z        
+        # return the rate of change
+        list(c(dX, dY, dZ))
+    })
+}
+
+solveIni <- function(state, ts=1:20, ps=parameters) {
+  # solve ODE and convert to data frame
+  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
+}
+
+state2states <- function(state, N = 5, sd = 0.1){
+  # input: initial state = named vector of length p (number of variables)
+  # output: matrix of N row vectors of perturbed initial states
+  p <- length(state)
+  M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
+  states <- M*state
+  colnames(states) = names(state)
+  return(states)
+}
+
 ui <- fluidPage(
   titlePanel('Planetary Motion'),
   
@@ -127,7 +134,10 @@ ui <- fluidPage(
     column(6,
            selectInput('center', 'choose center', c("Sun",rownames(planets))),
     ),
-    
+    column(3, sliderInput("param_a", label = "a:", min = -10, max = 20, value = 10, step=0.001)),
+    column(3, sliderInput("param_b", label = "b:", min = -10, max = 100, value = 28, step=0.001)),
+    column(3, sliderInput("param_c", label = "c:", min = -10, max = 20, value = 8./3., step=0.001)),
+    column(3, sliderInput("time", label = "Time Range:", min = 1, max = 200, value = c(1,100), step=1)),
     column(12, actionButton("update", "Update Parameters") ),
     
     tabsetPanel(
