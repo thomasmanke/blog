@@ -59,7 +59,7 @@ can have large differences after some time $t$.
 library(shiny)
 library(dplyr)
 library(tidyr)
-library(deSolve)
+#library(deSolve)
 library(plotly)
 library(DT)
 library(shinyalert)
@@ -110,15 +110,15 @@ Lorenz<-function(t, state, parameters) {
 #  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
 #}
 
-state2states <- function(state, N = 5, sd = 0.1){
-  # input: initial state = named vector of length p (number of variables)
-  # output: matrix of N row vectors of perturbed initial states
-  p <- length(state)
-  M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
-  states <- M*state
-  colnames(states) = names(state)
-  return(states)
-}
+# state2states <- function(state, N = 5, sd = 0.1){
+#   # input: initial state = named vector of length p (number of variables)
+#   # output: matrix of N row vectors of perturbed initial states
+#   p <- length(state)
+#   M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
+#   states <- M*state
+#   colnames(states) = names(state)
+#   return(states)
+# }
 
 ui <- fluidPage(
   titlePanel('Planetary Motion'),
@@ -137,6 +137,12 @@ ui <- fluidPage(
     column(6,
            selectInput('center', 'choose center', c("Sun",rownames(planets))),
     ),
+
+    column(3, sliderInput("param_a", label = "a:", min = -10, max = 20, value = 10, step=0.001)),
+    column(3, sliderInput("param_b", label = "b:", min = -10, max = 100, value = 28, step=0.001)),
+    column(3, sliderInput("param_c", label = "c:", min = -10, max = 20, value = 8./3., step=0.001)),
+    column(3, sliderInput("time", label = "Time Range:", min = 1, max = 200, value = c(1,100), step=1)),
+
     column(12, actionButton("update", "Update Parameters") ),
     
     tabsetPanel(
