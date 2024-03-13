@@ -14,9 +14,6 @@ format:
   html: default
 
 #css: styles.css
-
-filters:
-  - shinylive
 ---
 
 ## Lorenz Attractor (1963)
@@ -52,9 +49,9 @@ can have large differences after some time $t$.
 ```{r}
 #| label: libraries
 #| warning: false
-library(shiny)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 library(deSolve)
 
 #The lorenz functions in a for deSolve can understand
