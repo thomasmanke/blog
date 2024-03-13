@@ -59,7 +59,7 @@ can have large differences after some time $t$.
 library(shiny)
 library(dplyr)
 library(tidyr)
-#library(deSolve)
+library(deSolve)
 library(plotly)
 library(DT)
 library(shinyalert)
@@ -92,17 +92,16 @@ createEllipses <- function(Tmax=360, dT=20,params=planets){
   return(d)
 }
 
-#The lorenz functions in a for deSolve can understand
-# Lorenz<-function(t, state, parameters) {
-#     with(as.list(c(state, parameters)),{
-#         # ODE
-#         dX <- a * (Y-X)
-#         dY <- X * (b-Z) - Y
-#         dZ <- X*Y - c*Z        
-#         # return the rate of change
-#         list(c(dX, dY, dZ))
-#     })
-# }
+# The lorenz functions in a for deSolve can understand
+Lorenz<-function(t, state, parameters) {
+    with(as.list(c(state, parameters)),{
+        dX <- a * (Y-X)
+        dY <- X * (b-Z) - Y
+        dZ <- X*Y - c*Z        
+        # return the rate of change
+        list(c(dX, dY, dZ))
+    })
+}
 
 #solveIni <- function(state, ts=1:20, ps=parameters) {
 #  # solve ODE and convert to data frame
