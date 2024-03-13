@@ -1,5 +1,5 @@
 ---
-title: Planetary Motion
+title: Planetary Motion (Test)
 date: 2024/03/02
 date-modified: last-modified
 categories: 
@@ -20,6 +20,37 @@ format:
 filters:
   - shinylive
 ---
+
+## Lorenz Attractor (1963)
+
+This blog shows how the `deSolve` package can be used to solve non-linear ODE numerically.
+Here at the example of the Lorenz Attractor:
+
+$$
+\begin{eqnarray*}
+\dot{X} = a (Y - X) \\
+\dot{Y} = X (b - Z) - Y \\
+\dot{Z} = X Y - c Z \\
+\end{eqnarray*}
+$$
+
+This set of equation is meant to model convection in a 2D fluid layer.
+
+- $X \propto$ rate of convection,  $a = \sigma \propto$ Prandtl number
+- $Y \propto$ horizontal temperature variation ($b = \rho \propto$ Rayleigh number)
+- $Z \propto$ vertical temperature variation ($c = \beta \propto$ layer dimensions)
+
+For specific choices of parameters, this system is known to be chaotic: $a=10, b=28, c=8/3$
+
+
+
+## Lorenz and climate 
+
+The app can calculate many initial conditions simultaenously.
+This illustrates the *butterfly effect*: For chaotic systems, small differences in initial conditions 
+can have large differences after some time $t$.
+
+
 
 ## Recentered Ellipses
 
