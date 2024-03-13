@@ -1,0 +1,123 @@
+---
+title: Lorenz Attractor (static)
+date: 2024/03/13
+date-modified: last-modified
+categories: 
+  - dynamical system
+  - Lorenz
+  - chaos
+  - desolve
+  
+#image: Buffon.png
+
+format:
+  html: default
+
+#css: styles.css
+
+filters:
+  - shinylive
+---
+
+## Lorenz Attractor (1963)
+
+This blog shows how the `deSolve` package can be used to solve non-linear ODE numerically.
+Here at the example of the Lorenz Attractor:
+
+$$
+\begin{eqnarray*}
+\dot{X} = a (Y - X) \\
+\dot{Y} = X (b - Z) - Y \\
+\dot{Z} = X Y - c Z \\
+\end{eqnarray*}
+$$
+
+This set of equation is meant to model convection in a 2D fluid layer.
+
+- $X \propto$ rate of convection,  $a = \sigma \propto$ Prandtl number
+- $Y \propto$ horizontal temperature variation ($b = \rho \propto$ Rayleigh number)
+- $Z \propto$ vertical temperature variation ($c = \beta \propto$ layer dimensions)
+
+For specific choices of parameters, this system is known to be chaotic: $a=10, b=28, c=8/3$
+
+
+
+## Lorenz and climate 
+
+The app can calculate many initial conditions simultaenously.
+This illustrates the *butterfly effect*: For chaotic systems, small differences in initial conditions 
+can have large differences after some time $t$.
+
+## The app
+```{r}
+#| label: libraries
+#| warning: false
+library(shiny)
+library(dplyr)
+library(tidyr)
+library(deSolve)
+
+#The lorenz functions in a for deSolve can understand
+Lorenz<-function(t, state, parameters) {
+    with(as.list(c(state, parameters)),{
+        # ODE
+        dX <- a * (Y-X)
+        dY <- X * (b-Z) - Y
+        dZ <- X*Y - c*Z        
+        # return the rate of change
+        list(c(dX, dY, dZ))
+    })
+}
+
+solveIni <- function(state, ts=1:20, ps=parameters) {
+  # solve ODE and convert to data frame
+  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
+}
+
+state2states <- function(state, N = 5, sd = 0.1){
+  # input: initial state = named vector of length p (number of variables)
+  # output: matrix of N row vectors of perturbed initial states
+  p <- length(state)
+  M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
+  states <- M*state
+  colnames(states) = names(state)
+  return(states)
+}
+```
+
+```{r}
+#| label: calculate
+
+a = 10
+b = 28
+c = 8./3.
+parameters <- c(a = 10, b = 28, c = 8./3.)
+times <- seq(1, 100, by = 0.01)
+state <- c(X = 1, Y = 1, Z = 1) 
+
+out <- ode(y = state, times = times, func = Lorenz, parms = parameters) %>%
+            as.data.frame()
+```
+
+
+## Plot
+```{r}
+#| label: plot
+out %>% 
+  pivot_longer(-time, names_to= "coord" , values_to = "value") %>%
+  ggplot(aes(x = time, y = value)) +
+  geom_path() +
+  facet_wrap(~coord)
+```
+
+## Session Info
+```{r}
+#| label: sessionInfo
+sessionInfo()
+```
+
+## References
+
+- [Wikipedia](https://en.wikipedia.org/wiki/Lorenz_system)
+- [standalone shiny app](https://github.com/thomasmanke/shiny/tree/main/lorenz)
+
