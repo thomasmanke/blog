@@ -99,12 +99,21 @@ out <- ode(y = state, times = times, func = Lorenz, parms = parameters) %>%
 
 ## Plot
 ```{r}
-#| label: plot
+#| label: plot_time
 out %>% 
   pivot_longer(-time, names_to= "coord" , values_to = "value") %>%
   ggplot(aes(x = time, y = value)) +
   geom_path() +
   facet_wrap(~coord)
+```
+
+## X-Y plot
+```{r}
+#| label: plot_XY
+out %>%
+  ggplot(aes(x=X,y=Y,colour=time)) +
+  geom_path() +
+  coord_fixed()
 ```
 
 ## Session Info
