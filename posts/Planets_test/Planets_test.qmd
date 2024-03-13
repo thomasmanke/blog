@@ -61,6 +61,8 @@ library(dplyr)
 library(tidyr)
 #library(deSolve)
 library(plotly)
+library(DT)
+library(shinyalert)
 
 ### Define Planetary data #####
 planets = data.frame(
@@ -91,33 +93,33 @@ createEllipses <- function(Tmax=360, dT=20,params=planets){
 }
 
 #The lorenz functions in a for deSolve can understand
-Lorenz<-function(t, state, parameters) {
-    with(as.list(c(state, parameters)),{
-        # ODE
-        dX <- a * (Y-X)
-        dY <- X * (b-Z) - Y
-        dZ <- X*Y - c*Z        
-        # return the rate of change
-        list(c(dX, dY, dZ))
-    })
-}
+# Lorenz<-function(t, state, parameters) {
+#     with(as.list(c(state, parameters)),{
+#         # ODE
+#         dX <- a * (Y-X)
+#         dY <- X * (b-Z) - Y
+#         dZ <- X*Y - c*Z        
+#         # return the rate of change
+#         list(c(dX, dY, dZ))
+#     })
+# }
 
-solveIni <- function(state, ts=1:20, ps=parameters) {
-  # solve ODE and convert to data frame
-  df = data.frame()
-  df
+#solveIni <- function(state, ts=1:20, ps=parameters) {
+#  # solve ODE and convert to data frame
+#  df = data.frame()
+#  df
 #  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
-}
+#}
 
-state2states <- function(state, N = 5, sd = 0.1){
-  # input: initial state = named vector of length p (number of variables)
-  # output: matrix of N row vectors of perturbed initial states
-  p <- length(state)
-  M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
-  states <- M*state
-  colnames(states) = names(state)
-  return(states)
-}
+# state2states <- function(state, N = 5, sd = 0.1){
+#   # input: initial state = named vector of length p (number of variables)
+#   # output: matrix of N row vectors of perturbed initial states
+#   p <- length(state)
+#   M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
+#   states <- M*state
+#   colnames(states) = names(state)
+#   return(states)
+# }
 
 ui <- fluidPage(
   titlePanel('Planetary Motion'),
