@@ -59,7 +59,7 @@ can have large differences after some time $t$.
 library(shiny)
 library(dplyr)
 library(tidyr)
-library(deSolve)
+#library(deSolve)
 library(plotly)
 
 ### Define Planetary data #####
@@ -104,7 +104,9 @@ Lorenz<-function(t, state, parameters) {
 
 solveIni <- function(state, ts=1:20, ps=parameters) {
   # solve ODE and convert to data frame
-  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
+  df = data.frame()
+  df
+#  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
 }
 
 state2states <- function(state, N = 5, sd = 0.1){
