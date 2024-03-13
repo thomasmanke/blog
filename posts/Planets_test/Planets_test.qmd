@@ -59,7 +59,7 @@ can have large differences after some time $t$.
 library(shiny)
 library(dplyr)
 library(tidyr)
-#library(deSolve)
+library(deSolve)
 library(plotly)
 library(DT)
 library(shinyalert)
