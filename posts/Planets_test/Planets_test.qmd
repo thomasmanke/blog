@@ -110,15 +110,15 @@ Lorenz<-function(t, state, parameters) {
 #  ode(y = state, times = ts, func=Lorenz, parms=ps) %>% as.data.frame()
 #}
 
-# state2states <- function(state, N = 5, sd = 0.1){
-#   # input: initial state = named vector of length p (number of variables)
-#   # output: matrix of N row vectors of perturbed initial states
-#   p <- length(state)
-#   M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
-#   states <- M*state
-#   colnames(states) = names(state)
-#   return(states)
-# }
+state2states <- function(state, N = 5, sd = 0.1){
+  # input: initial state = named vector of length p (number of variables)
+  # output: matrix of N row vectors of perturbed initial states
+  p <- length(state)
+  M <- matrix(rnorm(N * p, mean = 1, sd = sd), nrow = N)
+  states <- M*state
+  colnames(states) = names(state)
+  return(states)
+}
 
 ui <- fluidPage(
   titlePanel('Planetary Motion'),
