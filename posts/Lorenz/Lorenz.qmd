@@ -1,6 +1,6 @@
 ---
-title: Lorenz Attractor
-date: 2024/03/10
+title: Lorenz Attractor (shiny)
+date: 2024/03/14
 date-modified: last-modified
 categories: 
   - dynamical system
@@ -10,7 +10,7 @@ categories:
   - plotly
   - shinylive
   
-#image: Buffon.png
+image: lorenz.png
 
 format:
   html: default
@@ -42,8 +42,6 @@ This set of equation is meant to model convection in a 2D fluid layer.
 
 For specific choices of parameters, this system is known to be chaotic: $a=10, b=28, c=8/3$
 
-
-
 ## Lorenz and climate 
 
 The app can calculate many initial conditions simultaenously.
@@ -58,8 +56,8 @@ can have large differences after some time $t$.
 library(shiny)
 library(dplyr)
 library(tidyr)
-library(deSolve)
 library(plotly)
+library(deSolve)
 
 #The lorenz functions in a for deSolve can understand
 Lorenz<-function(t, state, parameters) {
@@ -117,12 +115,12 @@ server <- function(input, output, session) {
         state <- c(X = 1, Y = 1, Z = 1)                                    # single initial state
         states <- state2states(state, N=input$ini_n, sd=input$ini_sd)      # multiple initial states
 
-        # single solution
+        # single solution - high time resolution
         vals$out <- ode(y = state, times = times, func = Lorenz, parms = parameters) %>%
             as.data.frame()
-        # multiple solution - coarse times
+        # multiple solution - coarse times (limit number of frames)
         times_c = seq(input$time[[1]], input$time[[2]], by=1)   
-        res <- apply(states,1, solveIni, ts=times_c, ps=parameters)   # multiple solutions (list of dataframes)
+        res <- apply(states,1, solveIni, ts=times_c, ps=parameters)   # multiple initial states (list of dataframes)
         vals$df <- bind_rows(res, .id="start")            # convert list of df to single df with extra column
     })
 

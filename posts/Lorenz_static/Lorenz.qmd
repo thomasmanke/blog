@@ -125,5 +125,5 @@ sessionInfo()
 ## References
 
 - [Wikipedia](https://en.wikipedia.org/wiki/Lorenz_system)
-- [standalone shiny app](https://github.com/thomasmanke/shiny/tree/main/lorenz)
+- [deSolve](https://cran.r-project.org/web/packages/deSolve/index.html)
 
