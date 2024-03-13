@@ -11,3 +11,5 @@ quarto add --no-prompt quarto-ext/include-code-files
 
 # add R-package shinylive
 Rscript -e 'pak::pak("posit-dev/r-shinylive")'
+
+Rscript -e "install.packages(c('deSolve'))"
