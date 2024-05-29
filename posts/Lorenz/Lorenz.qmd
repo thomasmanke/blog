@@ -149,5 +149,6 @@ shinyApp(ui = ui, server = server)
 ## References
 
 - [Wikipedia](https://en.wikipedia.org/wiki/Lorenz_system)
+- [deSolve](https://desolve.r-forge.r-project.org/)
 - [standalone shiny app](https://github.com/thomasmanke/shiny/tree/main/lorenz)
 
