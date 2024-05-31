@@ -27,18 +27,3 @@ format:
   html:
     code-line-numbers: true
     code-tools: true
-  revealjs:
-    footer: "Thomas Manke"
-    overview: true
-    theme: night
-    toc: false
-    code-block-bg: #ded9ca
-    scrollable: true
-    tbl-cap-location: bottom
-    chalkboard: true
-    slide-number: true
-    output-file: revealjs.html
-    # ideally I would like to have a variable output-file name here.
-    # It should depend on the input.qmd or input.ipynb
-    # but I could not find a solution for this
-    # WARNING: do not add below comment lines - those fields might be ignored!
