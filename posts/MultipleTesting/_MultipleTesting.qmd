@@ -1,0 +1,214 @@
+---
+title: "Multiple Testing"
+date: 2024/05/29
+date-modified: last-modified
+categories: 
+  - multiple testing
+
+#image: gapminder.png
+
+format:
+  html: default
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(pheatmap)
+```
+
+# Goal
+
+Multiple testing often occurs if samples can be characterized by many variables (features), and if we repeatedly compare the same groups with respect to all those variables. For a specific example; we may want to compare two samples of healthy and diseased individuals using gene expression data. In this case we typically have >10,000 genes for which this comparison can be done.
+
+In such cases we need to be more careful in our testing approach.
+
+# Generate Data
+To illustrate the problem, I will simulate data for two sample groups (A and B) and multiple variables.
+I will assume that only a fraction of variables will have true differences between the two sample groups.
+
+```{r}
+#| label: simulation
+set.seed(42)                          # for reproducibility
+ns <- 50                              # number of samples
+nt <- 1000                            # number of variables (=tests)
+fract <- 0.1                          # fraction of true differences
+alpha <- 0.05                         # significance levels
+
+# parameter string for reference 
+parms = paste('samples=', ns, 'tests=', nt, 'H0 false=', nt * fract, '(', fract, ')')
+
+# generate data
+group <- rep(c("A", "B"), each = ns/2)                # metadata: two equal size groups
+data  <- matrix(rnorm(ns * nt), nrow = ns, ncol = nt) # data: from normal distribution
+
+# sample subset of variables(tests ic) with true effect
+# for simplicity the effect size is fixed here
+ic <- sample(1:nt, size = nt * fract)
+if (length(ic)>0) {
+    effect_size = 1
+    data[group == "B", ic] <- data[group == "B", ic] + effect_size
+}
+
+# show data with annotations
+ann_row <- data.frame(group=group)
+ann_col <- data.frame(H0=as.factor(!(1:nt %in% ic)))
+rownames(data)=1:ns
+colnames(data)=1:nt
+rownames(ann_row) = rownames(data)
+rownames(ann_col) = colnames(data)
+
+pheatmap(data, 
+    cluster_rows=F,cluster_cols=T,
+    annotation_row=ann_row, annotation_col=ann_col,
+    show_rownames=F, show_colnames=F,
+    treeheight_col=20,
+    )
+
+grid::grid.text('Samples', x=0.025, y=0.5, rot=90)
+grid::grid.text('Variables (Tests)', x=0.5, y=0.025, rot=0)
+```
+
+# Multiple Tests
+```{r}
+#| label: t-test
+
+# calculate p-values from t.test for each data row
+p.values <- apply(data, 2, function(x) t.test(x ~ group)$p.value)
+sig1 <- sum(p.values < alpha)   # number of significant p-values
+
+title=paste('p.values', parms)
+subtitle=paste('No correction. alpha = ', alpha, 'exp: ', alpha * nt, 'obs:', sum(p.values < alpha))
+data.frame(p.values = p.values) %>%
+    ggplot(aes(x = p.values)) +
+    geom_histogram(binwidth = 0.05, fill = 'slateblue', color = 'black') +
+    theme_minimal() +
+    labs(title = title, subtitle = subtitle, y = "Frequency")
+    
+table(test=p.values < alpha, H0=1:length(p.values) %in% ic)
+```
+
+# Multiple Testing Correction: In Practice
+```{r}
+#| label: BH_practice
+p.adjusted <- p.adjust(p.values, method = "BH")
+sig2 <- sum(p.adjusted < alpha)
+
+title=paste('p.adjusted', parms)
+subtitle=paste('BH correction. alpha = ', alpha, 'exp: ', alpha * sig2, 'obs:', sum(p.adjusted < alpha))
+data.frame(p.adjusted = p.adjusted) %>%
+    ggplot(aes(x = p.adjusted)) +
+    geom_histogram(binwidth = 0.05, fill = 'slateblue', color = 'black') +
+    theme_minimal() +
+    labs(title = title, subtitle = subtitle, y = "Frequency")
+table(test=p.adjusted < alpha, H0=1:length(p.values) %in% ic)
+```
+
+Notice:
+
+- Look at the confusion table after adjusting for multiple testing. Controlling for FDR does not necessarily mean that we improve accuracy. Keep in mind that $H_0$ is false for 10% of variables (=100 tests). But the goal is to control the rate of false discoveries to an acceptable level.
+
+# Multiple Testing Correction: The Principle
+If $H_0$ was true for all $n_t$ tests we would expect to reject $\alpha n_t$ tests (='false discoveries').
+
+Bonferoni Correction:
+
+If we want to control the *family-wise error rate (FWER)* over all tests we could set a new global threshold
+$$
+p < \alpha/n_t
+$$
+
+With this threshold we try to ensure that the probability of making a single wrong
+prediction among all predictions is smaller than $\alpha$.
+But in many cases this might be too conservative and not necessary.
+
+Benjamini-Hochberg Correction:
+
+Instead we may be willing to accept a certain fraction of false discoveries, i.e. we want to control the *false discovery rate (FDR)*. The key insight is that if $H_0=$true
+
+- the p-value distribution would be uniform
+- the cummulative p-value distribution would be the diagonal in (0,1)
+- a sorted list of p-values would be straight line
+
+This suggests a procedure to set a *variable threshold* depending on the rank of the p-value $p_r$
+in a list of sorted p-values ($r \in 1 \dots n_t$). The rank-dependent threshold can be written as 
+
+
+$$
+p_r < \alpha * \frac{r}{n_t}
+$$
+
+```{r}
+#| label: BH_principle
+df <- data.frame(p=p.values)
+df$rank <- rank(df$p)                     # rank of p
+df$thresh <- alpha * df$rank/nt           # rank-dependent threshold
+df$reject <- df$p < df$thresh             # Boolean decision
+df$H0     <- !(seq_len(nrow(df)) %in% ic) # H0 true or false 
+options(ggplot2.discrete.colour= c("black", "red"))
+df %>% arrange(p) %>% head(100) %>% 
+    ggplot(aes(x=seq_along(p), y=p, color=reject, shape=H0)) +
+    geom_point() +
+    geom_line( aes(y=thresh), color="red") +
+    geom_hline(yintercept=alpha/nt, color="black")
+```
+
+Notice:
+
+- Only the first 100 smallest p-values are shown for clarity
+- Shape denotes whether H0 was true (no size effect) or false (size effect in samples B). This is known by construction
+- black line (Bonferroni, FWER control): denotes $p <\alpha/n_t$ where $\alpha=0.05$
+- red line (BH, FDR control): denotes $p<\alpha*r/n_t$ where $\alpha=0.05$
+- red dots: denote those tests that are deemed significant by the BH criterion
+
+
+Conceptually we should first fix the significance level $\alpha$ and obtain the number of significant tests.
+In practical application we frequently we ask the reverse: what is the FDR level $\alpha=q_r$ at which a given p-value $p_r$ (in a longer list of p-values from multiple tests) would still be considered significant?
+
+
+$$
+q_r = p_r \frac{n_t}{r}
+$$
+
+This is called p-value adjustment, and it replaces all p-values $p_r \to q_r$.
+Notice that $q_r$ is the output of `p.adjust()`
+
+# Multiple Testing: Technical Implementation
+The code below is implemented efficiently in base-R with `p.adjust()`
+
+```{r}
+#| label: BH_implementation
+nt <- length(df$p) ##|  number of tests = number of p-values
+i <- nt:1          # index reversed: n, ..., 1
+
+# Define two look-up tables o and ro
+o <- order(df$p, decreasing = TRUE) # index -> order. Notice that pmax = df$p[o[1]], pmin=df$p[o[nt]]
+ro <- order(o)                      # order -> index.
+alpha = nt/i * df$p[o]              # alpha_r threshold for each p_r (in order)
+alpha = cummin(alpha)               # see notice below
+alpha = pmin(1, alpha)              # ensure alpha<=1
+
+df$p_BH1 = alpha[ro]                    # return in order of p-values
+df$p_BH2 = p.adjust(df$p, method="BH")  # base-R implementation (as used before)
+
+all.equal(df$p_BH1, df$p_BH2)        # should be TRUE
+```
+
+Notice:
+
+- the calculation of the cummulative minimum, cummin(), is to get rid of fluctuations since `alpha` should only decrease.
+Basically the p-values `df$p[o]` should decrease as rapidly as expected for true $H_0=$ true.
+In other words: p-values should decrease more rapidly than `n_t/i` increases.
+- Occassionaly $\alpha>1$ if the largest observed p-value are greater than whay might be expected. pmin() ensures that $\alpha \le 1$
+
+# Tasks
+
+Change and observe:
+
+- the fraction `fract` of true differences ($H_0=$ false)
+- the number of samples, the number of tests, the size effect
+- optionally: include a variable size effect
+
+# Reference
+
+- Benjamini & Hochberg (1995). https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/j.2517-6161.1995.tb02031.x
