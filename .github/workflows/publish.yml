@@ -42,11 +42,28 @@ jobs:
       - name: Get changed files
         id: changed-files
         run: |
-          echo "Finding changed or new QMD files..."
-          # Get list of changed/added qmd files since last successful build
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.qmd$' || echo "")
-          echo "Changed files: $CHANGED_FILES"
-          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "Finding QMD files to render..."
+          
+          # Check if we have a previous commit to compare against
+          if [ -z "${{ github.event.before }}" ] || [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
+            # First run or full rebuild scenario - get all qmd files
+            echo "First run or full rebuild detected, processing all QMD files"
+            ALL_FILES=$(find . -name "*.qmd" -not -path "*/\.*" | sort)
+            echo "changed_files=$ALL_FILES" >> $GITHUB_OUTPUT
+          else
+            # Get list of changed/added qmd files since last successful build
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.qmd$' || echo "")
+            
+            # If no changed files detected but docs directory doesn't exist, process all files
+            if [ -z "$CHANGED_FILES" ] && [ ! -d "docs" ]; then
+              echo "No docs directory found, processing all QMD files"
+              ALL_FILES=$(find . -name "*.qmd" -not -path "*/\.*" | sort)
+              echo "changed_files=$ALL_FILES" >> $GITHUB_OUTPUT
+            else
+              echo "Changed files: $CHANGED_FILES"
+              echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+            fi
+          fi
 
       - name: Restore previous build
         id: cache-docs
@@ -123,6 +140,25 @@ jobs:
           for file in $CHANGED_FILES; do
             process_qmd "$file"
           done
+
+      - name: Verify output directory
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "Warning: docs directory still doesn't exist after rendering"
+            
+            # Look in _quarto.yml for output-dir setting
+            if [ -f "_quarto.yml" ]; then
+              echo "Checking _quarto.yml for output-dir setting:"
+              grep -i "output-dir\|output_dir" _quarto.yml || echo "No output-dir setting found"
+            fi
+            
+            # Create docs as fallback
+            echo "Creating empty docs directory as fallback"
+            mkdir -p docs
+          else
+            echo "docs directory exists, contains:"
+            ls -la docs/
+          fi
 
       - name: Upload
         uses: actions/upload-pages-artifact@v3
