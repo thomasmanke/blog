@@ -29,16 +29,6 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Micromamba (networkx)
-        uses: mamba-org/setup-micromamba@v2
-        with:
-            environment-file: envs/python_base.yml
-            create-args: >-
-              -f envs/networkx.yml
-            cache-environment: true
-            cache-downloads: true
-            environment-name: networkx
-
       - name: Micromamba
         uses: mamba-org/setup-micromamba@v2
         with:
@@ -46,12 +36,25 @@ jobs:
           cache-environment: true
           cache-downloads: true
           environment-name: web
-          
+
+      - name: Micromamba (networkx)
+        uses: mamba-org/setup-micromamba@v2
+        with:
+            environment-file: envs/python_base.yml
+            create-args: >-
+                -f envs/networkx.yml
+            cache-environment: true
+            cache-downloads: true
+            environment-name: networkx
+
       - name: Activate Env
         run: |
           micromamba --version
           micromamba activate web
-
+          python -m nb_conda_kernels list
+          jupyter kernelspec list
+          
+          
       - name: Install shinylive extension and package
         run: |
           ./install_packages.sh
