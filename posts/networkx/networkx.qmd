@@ -1,0 +1,123 @@
+---
+title: "Networks with Python"
+date-modified: last-modified
+jupyter: conda-env-micromamba-networkx-py
+format: html
+---
+
+## Preparation
+Notice that this qmd file is rendered with a special jupyter kernel
+that is defined in the yaml header
+
+  jupyter: conda-env-micromamba-networkx-py
+
+It refers to a dedicated conda/micromamba environment.
+
+The goal is to render quarto documents in one environment (with `quarto render`)
+but the document-specific environments may be different from this base environment, and from each other.
+
+
+Typically jupyter kernels in a single environment can be shown as
+```{bash}
+jupyter kernelspec list
+```
+
+but to resolve all available conda kernels (from other environments) run
+  ```{bash} 
+  python -m nb_conda_kernels list
+  ```
+
+To this end the jupyter config needs a special entry:
+
+  ```{bash}
+  cat ~/.jupyter/jupyter_config.json
+  ```
+
+```
+{
+  "CondaKernelSpecManager": {
+    "kernelspec_path": "--user"
+  }
+}
+```
+
+Notice: In this setting, I did not succeed to run both 
+python and bash kernels in the same qmd. Therefore the 
+bash cells shown are not executed.
+
+## Setup
+```{python}
+import networkx as nx
+import matplotlib.pyplot as plt
+```
+
+## Create Graph
+```{python}
+G = nx.karate_club_graph()
+labels = nx.get_node_attributes(G, 'club')
+
+# map labels to colors
+color_map = []
+for node in G.nodes():
+    if labels[node] == 'Mr. Hi':
+        color_map.append('blue')  
+    else:
+        color_map.append('red') 
+
+plt.figure(figsize=(8, 8))
+pos = nx.spring_layout(G)  
+nx.draw(G, pos, with_labels=True, node_color=color_map, font_size=12, font_weight='bold', node_size=500)
+plt.title("Zachary's Karate Club Network")
+plt.show()
+```
+
+## Centrality
+
+```{python}
+degree_centrality = nx.degree_centrality(G)
+betweenness_centrality = nx.betweenness_centrality(G)
+closeness_centrality = nx.closeness_centrality(G)
+
+top_degree_nodes = sorted(degree_centrality, key=degree_centrality.get, reverse=True)[:5]
+print(top_degree_nodes)
+```
+
+## Community Detection
+
+```{python}
+from networkx.algorithms.community import girvan_newman
+comp = girvan_newman(G)
+first_level_communities = next(comp)
+
+pos = nx.spring_layout(G)
+plt.figure(figsize=(8, 8))
+
+# Color nodes by their community
+node_colors = ['skyblue' if node in first_level_communities[0] else 'orange' for node in G.nodes()]
+nx.draw(G, pos, with_labels=True, node_color=node_colors, font_size=12, node_size=500)
+
+plt.title("Karate Club Network with Girvan-Newman Communities")
+plt.show()
+```
+
+
+## Graph Models
+
+```{python}
+ws = nx.watts_strogatz_graph(30, 3, 0.1, seed=42)
+plt.figure(figsize=(8, 8))
+pos = nx.circular_layout(ws)
+#pos = nx.spring_layout(ws)  
+nx.draw(ws, pos, with_labels=True, node_color='skyblue', font_size=12, font_weight='bold', node_size=500)
+plt.title("Watts-Strogatz")
+plt.show()
+```
+## References
+
+- networkx package: https://towardsdatascience.com/navigating-networks-with-networkx-a-short-guide-to-graphs-in-python-c16cbafe8063/
+- using specific environments: https://thedatasavvycorner.com/blogs/08-quarto-conda-env
+
+
+
+
+
