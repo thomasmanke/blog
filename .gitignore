@@ -2,6 +2,7 @@ _site
 __pycache__
 *_files
 *_cache
+*.html
 .DS_Store
 .Rhistory
 .Rproj.user
@@ -13,3 +14,4 @@ lectures/_future
 
 _freeze
 _extensions
+docs/
