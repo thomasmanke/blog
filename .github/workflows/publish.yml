@@ -30,7 +30,7 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Micromamba (networkx)
-        uses: mamba-org/setup-micromamba@v1
+        uses: mamba-org/setup-micromamba@v2
         with:
             environment-file: envs/python_base.yml
             create-args: >-
@@ -40,7 +40,7 @@ jobs:
             environment-name: networkx
 
       - name: Micromamba
-        uses: mamba-org/setup-micromamba@v1
+        uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: envs/env.yml
           cache-environment: true
