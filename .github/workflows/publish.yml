@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches: main
+    paths:
+      - '**.qmd'
+      - '**.Rmd'
+      - '**.yml'
+      - '**.yaml'
+      - 'envs/**'
+      - '.github/workflows/publish.yml'
 
 defaults:
   run:
@@ -13,6 +20,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -25,50 +33,97 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history to determine file changes
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Micromamba
+      - name: Get changed files
+        id: changed-files
+        run: |
+          echo "Finding changed or new QMD files..."
+          # Get list of changed/added qmd files since last successful build
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.qmd$' || echo "")
+          echo "Changed files: $CHANGED_FILES"
+          echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Restore previous build
+        id: cache-docs
+        uses: actions/cache@v3
+        with:
+          path: ./docs
+          key: quarto-docs-${{ github.sha }}
+          restore-keys: |
+            quarto-docs-
+
+      - name: Create base conda environment
         uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: envs/env.yml
           cache-environment: true
           cache-downloads: true
-          environment-name: web
+          environment-name: base-env
 
-      - name: Micromamba (networkx)
-        uses: mamba-org/setup-micromamba@v2
-        with:
-            environment-file: envs/python_base.yml
-            create-args: >-
-                -f envs/networkx.yml
-            cache-environment: true
-            cache-downloads: true
-            environment-name: networkx
-
-      - name: Activate Env
+      - name: Install ipykernel and nb_conda_kernels
         run: |
-          micromamba --version
-          micromamba activate web
-          python -m nb_conda_kernels list
+          micromamba activate base-env
+          micromamba install -c conda-forge ipykernel nb_conda_kernels
+          python -m ipykernel install --user --name base-env
           jupyter kernelspec list
-          
-          
-      - name: Install shinylive extension and package
+
+      - name: Process QMD files with custom environments
+        id: process-qmd
+        if: steps.changed-files.outputs.changed_files != ''
         run: |
-          ./install_packages.sh
-        
-      - name: List quarto extensions
-        run: quarto list extensions
+          micromamba activate base-env
+          CHANGED_FILES="${{ steps.changed-files.outputs.changed_files }}"
+          
+          # Function to process a QMD file
+          process_qmd() {
+            local qmd_file=$1
+            local dir=$(dirname "$qmd_file")
+            local base_name=$(basename "$qmd_file" .qmd)
+            local env_yaml="$dir/$base_name.yml"
+            
+            echo "Processing QMD: $qmd_file"
+            
+            # If custom environment file exists
+            if [ -f "$env_yaml" ]; then
+              echo "Found custom environment file: $env_yaml"
+              
+              # Create a custom environment for this QMD file
+              env_name="${base_name}-env"
+              echo "Creating environment: $env_name"
+              
+              # Create environment using base as starting point
+              micromamba create -n $env_name --file envs/base.yml
+              micromamba activate $env_name
+              
+              # Add additional packages from custom YAML
+              micromamba install -y --file $env_yaml
+              
+              # Register the kernel
+              python -m ipykernel install --user --name $env_name
+              
+              # Render the file with this environment
+              echo "Rendering $qmd_file using environment $env_name"
+              quarto render "$qmd_file"
+              
+              # Return to base environment for next file
+              micromamba activate base-env
+            else
+              echo "No custom environment file found, using base environment"
+              echo "Rendering $qmd_file using base environment"
+              quarto render "$qmd_file"
+            fi
+          }
+          
+          # Process each changed file
+          for file in $CHANGED_FILES; do
+            process_qmd "$file"
+          done
 
-      - name: List jupyter kernels
-        run: jupyter kernelspec list
-
-      - name: Render
-        #continue-on-error: true. # only for error tracking
-        run: quarto render
-        
       - name: Upload
         uses: actions/upload-pages-artifact@v3
         with:
