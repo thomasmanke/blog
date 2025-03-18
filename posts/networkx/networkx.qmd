@@ -3,6 +3,7 @@ title: "Networks with Python"
 date-modified: last-modified
 jupyter: conda-env-micromamba-networkx-py
 format: html
+draft: true
 ---
 
 ## Preparation
