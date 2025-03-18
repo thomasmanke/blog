@@ -23,7 +23,7 @@ jobs:
       - name: Set up base environment
         uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: envs/base.yml
+          environment-file: envs/env.yml
           environment-name: base
           cache-environment: true
 
@@ -37,7 +37,7 @@ jobs:
           micromamba activate base
           
           # Start with the base environment
-          SPECIALIZED_ENVS=("base:envs/base.yml")
+          SPECIALIZED_ENVS=("base:envs/env.yml")
           
           # Find all QMD files that have matching YML files
           echo "Searching for QMD files with matching YML files..."
@@ -75,7 +75,7 @@ jobs:
             
             echo "Creating environment $env_name from $env_file"
             # Start with the base environment
-            micromamba create -n "$env_name" --file envs/base.yml
+            micromamba create -n "$env_name" --file envs/env.yml
             micromamba activate "$env_name"
             
             # Add the specialized packages
