@@ -8,170 +8,115 @@ on:
       - '**.qmd'
       - '**.Rmd'
       - '**.yml'
-      - '**.yaml'
       - 'envs/**'
-      - '.github/workflows/publish.yml'
 
-defaults:
-  run:
-    shell: bash -l {0}
-    
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-  
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-  
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Fetch all history to determine file changes
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Get changed files
-        id: changed-files
-        run: |
-          echo "Finding QMD files to render..."
-          
-          # Check if we have a previous commit to compare against
-          if [ -z "${{ github.event.before }}" ] || [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
-            # First run or full rebuild scenario - get all qmd files
-            echo "First run or full rebuild detected, processing all QMD files"
-            ALL_FILES=$(find . -name "*.qmd" -not -path "*/\.*" | sort)
-            echo "changed_files=$ALL_FILES" >> $GITHUB_OUTPUT
-          else
-            # Get list of changed/added qmd files since last successful build
-            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.qmd$' || echo "")
-            
-            # If no changed files detected but docs directory doesn't exist, process all files
-            if [ -z "$CHANGED_FILES" ] && [ ! -d "docs" ]; then
-              echo "No docs directory found, processing all QMD files"
-              ALL_FILES=$(find . -name "*.qmd" -not -path "*/\.*" | sort)
-              echo "changed_files=$ALL_FILES" >> $GITHUB_OUTPUT
-            else
-              echo "Changed files: $CHANGED_FILES"
-              echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
-            fi
-          fi
-
-      - name: Restore previous build
-        id: cache-docs
-        uses: actions/cache@v3
-        with:
-          path: ./docs
-          key: quarto-docs-${{ github.sha }}
-          restore-keys: |
-            quarto-docs-
-
-      - name: Create base conda environment
+      - name: Set up base environment
         uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: envs/env.yml
+          environment-file: envs/base.yml
+          environment-name: base
           cache-environment: true
-          cache-downloads: true
-          environment-name: base-env
 
-      - name: Install ipykernel and nb_conda_kernels
+      - name: Register base kernel
         run: |
-          micromamba activate base-env
-          micromamba install -c conda-forge ipykernel nb_conda_kernels
-          python -m ipykernel install --user --name base-env
-          jupyter kernelspec list
-
-      - name: Process QMD files with custom environments
-        id: process-qmd
-        if: steps.changed-files.outputs.changed_files != ''
-        run: |
-          micromamba activate base-env
-          CHANGED_FILES="${{ steps.changed-files.outputs.changed_files }}"
+          micromamba activate base
+          python -m ipykernel install --user --name "base" --display-name "Python (Base)"
           
-          # Function to process a QMD file
-          process_qmd() {
-            local qmd_file=$1
-            local dir=$(dirname "$qmd_file")
-            local base_name=$(basename "$qmd_file" .qmd)
-            local env_yaml="$dir/$base_name.yml"
+      - name: Identify and create specialized environments
+        run: |
+          micromamba activate base
+          
+          # Start with the base environment
+          SPECIALIZED_ENVS=("base:envs/base.yml")
+          
+          # Find all QMD files that have matching YML files
+          echo "Searching for QMD files with matching YML files..."
+          while IFS= read -r qmd_file; do
+            # Get the directory and base name
+            dir=$(dirname "$qmd_file")
+            base_name=$(basename "$qmd_file" .qmd)
             
-            echo "Processing QMD: $qmd_file"
-            
-            # If custom environment file exists
-            if [ -f "$env_yaml" ]; then
-              echo "Found custom environment file: $env_yaml"
+            # Check if a matching YML file exists
+            yml_file="${dir}/${base_name}.yml"
+            if [ -f "$yml_file" ]; then
+              echo "Found matching YML for $qmd_file: $yml_file"
               
-              # Create a custom environment for this QMD file
-              env_name="${base_name}-env"
-              echo "Creating environment: $env_name"
-              
-              # Create environment using base as starting point
-              micromamba create -n $env_name --file envs/base.yml
-              micromamba activate $env_name
-              
-              # Add additional packages from custom YAML
-              micromamba install -y --file $env_yaml
-              
-              # Register the kernel
-              python -m ipykernel install --user --name $env_name
-              
-              # Render the file with this environment
-              echo "Rendering $qmd_file using environment $env_name"
-              quarto render "$qmd_file"
-              
-              # Return to base environment for next file
-              micromamba activate base-env
-            else
-              echo "No custom environment file found, using base environment"
-              echo "Rendering $qmd_file using base environment"
-              quarto render "$qmd_file"
+              # Add to the specialized environments list
+              SPECIALIZED_ENVS+=("${base_name}:${yml_file}")
             fi
-          }
+          done < <(find . -name "*.qmd" -not -path "*/\.*")
           
-          # Process each changed file
-          for file in $CHANGED_FILES; do
-            process_qmd "$file"
+          # Print the discovered environments
+          echo "Discovered the following specialized environments:"
+          for env_spec in "${SPECIALIZED_ENVS[@]}"; do
+            echo "  $env_spec"
           done
-
-      - name: Verify output directory
-        run: |
-          if [ ! -d "docs" ]; then
-            echo "Warning: docs directory still doesn't exist after rendering"
+          
+          # Create each specialized environment (skip the base environment which is already created)
+          for env_spec in "${SPECIALIZED_ENVS[@]}"; do
+            env_name="${env_spec%%:*}"
+            env_file="${env_spec#*:}"
             
-            # Look in _quarto.yml for output-dir setting
-            if [ -f "_quarto.yml" ]; then
-              echo "Checking _quarto.yml for output-dir setting:"
-              grep -i "output-dir\|output_dir" _quarto.yml || echo "No output-dir setting found"
+            # Skip the base environment
+            if [ "$env_name" = "base" ]; then
+              echo "Skipping base environment which is already created"
+              continue
             fi
             
-            # Create docs as fallback
-            echo "Creating empty docs directory as fallback"
-            mkdir -p docs
-          else
-            echo "docs directory exists, contains:"
-            ls -la docs/
-          fi
+            echo "Creating environment $env_name from $env_file"
+            # Start with the base environment
+            micromamba create -n "$env_name" --file envs/base.yml
+            micromamba activate "$env_name"
+            
+            # Add the specialized packages
+            micromamba install -y --file "$env_file"
+            
+            # Register the kernel with a predictable name
+            python -m ipykernel install --user --name "$env_name" --display-name "Python ($env_name)"
+            
+            # Return to base environment
+            micromamba activate base
+          done
+          
+          # List all available kernels for reference
+          echo "Available Jupyter kernels:"
+          jupyter kernelspec list
+          
+          # List all created environments
+          echo "Created Micromamba environments:"
+          micromamba env list
 
-      - name: Upload
+      - name: Render Quarto project
+        run: |
+          micromamba activate base
+          quarto render
+          
+      - name: Upload artifacts
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
-          
+
   deploy:
     needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        
