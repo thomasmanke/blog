@@ -10,6 +10,12 @@ on:
       - '**.yml'
       - 'envs/**'
 
+env:
+  # Set the base environment file path here - single source of truth
+  BASE_ENV_FILE: 'envs/env.yml'
+  # Use a different name for our primary environment to avoid conflicts
+  PRIMARY_ENV_NAME: 'quarto-base'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,24 +26,32 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Verify base environment file
+        run: |
+          if [ ! -f "${{ env.BASE_ENV_FILE }}" ]; then
+            echo "::error::Base environment file ${{ env.BASE_ENV_FILE }} does not exist!"
+            exit 1
+          fi
+          echo "Using base environment file: ${{ env.BASE_ENV_FILE }}"
+
       - name: Set up base environment
         uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: envs/env.yml
-          environment-name: base
+          environment-file: ${{ env.BASE_ENV_FILE }}
+          environment-name: ${{ env.PRIMARY_ENV_NAME }}
           cache-environment: true
 
       - name: Register base kernel
         run: |
-          micromamba activate base
-          python -m ipykernel install --user --name "base" --display-name "Python (Base)"
+          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
+          python -m ipykernel install --user --name "${{ env.PRIMARY_ENV_NAME }}" --display-name "Python (Base)"
           
       - name: Identify and create specialized environments
         run: |
-          micromamba activate base
+          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           
           # Start with the base environment
-          SPECIALIZED_ENVS=("base:envs/env.yml")
+          SPECIALIZED_ENVS=("${{ env.PRIMARY_ENV_NAME }}:${{ env.BASE_ENV_FILE }}")
           
           # Find all QMD files that have matching YML files
           echo "Searching for QMD files with matching YML files..."
@@ -67,15 +81,15 @@ jobs:
             env_name="${env_spec%%:*}"
             env_file="${env_spec#*:}"
             
-            # Skip the base environment
-            if [ "$env_name" = "base" ]; then
-              echo "Skipping base environment which is already created"
+            # Skip the primary environment
+            if [ "$env_name" = "${{ env.PRIMARY_ENV_NAME }}" ]; then
+              echo "Skipping primary environment which is already created"
               continue
             fi
             
             echo "Creating environment $env_name from $env_file"
             # Start with the base environment
-            micromamba create -n "$env_name" --file envs/env.yml
+            micromamba create -n "$env_name" --file "${{ env.BASE_ENV_FILE }}"
             micromamba activate "$env_name"
             
             # Add the specialized packages
@@ -85,7 +99,7 @@ jobs:
             python -m ipykernel install --user --name "$env_name" --display-name "Python ($env_name)"
             
             # Return to base environment
-            micromamba activate base
+            micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           done
           
           # List all available kernels for reference
@@ -98,7 +112,7 @@ jobs:
 
       - name: Render Quarto project
         run: |
-          micromamba activate base
+          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           quarto render
           
       - name: Upload artifacts
@@ -119,4 +133,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-        
