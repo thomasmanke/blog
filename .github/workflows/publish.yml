@@ -40,6 +40,17 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Restore previous docs and freeze
+        id: cache-docs
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./docs
+            ./_freeze
+          key: quarto-${{ github.sha }}
+          restore-keys: |
+            quarto-
+
       - name: Verify base environment file
         run: |
           if [ ! -f "${{ env.BASE_ENV_FILE }}" ]; then
@@ -137,7 +148,23 @@ jobs:
         run: |
           micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           quarto render
+      
           
+      - name: Check docs directory
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "::error::Docs directory doesn't exist after rendering!"
+            echo "Checking Quarto project configuration..."
+            if [ -f "_quarto.yml" ]; then
+              grep -i "output-dir\|output_dir" _quarto.yml || echo "No output-dir setting found"
+            fi
+            mkdir -p docs
+            echo "<html><body>Build error - see logs</body></html>" > docs/index.html
+          else
+            echo "Docs directory contents:"
+            ls -la docs/
+          fi
+
       - name: Upload artifacts
         uses: actions/upload-pages-artifact@v3
         with:
