@@ -15,7 +15,7 @@ env:
   BASE_ENV_FILE: 'envs/env.yml'
   # Use a different name for our primary environment to avoid conflicts
   PRIMARY_ENV_NAME: 'quarto-base'
-  
+
 defaults:
   run:
     shell: bash -l {0}
@@ -55,15 +55,24 @@ jobs:
           environment-name: ${{ env.PRIMARY_ENV_NAME }}
           cache-environment: true
 
+      - name: Activate base environment
+        run: |
+            micromamba --version
+            micromamba activate ${{ env.PRIMARY_ENV_NAME }}
+
+      - name: Install shinylive extension and packages
+        run: |
+          ./install_packages.sh
+
+      - name: List quarto extensions
+        run: quarto list extensions
+
       - name: Register base kernel
         run: |
-          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           python -m ipykernel install --user --name "${{ env.PRIMARY_ENV_NAME }}" --display-name "Python (Base)"
           
       - name: Identify and create specialized environments
         run: |
-          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
-          
           # Start with the base environment
           SPECIALIZED_ENVS=("${{ env.PRIMARY_ENV_NAME }}:${{ env.BASE_ENV_FILE }}")
           
