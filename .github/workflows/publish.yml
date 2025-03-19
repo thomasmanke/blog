@@ -40,7 +40,19 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Restore previous docs and freeze
+      # Cache the entire Quarto extensions directory
+      - name: Cache Quarto extensions
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.local/share/quarto
+            /home/runner/.local/share/quarto
+          key: quarto-ext-v1 
+          ### later; key: quarto-ext-${{ hashFiles('.github/workflows/publish.yml') }}
+          restore-keys: |
+            quarto-ext-
+
+      - name: Cache docs and freeze
         id: cache-docs
         uses: actions/cache@v3
         with:
@@ -71,9 +83,29 @@ jobs:
             micromamba --version
             micromamba activate ${{ env.PRIMARY_ENV_NAME }}
 
-      - name: Install shinylive extension and packages
+      - name: Install Quarto extensions conditionally
         run: |
-          ./install_packages.sh
+          if ! quarto list extensions | grep -q "shinylive"; then
+            echo "Installing shinylive extension..."
+            quarto add --no-prompt quarto-ext/shinylive
+          else
+            echo "shinylive extension already installed"
+          fi
+          
+          if ! quarto list extensions | grep -q "include-code-files"; then
+            echo "Installing include-code-files extension..."
+            quarto add --no-prompt quarto-ext/include-code-files
+          else
+            echo "include-code-files extension already installed"
+          fi
+          
+          # Install R packages
+          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
+          Rscript -e 'if(!requireNamespace("shinylive", quietly = TRUE)) pak::pak("posit-dev/r-shinylive")'
+              
+#      - name: Install shinylive extension and packages
+#        run: |
+#          ./install_packages.sh
 
       - name: List quarto extensions
         run: quarto list extensions
