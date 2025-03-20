@@ -92,7 +92,9 @@ runs:
           # Return to base environment
           micromamba activate ${{ inputs.primary-env-name }}
         done < .env-cache/environments.txt
-        
+
+        micromamba activate ${{ inputs.primary-env-name }}
+
         # List all available kernels for reference
         echo "Available Jupyter kernels:"
         jupyter kernelspec list
@@ -103,9 +105,11 @@ runs:
 
     - name: Use cached specialized environments
       if: steps.cache-specialized-envs.outputs.cache-hit == 'true'
-      shell: bash
+      shell: bash -l {0}
       run: |
         echo "Using cached specialized environments"
+        micromamba activate ${{ inputs.primary-env-name }}
+
         echo "Available Jupyter kernels:"
         jupyter kernelspec list
         echo "Available Micromamba environments:"
