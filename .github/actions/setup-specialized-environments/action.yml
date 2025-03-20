@@ -65,7 +65,7 @@ runs:
 
     - name: Create specialized environments if needed
       if: steps.cache-specialized-envs.outputs.cache-hit != 'true'
-      shell: bash
+      shell: bash -l {0}
       run: |
         # Create each specialized environment (skip the base environment which is already created)
         while IFS= read -r env_spec; do
