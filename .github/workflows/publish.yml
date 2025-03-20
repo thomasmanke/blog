@@ -114,74 +114,18 @@ jobs:
         run: |
           python -m ipykernel install --user --name "${{ env.PRIMARY_ENV_NAME }}" --display-name "Python (Base)"
           
-      - name: Identify and create specialized environments
-        run: |
-          # Start with the base environment
-          SPECIALIZED_ENVS=("${{ env.PRIMARY_ENV_NAME }}:${{ env.BASE_ENV_FILE }}")
+      - name: Setup specialized environments
+        id: specialized-envs
+        uses: ./.github/actions/setup-specialized-environments
+        with:
+          base-env-file: ${{ env.BASE_ENV_FILE }}
+          primary-env-name: ${{ env.PRIMARY_ENV_NAME }}
           
-          # Find all QMD files that have matching YML files
-          echo "Searching for QMD files with matching YML files..."
-          while IFS= read -r qmd_file; do
-            # Get the directory and base name
-            dir=$(dirname "$qmd_file")
-            base_name=$(basename "$qmd_file" .qmd)
-            
-            # Check if a matching YML file exists
-            yml_file="${dir}/${base_name}.yml"
-            if [ -f "$yml_file" ]; then
-              echo "Found matching YML for $qmd_file: $yml_file"
-              
-              # Add to the specialized environments list
-              SPECIALIZED_ENVS+=("${base_name}:${yml_file}")
-            fi
-          done < <(find . -name "*.qmd" -not -path "*/\.*")
-          
-          # Print the discovered environments
-          echo "Discovered the following specialized environments:"
-          for env_spec in "${SPECIALIZED_ENVS[@]}"; do
-            echo "  $env_spec"
-          done
-          
-          # Create each specialized environment (skip the base environment which is already created)
-          for env_spec in "${SPECIALIZED_ENVS[@]}"; do
-            env_name="${env_spec%%:*}"
-            env_file="${env_spec#*:}"
-            
-            # Skip the primary environment
-            if [ "$env_name" = "${{ env.PRIMARY_ENV_NAME }}" ]; then
-              echo "Skipping primary environment which is already created"
-              continue
-            fi
-            
-            echo "Creating environment $env_name from $env_file"
-            # Start with the base environment
-            micromamba create -n "$env_name" --file "${{ env.BASE_ENV_FILE }}"
-            micromamba activate "$env_name"
-            
-            # Add the specialized packages
-            micromamba install -y --file "$env_file"
-            
-            # Register the kernel with a predictable name
-            python -m ipykernel install --user --name "$env_name" --display-name "Python ($env_name)"
-            
-            # Return to base environment
-            micromamba activate ${{ env.PRIMARY_ENV_NAME }}
-          done
-          
-          # List all available kernels for reference
-          echo "Available Jupyter kernels:"
-          jupyter kernelspec list
-          
-          # List all created environments
-          echo "Created Micromamba environments:"
-          micromamba env list
-
       - name: Render Quarto project
         run: |
           micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           quarto render
       
-          
       - name: Check docs directory
         run: |
           if [ ! -d "docs" ]; then

@@ -1,0 +1,112 @@
+# File: .github/actions/setup-specialized-environments/action.yml
+name: 'Setup Specialized Environments'
+description: 'Find and create specialized Quarto environments'
+
+inputs:
+  base-env-file:
+    description: 'Path to the base environment file'
+    required: true
+  primary-env-name:
+    description: 'Name of the primary environment'
+    required: true
+
+outputs:
+  cache-hit:
+    description: 'Whether the environment cache was hit'
+    value: ${{ steps.cache-specialized-envs.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Find specialized environment files
+      id: find-envs
+      shell: bash
+      run: |
+        # Create a directory to store environment metadata
+        mkdir -p .env-cache
+        
+        # Find all QMD files with matching YML files and generate a metadata file
+        echo "Searching for QMD files with matching YML files..."
+        echo "${{ inputs.primary-env-name }}:${{ inputs.base-env-file }}" > .env-cache/environments.txt
+        
+        while IFS= read -r qmd_file; do
+          dir=$(dirname "$qmd_file")
+          base_name=$(basename "$qmd_file" .qmd)
+          yml_file="${dir}/${base_name}.yml"
+          if [ -f "$yml_file" ]; then
+            echo "Found matching YML for $qmd_file: $yml_file"
+            echo "${base_name}:${yml_file}" >> .env-cache/environments.txt
+          fi
+        done < <(find . -name "*.qmd" -not -path "*/\.*")
+        
+        # Calculate hash directly from environments.txt file plus base env file
+        sha256sum ${{ inputs.base-env-file }} > .env-cache/hash_source.txt
+        sha256sum .env-cache/environments.txt >> .env-cache/hash_source.txt
+        
+        # For debugging
+        echo "Environment list:"
+        cat .env-cache/environments.txt
+        echo "Hash sources:"
+        cat .env-cache/hash_source.txt
+        
+        # Set outputs
+        echo "env_file_hash=$(cat .env-cache/hash_source.txt | sha256sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+    - name: Cache specialized environments
+      id: cache-specialized-envs
+      uses: actions/cache@v3
+      with:
+        path: |
+          /home/runner/micromamba/envs
+          ~/.local/share/jupyter
+        key: specialized-envs-${{ steps.find-envs.outputs.env_file_hash }}
+        restore-keys: |
+          specialized-envs-
+
+    - name: Create specialized environments if needed
+      if: steps.cache-specialized-envs.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        # Create each specialized environment (skip the base environment which is already created)
+        while IFS= read -r env_spec; do
+          env_name="${env_spec%%:*}"
+          env_file="${env_spec#*:}"
+          
+          # Skip the primary environment
+          if [ "$env_name" = "${{ inputs.primary-env-name }}" ]; then
+            echo "Skipping primary environment which is already created"
+            continue
+          fi
+          
+          echo "Creating environment $env_name from $env_file"
+          # Start with the base environment
+          micromamba create -n "$env_name" --file "${{ inputs.base-env-file }}"
+          micromamba activate "$env_name"
+          
+          # Add the specialized packages
+          micromamba install -y --file "$env_file"
+          
+          # Register the kernel with a predictable name
+          python -m ipykernel install --user --name "$env_name" --display-name "Python ($env_name)"
+          
+          # Return to base environment
+          micromamba activate ${{ inputs.primary-env-name }}
+        done < .env-cache/environments.txt
+        
+        # List all available kernels for reference
+        echo "Available Jupyter kernels:"
+        jupyter kernelspec list
+        
+        # List all created environments
+        echo "Created Micromamba environments:"
+        micromamba env list
+
+    - name: Use cached specialized environments
+      if: steps.cache-specialized-envs.outputs.cache-hit == 'true'
+      shell: bash
+      run: |
+        echo "Using cached specialized environments"
+        echo "Available Jupyter kernels:"
+        jupyter kernelspec list
+        echo "Available Micromamba environments:"
+        micromamba env list
