@@ -79,36 +79,57 @@ jobs:
           cache-environment: true
 
       - name: Activate base environment
+        shell: bash -l {0}
         run: |
             micromamba --version
             micromamba activate ${{ env.PRIMARY_ENV_NAME }}
 
       - name: Install Quarto extensions conditionally
+        id: install-extensions
+        shell: bash -l {0}
         run: |
-          if ! quarto list extensions | grep -q "shinylive"; then
+          # Activate base environment first to ensure proper shell setup
+          micromamba activate ${{ env.PRIMARY_ENV_NAME }}
+
+          # Check if extensions are already installed
+          INSTALLED_EXTENSIONS=$(quarto list extensions)
+          echo "Currently installed extensions:"
+          echo "$INSTALLED_EXTENSIONS"
+
+          # First refresh extension list to ensure Quarto sees any cached extensions
+          quarto update all
+
+          # Check again after update
+          INSTALLED_EXTENSIONS=$(quarto list extensions)
+
+          if ! echo "$INSTALLED_EXTENSIONS" | grep -q "shinylive"; then
             echo "Installing shinylive extension..."
             quarto add --no-prompt quarto-ext/shinylive
           else
             echo "shinylive extension already installed"
           fi
-          
-          if ! quarto list extensions | grep -q "include-code-files"; then
+
+          if ! echo "$INSTALLED_EXTENSIONS" | grep -q "include-code-files"; then
             echo "Installing include-code-files extension..."
             quarto add --no-prompt quarto-ext/include-code-files
           else
             echo "include-code-files extension already installed"
           fi
-          
-          # Install R packages
+
+          # Check for R package and install if needed
           micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           Rscript -e 'if(!requireNamespace("shinylive", quietly = TRUE)) pak::pak("posit-dev/r-shinylive")'
-              
+
+          # List installed extensions for verification
+          echo "Extensions after installation process:"
+          quarto list extensions
+  
 #      - name: Install shinylive extension and packages
 #        run: |
 #          ./install_packages.sh
 
-      - name: List quarto extensions
-        run: quarto list extensions
+#      - name: List quarto extensions
+#        run: quarto list extensions
 
       - name: Register base kernel
         run: |
@@ -122,6 +143,7 @@ jobs:
           primary-env-name: ${{ env.PRIMARY_ENV_NAME }}
           
       - name: Render Quarto project
+        shell: bash -l {0}
         run: |
           micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           quarto render
