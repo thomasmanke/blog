@@ -7,7 +7,7 @@ draft: false
 eval: true
 ---
 
-## Preparation
+## Preparations
 Notice that this qmd file is rendered with a special jupyter kernel
 that is defined in the yaml header
 
