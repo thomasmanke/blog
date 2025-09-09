@@ -1,0 +1,144 @@
+---
+title: "MixedModels"
+format: html
+editor: visual
+---
+
+## Setup
+
+```{r}
+#|eval: false
+
+install.packages('lme4')
+```
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+# Load necessary packages
+library(lme4)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Parameters
+num_students <- 100
+num_classes <- 4
+num_schools <- 2
+
+# Simulate schools (2 levels)
+schools <- rep(1:num_schools, each = num_students / num_schools)
+
+# Simulate classes (4 levels)
+classes <- rep(1:num_classes, each = num_students / num_classes)
+
+# Simulate SES, completely confounded with schools
+SES <- ifelse(schools == 1, "Low", "High")
+
+# Simulate gender (randomly assign)
+gender <- sample(c("M", "F"), num_students, replace = TRUE)
+
+# Simulate test scores with some random noise
+set.seed(123)
+test_scores <- 50 + 10 * (gender == "F") + 5 * (SES == "High") + 
+               rnorm(num_students, mean = rep(c(0, 5), each = num_students / 2), sd = 5)
+
+# Create a data frame
+data <- data.frame(Student = 1:num_students, School = factor(schools), 
+                   Class = factor(classes), SES = factor(SES),
+                   Gender = factor(gender), TestScore = test_scores)
+
+# Inspect the data
+head(data)
+
+# Create a design matrix for the fixed-effects model
+X <- model.matrix(~ Gender + SES + School, data = data)
+
+# Check the rank of the design matrix
+rankMatrix <- qr(X)$rank
+fullRank <- ncol(X)
+cat("Rank of the design matrix:", rankMatrix, "\n")
+cat("Number of columns in the design matrix:", fullRank, "\n")
+
+# Try fitting the fixed-effects model
+tryCatch({
+  fixed_model <- lm(TestScore ~ Gender + SES + School, data = data)
+}, error = function(e) {
+  message("Error in fitting the fixed-effects model: ", e$message)
+})
+
+# Fit the multi-level model
+multi_level_model <- lmer(TestScore ~ Gender + SES + (1 | Class) + (1 | School), data = data)
+
+# Display the summary of the model
+summary(multi_level_model)
+```
+
+```{r}
+# Load necessary libraries
+library(lme4)
+library(dplyr)
+
+# Create example data
+set.seed(42)
+data <- data.frame(
+  School = factor(rep(1:2, each = 4)),
+  Class = factor(rep(c(1, 2, 3, 4), times = 2)),
+  Response = rnorm(8)
+)
+
+# Adjust the Class factor levels to reflect nesting within School
+data <- data %>%
+  mutate(Class = factor(paste(School, Class, sep = ":")))
+
+# Display the data
+print(data)
+
+# Fit the nested model
+model <- lmer(Response ~ 1 + (1|School/Class), data = data)
+
+# Print model summary
+summary(model)
+
+# Extract the design matrix for the fixed effects
+design_matrix <- model.matrix(~ School/Class, data = data)
+
+# Display the design matrix
+print(design_matrix)
+
+```
+
+```{r}
+library(lme4)
+library(dplyr)
+
+# Create example data
+set.seed(42)
+data <- data.frame(
+  P = factor(rep(1:2, each = 2)),       # person
+  A = factor(rep(c(1, 2), times = 2)),  # treatment
+  Y = rnorm(4) # sleepiness
+)
+
+data <- data %>%
+  mutate(A = factor(paste(P, A, sep = ":")))
+
+# fixed model
+form <- Y ~ 1 + A
+model.matrix(form, data = data)
+fm <- lm(form, data = data) # fixed nodel
+
+summary(fm) # information on coefficients
+anova(fm)   # analysis of variance
+
+# mixed model
+form <- Y ~ 1 + (1|P/A)
+model.matrix(form, data = data)
+mm < - lmer(Y ~ 1 + (1|P/A), data = data)
+
+summary(mm) # information on coefficients
+anova(mm)   # analysis of variance
+
+```

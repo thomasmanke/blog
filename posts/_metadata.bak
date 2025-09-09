@@ -1,0 +1,44 @@
+# options specified here will apply to all posts in this folder
+
+# freeze computational output
+# (see https://quarto.org/docs/projects/code-execution.html#freeze)
+freeze: true
+
+# Enable banner style title blocks
+title-block-banner: true
+image-placeholder: https://github.com/thomasmanke/ABS/raw/main/figures/Sherlock.png
+
+author:
+  - name: Thomas Manke
+    url: thomasmanke1@gmail
+#    affiliation: Bioinformatics Group @ MPI-IE
+#    affiliation-url: https://bioinfo.ie-freiburg.mpg.de
+    
+eval: true
+echo: true
+cache: true
+code-tools: true
+code-fold: true
+toc: true
+toc-depth: 2
+number-sections: false
+
+format:
+  html:
+    code-line-numbers: true
+    code-tools: true
+  revealjs:
+    footer: "Thomas Manke"
+    overview: true
+    theme: night
+    toc: false
+    code-block-bg: #ded9ca
+    scrollable: true
+    tbl-cap-location: bottom
+    chalkboard: true
+    slide-number: true
+    output-file: revealjs.html
+    # ideally I would like to have a variable output-file name here.
+    # It should depend on the input.qmd or input.ipynb
+    # but I could not find a solution for this
+    # WARNING: do not add below comment lines - those fields might be ignored!

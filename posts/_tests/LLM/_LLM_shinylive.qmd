@@ -1,0 +1,93 @@
+---
+title: Large Language Models
+date: 2023/07/01
+date-modified: last-modified
+categories: 
+  - LLM
+  - shinylive
+
+format:
+  html: default
+  revealjs:
+     output-file: revealjs.html 
+
+filters:
+  - shinylive
+---
+
+## Large Language Models in Practice
+Here I show how to use the transformers package from HuggingFace
+
+https://github.com/huggingface/transformers/tree/main/notebooks 
+
+
+``` {shinylive-python}
+#| standalone: true
+#| components: [viewer, editor]
+#| code-folding: true
+#| layout: vertical
+#| viewerHeight: 420
+
+from shiny import App, Inputs, Outputs, Session, render, ui
+
+# the following import will not work because transformers in not available for 
+# shinylive, which in turn is based on pyodide
+# only a small set of packages are available here:
+# https://pyodide.org/en/stable/usage/packages-in-pyodide.html
+#from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, GenerationConfig
+
+#model   = AutoModelForSeq2SeqLM.from_pretrained(mn) # create model      
+#inp_em  = model.get_input_embeddings()              # function for input embedding
+#tok     = AutoTokenizer.from_pretrained(mn)         # pick a tokenizer (automatically)
+#config  = GenerationConfig(max_new_tokens=200)      # set config variables
+
+models=['google/flan-t5-base','google/flan-t5-large'] # model names --> https://huggingface.co/models
+
+app_ui = ui.page_fluid(
+    ui.input_select( "mn", "Choose a model:", models), 
+    ui.input_text("question", "Question:", "What colour is the sky?"),
+    ui.output_text_verbatim("answer"),
+)
+
+
+def server(input, output, session):
+    @output
+    @render.text
+    #@reactive.event(input.update, ignore_none=False)
+    def answer():
+        answer="hello" #input.question
+        return f"{input.mn()} says: {answer}"
+
+
+app = App(app_ui, server)  
+```
+
+
+## References
+
+-  https://www.youtube.com/watch?v=tL1zltXuHO8
+-  https://github.com/huggingface/transformers/tree/main/notebooks 
+
+::: {.callout-tip collapse="true"}
+#### watermark
+
+```{python}
+import watermark
+import pkg_resources
+
+#import os
+#print("Local variables:", locals())
+#print("Global variables:", globals())
+
+# Display watermark information
+print(watermark.watermark())
+
+# Get installed module versions
+installed_packages = pkg_resources.working_set
+
+# Print module versions
+print("Installed Packages:")
+for package in installed_packages:
+    print(package.key, package.version)
+```
+:::
