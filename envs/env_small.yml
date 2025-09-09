@@ -1,0 +1,46 @@
+name: tf_test
+channels:
+  - apple
+  - conda-forge
+dependencies:
+  - python=3
+  - jupyter
+  - jupyter-cache
+  - matplotlib
+  - numpy
+  - pandas
+  - scikit-learn
+  - seaborn
+  - tensorflow-deps
+  - pytorch
+  - transformers
+  - rpy2
+  - r-base
+  - r-rprojroot
+  - r-tidyverse
+  - r-pheatmap
+  - r-codetools
+  - r-upsetr
+  - r-kernsmooth
+  - r-shiny
+  - r-xml2
+  - r-ggextra
+  - r-patchwork
+  - r-gapminder
+  - r-rnaturalearth
+  - r-rnaturalearthdata
+  - r-maps
+  - r-sf
+  - r-plotly
+  - r-gt
+  - r-tidytext
+  - r-ggraph
+  - r-igraph
+  - r-stopwords
+  - r-wordcloud
+  - pip
+  - pip:
+      - tensorflow-macos
+      - tensorflow_datasets
+      - tf-keras-vis
+
