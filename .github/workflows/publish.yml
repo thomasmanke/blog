@@ -148,6 +148,41 @@ jobs:
           micromamba activate ${{ env.PRIMARY_ENV_NAME }}
           quarto render
       
+      # Add this step after Quarto extensions are installed
+      - name: Debug Quarto extension locations
+        shell: bash
+        run: |
+          echo "=== Quarto Configuration ==="
+          quarto --version
+          quarto check
+          
+          echo -e "\n=== Looking for Quarto and shinylive files ==="
+          # Search the entire home directory for Quarto-related files
+          find ~ -name "quarto" -o -name "shinylive" 2>/dev/null | grep -v "Permission denied" | sort
+          
+          echo -e "\n=== Quarto Configuration Files ==="
+          # Look for Quarto configuration files
+          find ~ -name "_quarto.yml" -o -name "quarto.yml" 2>/dev/null | grep -v "Permission denied"
+          
+          echo -e "\n=== Shinylive Cache Size ==="
+          # Check if shinylive cache exists and its size
+          if [ -d "/home/runner/.cache/shinylive" ]; then
+            du -sh /home/runner/.cache/shinylive
+            echo "Shinylive cache contents:"
+            ls -la /home/runner/.cache/shinylive
+          fi
+          
+          echo -e "\n=== Quarto Extensions Directory ==="
+          # Check if extensions directory exists
+          if [ -d "/home/runner/.local/share/quarto/extensions" ]; then
+            echo "Extensions directory contents:"
+            ls -la /home/runner/.local/share/quarto/extensions
+          else
+            echo "Extensions directory not found at expected location"
+            # Try to find it elsewhere
+            find ~ -path "*/quarto/extensions" 2>/dev/null | grep -v "Permission denied"
+          fi
+          
       - name: Check docs directory
         run: |
           if [ ! -d "docs" ]; then
